@@ -16,6 +16,11 @@
     --pink: #fa3a57;
     --brown: #a3821a;
     --white: #ffffff;
+
+    /* Font family */
+    --header_fontfamily: 'Montserrat', sans-serif;
+    --body_fontfamily: 'Lora', sans-serif;
+    --code_fontfamily: 'Fira Code', monospace;
 }
 
 /* Reset
@@ -98,7 +103,7 @@ time,
 mark,
 audio,
 video {
-    font-family: 'Lora', 'Montserrat', sans-serif;
+    font-family: var(--body_fontfamily);
     margin: 0;
     padding: 0;
     border: 0;
@@ -133,7 +138,7 @@ img {
 }
 html {
     box-sizing: border-box;
-    font-family: 'Lora', 'Montserrat', sans-serif;
+    font-family: var(--body_fontfamily);
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -191,7 +196,7 @@ code,
 kbd,
 pre,
 samp {
-    font-family: 'Fira Code', monospace;
+    font-family: var(--code_fontfamily);
     font-size: 1em;
 }
 button,
@@ -284,7 +289,7 @@ html {
 body {
     overflow-x: hidden;
     color: color(var(--midgrey) l(-25%));
-    font-family: 'Lora', 'Montserrat', sans-serif;
+    font-family: var(--body_fontfamily);
     font-size: 1.5rem;
     line-height: 1.6em;
     font-weight: 400;
