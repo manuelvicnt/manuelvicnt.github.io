@@ -1,6 +1,6 @@
 ## Jasper2 (manuelvivo.dev)
 
-![Site build](https://github.com/actions/manuelvicnt.github.io/workflows/Build%20and%20deploy%20Jekyll%20site%20to%20GitHub%20Pages/badge.svg)
+![Site build](https://github.com/manuelvicnt/manuelvicnt.github.io/workflows/Build%20and%20deploy%20Jekyll%20site%20to%20GitHub%20Pages/badge.svg)
 
 ## Live Demo
 
