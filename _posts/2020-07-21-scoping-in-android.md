@@ -1,15 +1,17 @@
 ---
 layout: post
 current: post
-cover: assets/images/2020-07-21-scoping-in-android.png
+cover: assets/images/2020-hilt.png
 navigation: True
 title: Scoping in Android and Hilt
 date: 2020-07-21 00:00:00
-tags: hilt
+tags: [hilt]
 class: post-template
 subclass: 'post'
 author: manuel
 ---
+
+Learn about scoping in Android and how that relates to scoping in Hilt
 
 **Scoping** an object `A` to another object `B` means that throughout the lifecycle of `B`, it’ll always have the same instance of `A`. When it comes to dependency injection (DI), an object `A` scoped to a container means that the container will always provide the same instance of `A` until the container is destroyed.
 

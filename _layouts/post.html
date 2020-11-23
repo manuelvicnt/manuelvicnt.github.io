@@ -25,19 +25,19 @@ into the {body} of the default.hbs template -->
         <article class="post-full {% if page.tags.size > 0 %}{% for tag in page.tags %} tag-{{ tag | slugify: "latin" }}{% endfor %}{% endif %} {{ page.subclass }} {% unless page.cover %}no-image{% endunless %}">
 
             <header class="post-full-header">
-                <section class="post-full-meta">
-                    <time class="post-full-meta-date" datetime="{{ page.date | date:'%e %B %Y' }}">{{ page.date | date:'%e %B %Y' }}</time>
-                    {% if page.tags.size > 0 %}
-                        <span class="date-divider">/</span>
-                        {% for tag in page.tags %}
-                            {% if forloop.index == page.tags.size %}
-                               <a href='{{ site.baseurl }}tag/{{ tag | slugify: "latin" }}/'>{{ tag | upcase }}</a>
-                            {% else %}
-                               <a href='{{ site.baseurl }}tag/{{ tag | slugify: "latin" }}/'>{{ tag | upcase }}</a>,
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </section>
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="{{ page.date | date:'%e %B %Y' }}">{{ page.date | date:'%e %B %Y' }}</time>
+              </section>
+
+              {% if page.tags.size > 0 %}
+                  {% for tag in page.tags %}
+                      {% if forloop.index == page.tags.size %}
+                          <span class="post-card-tags"><a style="color:white;" href='{{ site.baseurl }}tag/{{ tag | downcase | replace: ' ', '-' }}/'>{{ tag | capitalize }}</a></span>
+                      {% else %}
+                          <span class="post-card-tags"><a style="color:white;" href='{{ site.baseurl }}tag/{{ tag | downcase | replace: ' ', '-' }}/'>{{ tag | capitalize }}</a></span>
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
                 <h1 class="post-full-title">{{ page.title }}</h1>
             </header>
 
