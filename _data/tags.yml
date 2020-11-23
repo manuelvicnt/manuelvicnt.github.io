@@ -18,3 +18,11 @@ hilt:
   name: Hilt
   description: False
   cover: False
+dagger:
+  name: Dagger
+  description: False
+  cover: False
+coroutines:
+  name: Coroutines
+  description: False
+  cover: False
