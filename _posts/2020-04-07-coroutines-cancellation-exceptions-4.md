@@ -4,7 +4,7 @@ current: post
 cover: assets/images/2020-coroutines.png
 navigation: True
 title: Coroutines & Patterns for work that shouldn’t be cancelled
-date: 2020-04-23 00:00:00
+date: 2020-04-07 00:00:00
 tags: [coroutines]
 class: post-template
 subclass: 'post'
