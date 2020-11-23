@@ -2,6 +2,13 @@
 
 ![Site build](https://github.com/manuelvicnt/manuelvicnt.github.io/workflows/Build%20and%20deploy%20Jekyll%20site%20to%20GitHub%20Pages/badge.svg)
 
+## Local deploy
+
+To deploy and verify changes locally, run the `gulp` command to pickup CSS style changes and `bundle exec jekyll serve` on different terminal windows.
+
+This is a full-featured port of Ghost's default theme [Casper](https://github.com/tryghost/casper)
+*v2.1.9* for [Jekyll](https://jekyllrb.com/) / [GitHub Pages](https://pages.github.com/).
+
 ## Live Demo
 
 [Ghost's Casper](https://demo.ghost.io) // [Jasper2](https://jekyller.github.io/jasper2)

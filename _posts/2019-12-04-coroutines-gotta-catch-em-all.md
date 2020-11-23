@@ -3,9 +3,9 @@ layout: post
 current: post
 cover: assets/images/2019-12-04-Coroutines-gotta-catch-em-all.png
 navigation: True
-title: Coroutines! Gotta catch 'em all!
+title: Coroutines! Gotta catch 'em all! - KotlinConf 2019
 date: 2019-12-04 00:00:00
-tags: [talk, coroutines]
+tags: [talks, coroutines]
 class: post-template
 subclass: 'post'
 author: manuel
