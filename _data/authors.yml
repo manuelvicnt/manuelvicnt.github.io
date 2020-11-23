@@ -74,3 +74,14 @@ martin:
   facebook: False
   twitter: False
   cover: False
+manuel:
+  username: manuel
+  name: Manuel Vivo
+  location: Murcia, Spain
+  url_full: https://github.com/manuelvicnt/
+  url: github.com/manuelvicnt
+  bio: Android Developer Relations @ Google
+  picture: assets/images/manuelvicnt.jpg
+  facebook: False
+  twitter: manuelvicnt
+  cover: False
