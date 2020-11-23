@@ -14,3 +14,7 @@ getting-started:
   name: getting-started
   description: False
   cover: False
+hilt:
+  name: Hilt
+  description: False
+  cover: False

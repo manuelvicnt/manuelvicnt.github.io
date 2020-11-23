@@ -703,6 +703,7 @@ The first (most recent) post in the list is styled to be bigger than the others 
 .post-full-content h6 {
     color: color(var(--darkgrey) l(-5%));
     font-family: var(--body_fontfamily);
+    min-width: 100%;
 }
 .post-full-content p,
 .post-full-content ul,
@@ -746,6 +747,9 @@ The first (most recent) post in the list is styled to be bigger than the others 
 .post-full-content small {
     display: inline-block;
     line-height: 1.6em;
+    font-style: italic;
+    text-align: center;
+    min-width: 100%;
 }
 
 .post-full-content li:first-child {
@@ -792,6 +796,9 @@ Usage (In Ghost editor):
     display: block;
     margin-top: -3em;
     margin-bottom: 1.5em;
+    font-style: italic;
+    text-align: center;
+    min-width: 100%;
 }
 
 
@@ -894,7 +901,7 @@ Usage (In Ghost editor):
 }
 
 .post-full-content h2 {
-    margin: 0.5em 0 0.2em 0;
+    margin: 1em 0 0.5em 0;
     font-size: 3.6rem;
     font-weight: 700;
 }
@@ -905,7 +912,7 @@ Usage (In Ghost editor):
 }
 
 .post-full-content h3 {
-    margin: 0.5em 0 0.2em 0;
+    margin: 1em 0 0.5em 0;
     font-size: 2.8rem;
     font-weight: 700;
 }
