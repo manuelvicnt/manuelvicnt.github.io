@@ -26,3 +26,8 @@ coroutines:
   name: Coroutines
   description: False
   cover: False
+talk:
+  name: Talks
+  description: A selection of my talks
+  cover: assets/images/blog-cover.jpg
+  

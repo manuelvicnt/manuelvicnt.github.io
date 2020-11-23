@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2020-03-30-dagger-cheat-sheets.jpg
+cover: assets/images/2020-03-30-dagger-cheat-sheets.png
 navigation: True
 title: Dagger code generation cheat sheets
 date: 2020-03-03 00:00:00
