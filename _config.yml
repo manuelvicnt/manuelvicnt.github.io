@@ -28,6 +28,9 @@ twitter: manuelvicnt
 disqus: True
 disqus_shortname: manuelvivo
 
+# Google Analytics
+google_analytics: G-8WG7TD0NF4 # replace with your GA tracking identifier
+
 # Permalinks
 permalink: /:title
 # permalink: /author/:author
