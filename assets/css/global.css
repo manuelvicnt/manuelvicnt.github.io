@@ -20,6 +20,13 @@
     --brown: #a3821a;
     --white: #ffffff;
 
+    --button: var(--blue);
+    --date: var(--blue);
+    --tags: var(--blue);
+    --links: var(--darkgreen);
+    --progressbar: var(--darkgreen);
+    --textselection: #57f69e; /* 10% lighter than green */
+
     /* Code syntax */
     --codebackground: #073042;
     --keyword: #85c0ff; /* 30% lighter than blue */
@@ -321,7 +328,7 @@ body {
 
 ::selection {
     text-shadow: none;
-    background: color(var(--blue) lightness(+30%));
+    background: color(var(--textselection) lightness(+30%));
 }
 
 hr {
@@ -434,7 +441,7 @@ blockquote cite a {
 }
 
 a {
-    color: color(var(--blue) l(-5%));
+    color: color(var(--links) l(-5%));
     text-decoration: none;
 }
 
