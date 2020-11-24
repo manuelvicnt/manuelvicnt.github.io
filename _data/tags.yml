@@ -15,18 +15,18 @@ getting-started:
   description: False
   cover: False
 hilt:
-  name: Hilt
-  description: False
-  cover: False
+  name: hilt
+  description: Jetpack's recommended library for dependency injection
+  cover: assets/images/blog-cover.jpg
 dagger:
-  name: Dagger
-  description: False
-  cover: False
+  name: dagger
+  description: Dependency injection framework for Android
+  cover: assets/images/blog-cover.jpg
 talks:
   name: talks
   description: A selection of my talks
   cover: assets/images/blog-cover.jpg
 coroutines:
-  name: Coroutines
-  description: False
-  cover: False
+  name: coroutines
+  description: Android's recommended solution for async programming
+  cover: assets/images/blog-cover.jpg
