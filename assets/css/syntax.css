@@ -2,7 +2,7 @@
 .highlight pre { background: var(--codebackground) }
 .highlight .hll { background: var(--codebackground) }
 .highlight .c { color: var(--comments) } /* Comment */
-.highlight .err { color: #960050; background-color: #1e0010 } /* Error */
+.highlight .err { color: var(--punctuation) } /* Error */
 .highlight .k { color: var(--keyword) } /* Keyword */
 .highlight .l { color: var(--literals) } /* Literal */
 .highlight .n { color: var(--names) } /* Name */

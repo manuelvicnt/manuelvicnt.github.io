@@ -725,10 +725,11 @@ The first (most recent) post in the list is styled to be bigger than the others 
 }
 
 .post-template .kg-card-markdown > p:first-child {
-    background-color: var(--whitegrey);
+    background-color: color(var(--blue) l(+35%));
     border-radius: 5px;
     padding: 12px;
     font-size: 1em;
+    font-weight: bold;
     line-height: 1.5em;
 }
 
