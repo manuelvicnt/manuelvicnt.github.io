@@ -32,8 +32,10 @@ As you can see, navigating the Dagger graph of your Android app has never been e
 
 Starting with Android Studio 4.1 Canary 7, you can see a new gutter icon in projects that use Dagger or Hilt:
 
-![img](assets/images/2020-04-23-dagger-hilt-navigation-android-studio_2.png)
-<small>New Dagger and Hilt gutter icons in Android Studio</small>
+<p align="center">
+	<img height="75" src="assets/images/2020-04-23-dagger-hilt-navigation-android-studio_2.png">
+	<small>New Dagger and Hilt gutter icons in Android Studio</small>
+</p>
 
 The behavior of these actions are as follows:
 

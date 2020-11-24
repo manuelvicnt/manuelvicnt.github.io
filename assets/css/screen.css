@@ -828,11 +828,12 @@ Usage (In Ghost editor):
 
 .post-full-content code {
     padding: 0 5px 2px;
-    font-size: 0.8em;
+    font-size: 0.9em;
     line-height: 1em;
-    font-weight: 400!important;
+    font-weight: 500!important;
     background: var(--whitegrey);
     border-radius: 3px;
+    color: var(--darkgreen);
 }
 
 .post-full-content pre {
@@ -840,11 +841,11 @@ Usage (In Ghost editor):
     margin: 1.5em 0 3em;
     padding: 20px;
     max-width: 100%;
-    border: color(var(--darkgrey) l(-10%)) 1px solid;
+    border: color(var(--codebackground) l(-10%)) 1px solid;
     color: var(--whitegrey);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     line-height: 1.5em;
-    background: color(var(--darkgrey) l(-3%));
+    background: var(--codebackground);
     border-radius: 5px;
 }
 

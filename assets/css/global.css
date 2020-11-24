@@ -3,9 +3,11 @@
 
 :root {
     /* Colours */
+    --lightblue: #D7EFFE;
     --blue: #4285f4;
     --navy: #073042;
     --green: #3ddc84;
+    --darkgreen: #0d904f;
     --purple: #ad26b4; /* TODO */
     --yellow: #eff7cf;
     --red: #f05230; /* TODO */
@@ -13,9 +15,23 @@
     --midgrey: #738a94;
     --lightgrey: #c5d2d9;
     --whitegrey: #f5f5f5;
+    --orange: #f86734;
     --pink: #fa3a57;
     --brown: #a3821a;
     --white: #ffffff;
+
+    /* Code syntax */
+    --codebackground: #073042;
+    --keyword: #85c0ff; /* 30% lighter than blue */
+    --comments: var(--lightblue);
+    --literals: var(--orange);
+    --names: var(--white);
+    --punctuation: #c9c9c9;
+    --types: #e1f39b;
+    --strings: var(--orange);
+    --class: #57f69e;
+    --function: #fffec8;
+    --annotation: #ffbc8f; /* 30% lighter than orange */
 
     /* Font family */
     --header_fontfamily: 'Montserrat', sans-serif;
