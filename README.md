@@ -2,14 +2,20 @@
 
 ![Site build](https://github.com/manuelvicnt/manuelvicnt.github.io/workflows/Build%20and%20deploy%20Jekyll%20site%20to%20GitHub%20Pages/badge.svg)
 
+Source code of my personal website [manuelvivo.dev](https://manuelvivo.dev).
+
 ## Local deploy
 
 To deploy and verify changes locally, run the `gulp` command to pickup CSS style changes and `bundle exec jekyll serve` on different terminal windows.
 
-This is a full-featured port of Ghost's default theme [Casper](https://github.com/tryghost/casper)
-*v2.1.9* for [Jekyll](https://jekyllrb.com/) / [GitHub Pages](https://pages.github.com/).
+## Setup
+
+GitHub actions was set up following [this post](https://jekyllrb.com/docs/continuous-integration/github-actions/)m and the redirect fromg GitHub pages to [manuelvivo.dev](https://manuelvivo.dev) following [this one](https://dev.to/trentyang/how-to-setup-google-domain-for-github-pages-1p58).
 
 ## Live Demo
+
+This is a full-featured port of Ghost's default theme [Casper](https://github.com/tryghost/casper)
+*v2.1.9* for [Jekyll](https://jekyllrb.com/) / [GitHub Pages](https://pages.github.com/).
 
 [Ghost's Casper](https://demo.ghost.io) // [Jasper2](https://jekyller.github.io/jasper2)
 

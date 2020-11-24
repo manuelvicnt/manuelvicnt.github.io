@@ -27,19 +27,25 @@ Also, if you’re interested in the future of Dagger in Android, watch this Andr
 
 [Download file](https://developer.android.com/images/training/dependency-injection/dagger-codegen-basics.png)
 
-![img](assets/images/2020-03-30-dagger-cheat-sheets_1.png)
-<small>Dagger basic annotations cheat sheet</small>
+<p align="center">
+  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_1.png">
+	<small>Dagger basic annotations cheat sheet</small>
+</p>
 
 ## Dagger Subcomponents
 
 [Download file](https://developer.android.com/images/training/dependency-injection/dagger-codegen-subcomponents.png)
 
-![img](assets/images/2020-03-30-dagger-cheat-sheets_2.png)
-<small>Dagger subcomponents cheat sheet</small>
+<p align="center">
+  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_2.png">
+	<small>Dagger subcomponents cheat sheet</small>
+</p>
 
 ## Component dependencies
 
 [Download file](https://developer.android.com/images/training/dependency-injection/dagger-codegen-component-dependencies.png)
 
-![img](assets/images/2020-03-30-dagger-cheat-sheets_3.png)
-<small>Dagger component dependencies cheat sheet</small>
+<p align="center">
+  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_3.png">
+	<small>Dagger component dependencies cheat sheet</small>
+</p>
