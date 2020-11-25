@@ -39,7 +39,7 @@ I started playing the trumpet 🎺 since I was 7 years old. During my childhood 
 	<small>Playing with Las Musas de Guadalupe</small>
 </p>
 
-Fast forward a few years, I graduated in Computer Science in the [University of Murcia](https://en.wikipedia.org/wiki/University_of_Murcia) (Spain) and moved to Nottingham (UK) to work at Capital One UK as an Android developer. Few years later, I transferred to the US to work at Capital One in McLean, Virginia; close to Washington D.C.
+Fast forward a few years, I graduated in Computer Science at the [University of Murcia](https://en.wikipedia.org/wiki/University_of_Murcia) (Spain) and moved to Nottingham (UK) to work at Capital One UK as an Android developer. Few years later, I transferred to the US to work at Capital One in McLean, Virginia; close to Washington D.C.
 
 <p align="center">
 	<img width="500" src="../assets/images/last-day-nottingham.jpg">
