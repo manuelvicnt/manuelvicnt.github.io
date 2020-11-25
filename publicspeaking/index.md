@@ -8,22 +8,20 @@ class: page-template
 subclass: 'post page'
 ---
 
-* [2020](#2020)
-  * [Talks](#2020-talks)
-  * [Panels](#2020-panels)
-  * [Podcasts](#2020-podcasts)
-  * [Youtube videos](#2020-youtube)
-  * [Interviews](#2020-interviews)
-* [2019](#2019)
-  * [Talks](#2019-talks)
-  * [Podcasts](#2019-podcasts)
-  * [Youtube videos](#2019-youtube)
+## Content
+
+* 🎤 Talks - [2020](#2020-talks), [2019](#2019-talks)
+* 🎙️ Podcasts - [2020](#2020-podcasts), [2019](#2019-podcasts)
+* 📹 Youtube videos - [2020](#2020-youtube), [2019](#2019-youtube)
+* 👥 Panels - [2020](#2020-panels)
+* 👨‍💻 Interviews - [2020](#2020-interviews), [2019](#2019-interviews)
 
 ---
 
 # 2020 <a name="2020"/>
 
 ### Talks <a name="2020-talks"/>
+- <b>Compose for existing apps</b> - [Video](https://youtu.be/WQ9SVCxvfjE?t=244)<br/>_Kotlin Meetup Munich - November 19th, 2020_
 - <b>Compose for existing apps</b> - [Video](https://youtu.be/B-PCVjRwato?t=11242)<br/>_GDG DevFest Marmara, Turkey - October 18th, 2020_
 - <b>Hilt - Dependency injection for the mere mortals</b><br/>_GDG DevFest Ukraine - October 18th, 2020_
 - <b>Compose for existing apps (in Spanish)</b> - [Video](https://youtu.be/aFLF7v-6b1M?t=1540)<br/>_GDG DevFest Colombia - October 17th, 2020_
@@ -77,3 +75,6 @@ subclass: 'post page'
 
 ### Youtube videos <a name="2019-youtube"/>
 [New ShareSheet in Android 10](https://www.youtube.com/watch?v=qsKVL4FSHVI)
+
+### Interviews <a name="2019-interviews"/>
+[Codemotion Madrid 2019 - Coroutines](https://youtu.be/pawjjJJsi6c)
