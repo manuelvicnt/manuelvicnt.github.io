@@ -11,7 +11,7 @@ subclass: 'post'
 author: manuel
 ---
 
-Best practices for work that needs to run beyond its current scope
+Best practices for work that needs to run beyond its current scope with an applicationScope!
 
 In [part 2 of the Cancellation and Exceptions in Coroutines series](https://medium.com/androiddevelopers/cancellation-in-coroutines-aa6b90163629), we learnt the importance of cancelling work when it’s no longer needed. On Android, you can use the `CoroutineScopes` provided by Jetpack: `viewModelScope` or `lifecycleScope` that cancel any running work when their scope completes — that is when the `Activity/Fragment/Lifecycle` completes. If you’re creating your own `CoroutineScope`, make sure you tie it to a `Job` and call cancel when needed.
 

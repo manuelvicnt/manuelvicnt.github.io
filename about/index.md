@@ -1,17 +1,31 @@
 ---
 layout: page
 current: about
-title: About
+title: Hello World! I'm Manuel 👋
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template
 subclass: 'post page'
 ---
 
-Ghost is professional publishing platform designed for modern journalism. This is a demo site of a basic Ghost install to give you a general sense of what a new Ghost site looks like when set up for the first time.
+<p align="center">
+	<img src="../assets/images/manuelvicnt.jpg" alt="Manuel's portrait pic" style="width:180px;height:180px;border-radius: 50%">
+</p>
 
-> If you'd like to set up a site like this for yourself, head over to [Ghost.org](https://ghost.org/) and start a free 14 day trial to give Ghost a try!
+I'm an Android developer 👨‍💻 currently working at Google as a Developer Relations engineer.
 
-If you're a developer: Ghost is a completely open source (MIT) Node.js application built on a JSON API with an Ember.js admin client. It works with MySQL and SQLite, and is publicly available [on Github](https://github.com/TryGhost/ghost).
+### What I do
 
-If you need help with using Ghost, you'll find a ton of useful articles on [our knowledgebase](https://help.ghost.org/), as well as extensive [developer documentation](https://docs.ghost.org/).
+As a *Developer Relations (DevRel)* engineer, it's my focus to help improving the Android developer experience. I'm currently focusing on **Kotlin & Coroutines, Jetpack Compose, general app architecture, and dependency injection** (including Dagger and Hilt).
+
+My role can be clearly divided into two main tasks: 
+
+* **Feedback to other teams**. DevRel is the *0th customer* for libraries and framework SDK updates. We're the first ones trying out what's coming next in Android development and deliver feedback accordingly. **Always with the Android community in mind**, I pay attention to API usability and how certain features could be misused, discuss trade offs and alternatives to different solutions, file bugs, etc.
+
+* **Outreach and guidance**. Apart from the content you can find in this website, I contribute with documentation to [developers.android.com](https://developers.android.com), [codelabs](https://codelabs.developers.google.com/), and [code samples](https://github.com/android). I love getting involved with the community by going and speaking in conferences, writing articles, and helping others as much as I can.
+
+### Contact
+
+Feel free to reach out to me on [Twitter](https://twitter.com/manuelvicnt) where I'll happily chat with you or answer any questions you may have.
+
+Thanks all!

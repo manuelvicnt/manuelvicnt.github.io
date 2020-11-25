@@ -31,11 +31,7 @@ into the {body} of the default.hbs template -->
 
               {% if page.tags.size > 0 %}
                   {% for tag in page.tags %}
-                      {% if forloop.index == page.tags.size %}
-                          <span class="post-card-tags"><a style="color:white;" href='{{ site.baseurl }}tag/{{ tag | downcase | replace: ' ', '-' }}/'>{{ tag | capitalize }}</a></span>
-                      {% else %}
-                          <span class="post-card-tags"><a style="color:white;" href='{{ site.baseurl }}tag/{{ tag | downcase | replace: ' ', '-' }}/'>{{ tag | capitalize }}</a></span>
-                      {% endif %}
+                    <span class="post-card-tags"><a style="color:white;" href='{{ site.baseurl }}tag/{{ tag | downcase | replace: ' ', '-' }}/'>{{ tag | capitalize }}</a></span>
                   {% endfor %}
               {% endif %}
                 <h1 class="post-full-title">{{ page.title }}</h1>
