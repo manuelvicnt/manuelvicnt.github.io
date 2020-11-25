@@ -1,10 +1,10 @@
 ---
 layout: post
 current: post
-cover: assets/images/2020-04-23-dagger-hilt-navigation-android-studio.png
+cover: assets/images/2020-07-01-dagger-hilt-navigation-android-studio.png
 navigation: True
 title: Dagger and Hilt navigation support in Android Studio
-date: 2020-04-23 00:00:00
+date: 2020-07-01 00:00:00
 tags: [hilt, dagger]
 class: post-template
 subclass: 'post'

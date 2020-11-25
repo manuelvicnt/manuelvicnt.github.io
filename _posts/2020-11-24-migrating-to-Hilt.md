@@ -4,7 +4,7 @@ current: post
 cover: assets/images/2020-11-24-migrating-to-Hilt.png
 navigation: True
 title: Migrating from Dagger to Hilt — Is it worth it?
-date: 2020-11-24 00:00:00
+date: 2020-11-24 00:00:01
 tags: [hilt]
 class: post-template
 subclass: 'post'
