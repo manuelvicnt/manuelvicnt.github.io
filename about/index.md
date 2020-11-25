@@ -35,7 +35,7 @@ I started playing the trumpet 🎺 since I was 7 years old. During my childhood 
 * Appreciate the beauty of art - music specially. Everything is art! The code you write, your designs, your apps... everything! I tend to do things in the most beatiful way I can, keeping everything within a good harmony and balance.
 
 <p align="center">
-	<img height="400" src="../assets/images/las-musas.jpg">
+	<img width="800" src="../assets/images/las-musas.jpg">
 	<small>Playing with Las Musas de Guadalupe</small>
 </p>
 
