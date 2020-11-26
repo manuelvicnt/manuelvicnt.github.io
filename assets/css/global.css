@@ -42,7 +42,7 @@
 
     /* Font family */
     --header_fontfamily: 'Montserrat', sans-serif;
-    --body_fontfamily: 'Lora', sans-serif;
+    --body_fontfamily: 'Inter', sans-serif;
     --code_fontfamily: 'Source Code Pro', monospace;
 }
 

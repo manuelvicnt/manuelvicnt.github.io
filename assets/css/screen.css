@@ -840,6 +840,17 @@ Usage (In Ghost editor):
     margin-bottom: 0;
 }
 
+.post-full-content a code {
+    padding: 0 5px 2px;
+    font-size: 0.9em;
+    line-height: 1em;
+    font-weight: 500!important;
+    background: var(--whitegrey);
+    border-radius: 3px;
+    color: var(--darkgreen);
+    box-shadow: var(--links) 0 -1px 0 inset;
+}
+
 .post-full-content code {
     padding: 0 5px 2px;
     font-size: 0.9em;
