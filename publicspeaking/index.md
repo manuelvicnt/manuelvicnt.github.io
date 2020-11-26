@@ -10,7 +10,7 @@ subclass: 'post page'
 
 ## Content
 
-* 🎤 Talks - [2020](#2020-talks), [2019](#2019-talks)
+* 🎤 More talks - [2020](#2020-talks), [2019](#2019-talks)
 * 🎙️ Podcasts - [2020](#2020-podcasts), [2019](#2019-podcasts)
 * 📹 Youtube videos - [2020](#2020-youtube), [2019](#2019-youtube)
 * 👥 Panels - [2020](#2020-panels)
