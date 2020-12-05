@@ -20,7 +20,7 @@ I'm an Android developer 👨‍💻 currently working at Google.
 
 ## What I do
 
-At Google, I work as an *Android Developer Relations (DevRel)* engineer, it's my focus to help improving the Android developer experience. I'm currently focusing on **Kotlin & Coroutines, Jetpack Compose, general app architecture, and dependency injection** (including Dagger and Hilt).
+At Google, I work as an *Android Developer Relations (DevRel)* engineer. It's my focus to help improving the Android developer experience. I'm currently focusing on **Kotlin & Coroutines, Jetpack Compose, general app architecture, and dependency injection** (including Dagger and Hilt).
 
 My role can be clearly divided into two main tasks: 
 
