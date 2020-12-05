@@ -71,7 +71,7 @@ repo: manuelvicnt
 branch: master
 relative_source: ../manuelvicnt.github.io/
 destination: _site
-production_url:  https://manuelvicnt.github.io/
+production_url:  https://manuelvivo.dev
 source_url:  https://github.com/manuelvicnt/manuelvicnt.github.io
 
 exclude:
