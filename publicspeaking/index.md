@@ -11,12 +11,28 @@ subclass: 'post page'
 ## Content
 
 * 🎤 More talks - [2020](#2020-talks), [2019](#2019-talks)
-* 🎙️ Podcasts - [2020](#2020-podcasts), [2019](#2019-podcasts)
-* 📹 Youtube videos - [2020](#2020-youtube), [2019](#2019-youtube)
+* 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
+* 📹 Youtube videos - [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
 * 👥 Panels - [2020](#2020-panels)
-* 👨‍💻 Interviews - [2020](#2020-interviews), [2019](#2019-interviews)
+* 👨‍💻 Interviews - [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
 
 ---
+
+# 2021 <a name="2021"/>
+
+### Panels <a name="2021-panels"/>
+- <b>Kotlin and Jetpack API: Live Q&A - MAD Skills</b> - [Video](https://youtu.be/d-GkmHE8G80)<br/>_January 14th, 2021_
+- <b>Jetpack Compose Beta post-show (in Spanish) </b> - [Video](https://youtu.be/6VvGB6GYhg4)<br/>_Rock&Droid - February 24th, 2021_
+
+### Podcasts <a name="2021-podcasts"/>
+- [Jetpack Compose Beta (in Spanish)](sptfy.com/s02e06)<br/>_CodalotPodcast - February 26th, 2021_
+
+### Youtube videos <a name="2021-youtube"/>
+- [Now in Android episode #24](https://youtu.be/boz7_mL1wK4)<br/>_February 19th, 2021_
+
+### Interviews <a name="2021-interviews"/>
+- [Las Musas's music interview (in Spanish)](https://youtu.be/omnZx3Q8NZ0) - Talking about how music has influenced my career.
+
 
 # 2020 <a name="2020"/>
 
