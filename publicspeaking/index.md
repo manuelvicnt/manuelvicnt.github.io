@@ -23,9 +23,10 @@ subclass: 'post page'
 ### Panels <a name="2021-panels"/>
 - <b>Kotlin and Jetpack API: Live Q&A - MAD Skills</b> - [Video](https://youtu.be/d-GkmHE8G80)<br/>_January 14th, 2021_
 - <b>Jetpack Compose Beta post-show (in Spanish) </b> - [Video](https://youtu.be/6VvGB6GYhg4)<br/>_Rock&Droid - February 24th, 2021_
+- <b>Jetpack Compose Spanish Q&A </b> - [Video](https://youtu.be/9GNYY6kZ2k8)<br/>_Rock&Droid - March 24th, 2021_
 
 ### Podcasts <a name="2021-podcasts"/>
-- [Jetpack Compose Beta (in Spanish)](sptfy.com/s02e06)<br/>_CodalotPodcast - February 26th, 2021_
+- [Jetpack Compose Beta (in Spanish)](https://youtu.be/yYoDtkS8JrQ)<br/>_CodalotPodcast - February 26th, 2021_
 
 ### Youtube videos <a name="2021-youtube"/>
 - [Now in Android episode #24](https://youtu.be/boz7_mL1wK4)<br/>_February 19th, 2021_
