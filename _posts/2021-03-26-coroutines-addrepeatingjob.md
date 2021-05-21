@@ -11,11 +11,11 @@ subclass: 'post'
 author: manuel
 ---
 
-Learn how to use the `LifecycleOwner.addRepeatingJob` API to safely collect flows from the UI layer in Android.
+Learn how to use the `Lifecycle.repeatOnLifecycle` API to safely collect flows from the UI layer in Android.
 
 In an Android app, [Kotlin flows](https://developer.android.com/kotlin/flow) are typically collected from the UI layer to display data updates on the screen. However, you want to collect these flows making sure you’re not doing more work than necessary, wasting resources (both CPU and memory) or leaking data when the view goes to the background.
 
-In this article, you’ll learn how the `LifecycleOwner.addRepeatingJob`, `Lifecycle.repeatOnLifecycle`, and `Flow.flowWithLifecycle` APIs protect you from wasting resources and why they’re a good default to use for flow collection in the UI layer.
+In this article, you’ll learn how the `Lifecycle.repeatOnLifecycle`, and `Flow.flowWithLifecycle` APIs protect you from wasting resources and why they’re a good default to use for flow collection in the UI layer.
 
 ## Wasting resources
 
@@ -100,66 +100,75 @@ class LocationActivity : AppCompatActivity() {
 
 That’s a good solution, but that’s boilerplate, friends! And if there’s a universal truth about Android developers, it’s that we absolutely detest writing boilerplate code. One of the biggest benefits of not having to write boilerplate code is that with less code, there are fewer chances of making a mistake!
 
-## LifecycleOwner.addRepeatingJob
+## Lifecycle.repeatOnLifecycle
 
 Now that we all are on the same page and know where the problem lies, it’s time to come up with a solution. The solution needs to be 1) simple, 2) friendly or easy to remember/understand, and more importantly 3) safe! It should work for all use cases regardless of the flow implementation details.
 
-Without further ado, the API you should use is **`LifecycleOwner.addRepeatingJob`** available in the [*lifecycle-runtime-ktx*](https://developer.android.com/jetpack/androidx/releases/lifecycle) library. Take a look at the following code:
+Without further ado, the API you should use is **`Lifecycle.repeatOnLifecycle`** available in the [*lifecycle-runtime-ktx*](https://developer.android.com/jetpack/androidx/releases/lifecycle) library. 
+
+> Note: This API is available in the `lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01` library or later.
+
+Take a look at the following code:
 
 ```kotlin
 class LocationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Collects from the flow when the lifecycle is at least STARTED and
-        // STOPS the collection when it's STOPPED.
-        // It automatically restarts collecting when the lifecycle is STARTED again.
-        lifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
-            locationProvider.locationFlow().collect {
-                // New location! Update the map
-            } 
+        // Create a new coroutine since repeatOnLifecycle is a suspend function
+        lifecycleScope.launch {
+            // The block passed to repeatOnLifecycle is executed when the lifecycle
+            // is at least STARTED and is cancelled when the lifecycle is STOPPED.
+            // It automatically restarts the block when the lifecycle is STARTED again.
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Safely collect from locationFlow when the lifecycle is STARTED
+                // and stops collection when the lifecycle is STOPPED
+                locationProvider.locationFlow().collect {
+                    // New location! Update the map
+                }
+            }
         }
     }
 }
 ```
 
-`addRepeatingJob` takes a [`Lifecycle.State`](https://developer.android.com/reference/android/arch/lifecycle/Lifecycle.State) as a parameter that is used to **automatically create and launch a new coroutine** with the block passed to it when the lifecycle reaches that `state`, and **cancel the ongoing coroutine** when the lifecycle falls below the `state`.
+`repeatOnLifecycle` is a suspend function that takes a [`Lifecycle.State`](https://developer.android.com/reference/android/arch/lifecycle/Lifecycle.State) as a parameter that is used to **automatically create and launch a new coroutine** with the block passed to it when the lifecycle reaches that `state`, and **cancel the ongoing coroutine** when the lifecycle falls below the `state`.
 
-This avoids any boilerplate code since the associated code to cancel the coroutine when it’s no longer needed is automatically done by `addRepeatingJob`. As you could guess, it’s recommended to call these APIs in the activity’s `onCreate` or fragment’s `onViewCreated` methods to avoid unexpected behaviors. See the example below using fragments:
+This avoids any boilerplate code since the associated code to cancel the coroutine when it’s no longer needed is automatically done by `repeatOnLifecycle`. As you could guess, it’s recommended to call this API in the activity’s `onCreate` or fragment’s `onViewCreated` methods to avoid unexpected behaviors. See the example below using fragments:
 
 ```kotlin
 class LocationFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // ...
-        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
-            locationProvider.locationFlow().collect {
-                // New location! Update the map
-            } 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                locationProvider.locationFlow().collect {
+                    // New location! Update the map
+                }
+            }
         }
     }
 }
 ```
 
-> Note: These APIs are available in the `lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01` library or later.
+**Important**: Fragments should always use the `viewLifecycleOwner` to trigger UI updates. However, that’s not the case for `DialogFragment`s which might not have a View sometimes. For `DialogFragment`s, you can use the `lifecycleOwner`.
 
-### Using repeatOnLifecycle under the hood
+> Note: This API is available in the `lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01` library or later.
 
-To provide more flexible APIs and preserve the calling `CoroutineContext`, the `suspend Lifecycle.repeatOnLifecycle` function is also available for you to use. `repeatOnLifecycle` suspends the calling coroutine, re-launches the block when the lifecycle moves in and out of the target `state`, and resumes the calling coroutine when the `Lifecycle` is destroyed.
+### Under the hood
 
-This API is helpful whenever you need to do one time setup tasks that need to suspend before doing the repeating work. See example below:
+`repeatOnLifecycle` suspends the calling coroutine, re-launches the block when the lifecycle moves in and out of the target `state` in a *new* coroutine, and **resumes the calling coroutine when the `Lifecycle` is destroyed**. This last point is very important: the coroutine that calls `repeatOnLifecycle` won’t resume executing until the lifecycle is destroyed.
 
 ```kotlin
 class LocationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Create a coroutine
         lifecycleScope.launch {
-            // One time setup task
-            val expensiveObject = createExpensiveObject()
-
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Repeat when the lifecycle is STARTED, cancel when STOPPED
-                // Do work with expensive object
+            
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                // Repeat when the lifecycle is RESUMED, cancel when PAUSED
             }
 
             // `lifecycle` is DESTROYED when the coroutine resumes. repeatOnLifecycle
@@ -169,9 +178,19 @@ class LocationActivity : AppCompatActivity() {
 }
 ```
 
+## Visual diagram
+
+Circling back to the beginning, collecting `locationFlow` directly from a coroutine started with `lifecycleScope.launch` is dangerous since the collection keeps happening even when the View is in the background.
+
+`repeatOnLifecycle` prevents you from wasting resources and app crashes because it stops and restarts the flow collection when the lifecycle moves in and out of the target state.
+
+![img](assets/images/2021-03-26-coroutines-addrepeatingjob_2.png)
+<small>Difference between using and not using the repeatOnLifecycle API.</small>
+
+
 ## Flow.flowWithLifecycle
 
-You can also use the `Flow.flowWithLifecycle` operator when you have only one flow to collect. This API also uses the `suspend Lifecycle.repeatOnLifecycle` function under the hood, and emits items and cancels the underlying producer when the `Lifecycle` moves in and out of the target state.
+You can also use the `Flow.flowWithLifecycle` operator when you have only one flow to collect. This API uses the `Lifecycle.repeatOnLifecycle` API under the hood, and emits items and cancels the underlying producer when the `Lifecycle` moves in and out of the target state.
 
 ```kotlin
 class LocationActivity : AppCompatActivity() {
@@ -223,11 +242,11 @@ fun LocationScreen(locationFlow: Flow<Flow>) {
 
 Notice that you [need to `remember`](https://developer.android.com/jetpack/compose/state) the flow that is aware of the lifecycle with `locationFlow` and `lifecycleOwner` as keys to always use the same flow unless one of the keys change.
 
-In Compose, side effects must be performed in a [controlled environment](https://developer.android.com/jetpack/compose/lifecycle#state-effect-use-cases). Therefore, `LifecycleOwner.addRepeatingJob` is not safe to use. Instead, use [`LaunchedEffect`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#launchedeffect_1) to create a coroutine that follows the composable’s lifecycle. In its block, you could call the suspend `Lifecycle.repeatOnLifecycle` if you need it to re-launch a block of code when the host lifecycle is in a certain `State`.
+In Compose, side effects must be performed in a [controlled environment](https://developer.android.com/jetpack/compose/lifecycle#state-effect-use-cases). For that, use [`LaunchedEffect`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#launchedeffect_1) to create a coroutine that follows the composable’s lifecycle. In its block, you could call the suspend `Lifecycle.repeatOnLifecycle` if you need it to re-launch a block of code when the host lifecycle is in a certain `State`.
 
 ## Comparison with LiveData
 
-You might’ve noticed that this API behaves similarly to [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata), and that’s true! `LiveData` is aware of Lifecycle, and its restarting behavior makes it ideal for observing streams of data from the UI. And that’s also the case for the `LifecycleOwner.addRepeatingJob`, `suspend Lifecycle.repeatOnLifecycle`, and `Flow.flowWithLifecycle` APIs!
+You might’ve noticed that this API behaves similarly to [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata), and that’s true! `LiveData` is aware of Lifecycle, and its restarting behavior makes it ideal for observing streams of data from the UI. And that’s also the case for the `Lifecycle.repeatOnLifecycle`, and `Flow.flowWithLifecycle` APIs!
 
 Collecting flows using these APIs is a natural replacement for `LiveData` in *Kotlin-only* apps. If you use these APIs for flow collection, `LiveData` doesn’t offer any benefits over coroutines and flow. Even more, flows are more flexible since they can be collected from any `Dispatcher` and they can be powered with [all its operators](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/). As opposed to `LiveData`, which has limited operators available and whose values are always observed from the UI thread.
 
@@ -237,4 +256,4 @@ On a different note, one of the reasons you might be using `LiveData` is because
 
 --- 
 
-Use the `LifecycleOwner.addRepeatingJob`, `suspend Lifecycle.repeatOnLifecycle` or `Flow.flowWithLifecycle` APIs to safely collect flows from the UI layer in Android.
+Use the `Lifecycle.repeatOnLifecycle` or `Flow.flowWithLifecycle` APIs to safely collect flows from the UI layer in Android.
