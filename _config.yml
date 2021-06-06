@@ -7,7 +7,7 @@ words_per_minute: 200
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
 baseurl: /
-url: https://manuelvicnt.github.io
+url: https://unprecedental.github.io
 
 # Website info
 title: Manuel Vivo
@@ -16,8 +16,8 @@ cover: assets/images/blog-cover.jpg
 #logo: assets/images/blog-icon.png
 #logo_dark: assets/images/favicon.png
 favicon: assets/images/favicon.png
-production_url: https://manuelvicnt.github.io/
-source_url: https://github.com/manuelvicnt/manuelvicnt.github.io
+production_url: https://unprecedental.github.io/
+source_url: https://github.com/unprecedental/manuelvicnt.github.io
 CNAME: #manuelvivo.dev #add cname for website to be created
 
 # Social info
@@ -29,7 +29,7 @@ disqus: True
 disqus_shortname: manuelvicentevivo
 
 # Google Analytics
-google_analytics: UA-69281367-1 # replace with your GA tracking identifier
+# google_analytics: UA-69281367-1 # replace with your GA tracking identifier
 
 # Permalinks
 permalink: /:title
@@ -66,13 +66,13 @@ feed:
 # or "master" otherwise
 safe: False
 lsi: False
-username: manuelvicnt
+username: unprecedental
 repo: manuelvicnt
 branch: master
-relative_source: ../manuelvicnt.github.io/
+relative_source: ../unprecedental.github.io/
 destination: _site
-production_url:  https://manuelvicnt.github.io/
-source_url:  https://github.com/manuelvicnt/manuelvicnt.github.io
+production_url:  https://unprecedental.github.io/
+source_url:  https://github.com/unprecedental/manuelvicnt.github.io
 
 exclude:
   - assets/css
