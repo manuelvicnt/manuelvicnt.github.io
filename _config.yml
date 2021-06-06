@@ -10,12 +10,13 @@ baseurl: /
 url: https://unprecedental.github.io
 
 # Website info
-title: Manuel Vivo
+title: Manuel Vivo .dev
 description: A place where you can learn about Android development
 cover: assets/images/blog-cover.jpg
 #logo: assets/images/blog-icon.png
 #logo_dark: assets/images/favicon.png
 favicon: assets/images/favicon.png
+
 production_url: https://unprecedental.github.io/
 source_url: https://github.com/unprecedental/manuelvicnt.github.io
 CNAME: #manuelvivo.dev #add cname for website to be created
@@ -26,7 +27,7 @@ twitter: manuelvicnt
 
 # Disqus
 disqus: True
-disqus_shortname: manuelvicentevivo
+disqus_shortname: manuelvivo
 
 # Google Analytics
 # google_analytics: UA-69281367-1 # replace with your GA tracking identifier

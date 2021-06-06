@@ -3,23 +3,46 @@
 
 :root {
     /* Colours */
+    --lightblue: #D7EFFE;
     --blue: #4285f4;
-    --navy: #073042;
+    --navy: #0d3749;
     --green: #3ddc84;
+    --darkgreen: #0d904f;
     --purple: #ad26b4; /* TODO */
     --yellow: #eff7cf;
     --red: #f05230; /* TODO */
     --darkgrey: #15171A;
     --midgrey: #738a94;
     --lightgrey: #c5d2d9;
-    --whitegrey: #e5eff5;
+    --whitegrey: #f5f5f5;
+    --orange: #f86734;
     --pink: #fa3a57;
     --brown: #a3821a;
     --white: #ffffff;
 
+    --button: var(--blue);
+    --date: var(--blue);
+    --tags: var(--blue);
+    --links: var(--darkgreen);
+    --progressbar: var(--darkgreen);
+    --textselection: #57f69e; /* 10% lighter than green */
+
+    /* Code syntax */
+    --codebackground: #073042;
+    --keyword: #85c0ff; /* 30% lighter than blue */
+    --comments: var(--lightblue);
+    --literals: var(--orange);
+    --names: var(--white);
+    --punctuation: #c9c9c9;
+    --types: #e1f39b;
+    --strings: var(--orange);
+    --class: #57f69e;
+    --function: #fffec8;
+    --annotation: #ffbc8f; /* 30% lighter than orange */
+
     /* Font family */
     --header_fontfamily: 'Montserrat', sans-serif;
-    --body_fontfamily: 'Lora', sans-serif;
+    --body_fontfamily: 'Inter', sans-serif;
     --code_fontfamily: 'Source Code Pro', monospace;
 }
 
@@ -305,7 +328,7 @@ body {
 
 ::selection {
     text-shadow: none;
-    background: color(var(--blue) lightness(+30%));
+    background: color(var(--textselection) lightness(+30%));
 }
 
 hr {
@@ -418,7 +441,7 @@ blockquote cite a {
 }
 
 a {
-    color: color(var(--blue) l(-5%));
+    color: color(var(--links) l(-5%));
     text-decoration: none;
 }
 

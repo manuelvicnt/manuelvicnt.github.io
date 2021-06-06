@@ -1,15 +1,17 @@
 ---
 layout: post
 current: post
-cover: assets/images/2020-07-21-scoping-in-android.png
+cover: assets/images/2020-hilt.png
 navigation: True
 title: Scoping in Android and Hilt
 date: 2020-07-21 00:00:00
-tags: hilt
+tags: [hilt]
 class: post-template
 subclass: 'post'
 author: manuel
 ---
+
+Learn about scoping in Android and how that relates to scoping in Hilt
 
 **Scoping** an object `A` to another object `B` means that throughout the lifecycle of `B`, it’ll always have the same instance of `A`. When it comes to dependency injection (DI), an object `A` scoped to a container means that the container will always provide the same instance of `A` until the container is destroyed.
 
@@ -44,8 +46,10 @@ class ExampleActivity : AppCompatActivity() {
 
 Every time `ExampleActivity` is created, it’ll hold a new instance of the `ActivityComponent` DI container that will provide the same instance of `AnalyticsAdapter` to dependencies below it in the [component hierarchy](https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy) until the activity is destroyed.
 
-![img](assets/images/2020-07-21-scoping-in-android_1.png)
-<small>You get a new instance of `AnalyticsAdapter` and `MainActivity` after a configuration change</small>
+<p align="center">
+  <img src="assets/images/2020-07-21-scoping-in-android_1.png">
+  <small>You get a new instance of `AnalyticsAdapter` and `MainActivity` after a configuration change</small>
+</p>
 
 ## Scoping with ViewModel
 
@@ -82,8 +86,10 @@ class ExampleActivity : AppCompatActivity() {
 }
 ```
 
-![img](assets/images/2020-07-21-scoping-in-android_2.png)
-<small>You get the same instance of `AnalyticsAdapter` after a configuration change using ViewModel or Hilt’s `ActivityRetainedScope` annotation</small>
+<p align="center">
+  <img src="assets/images/2020-07-21-scoping-in-android_2.png">
+  <small>You get the same instance of `AnalyticsAdapter` after a configuration change using ViewModel or Hilt’s `ActivityRetainedScope` annotation</small>
+</p>
 
 If you still want to keep the ViewModel because it needs to perform some view logic while complying with good DI practices, you can use Hilt to provide the ViewModel dependencies using `@ViewModelInject` as specified in the [docs](https://developer.android.com/training/dependency-injection/hilt-jetpack#viewmodels). This time, `AnalyticsAdapter` doesn’t need to be scoped to `ActivityRetainedComponent` because it is now manually scoped to the ViewModel:
 

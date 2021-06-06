@@ -110,7 +110,7 @@ body {
     padding-top: 12px;
     padding-bottom: 12px;
     color: #fff;
-    background: color(var(--darkgrey) l(-5%)) no-repeat center center;
+    background: var(--navy) no-repeat center center;
     background-size: cover;
 }
 
@@ -434,7 +434,7 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
     padding: 0 12px;
     display: inline-block;
     font-size: 1.4rem;
-    background: var(--blue);
+    background: var(--tags);
     margin-bottom: 8px;
     font-family: var(--header_fontfamily);
     color: var(--white);
@@ -483,6 +483,19 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
     line-height: 33px;
     flex-shrink: 0;
     margin-left: 20px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    float: right;
+    margin-top: -4px;
+    color: var(--midgrey);
+}
+
+.reading-date {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 33px;
+    flex-shrink: 0;
+    margin-left: 2px;
     letter-spacing: .5px;
     text-transform: uppercase;
     float: right;
@@ -570,13 +583,13 @@ The first (most recent) post in the list is styled to be bigger than the others 
 
 .post-full-header {
     margin: 0 auto;
-    padding: 6vw 3vw 3vw;
+    padding: 4vw 3vw 2vw;
     max-width: 1040px;
     text-align: center;
 }
 @media (max-width: 500px) {
     .post-full-header {
-        padding: 14vw 3vw 10vw;
+        padding: 10vw 3vw 10vw;
     }
 }
 
@@ -592,7 +605,7 @@ The first (most recent) post in the list is styled to be bigger than the others 
 }
 
 .post-full-meta-date {
-    color: var(--blue);
+    color: var(--date);
 }
 
 .post-full-title {
@@ -608,8 +621,8 @@ The first (most recent) post in the list is styled to be bigger than the others 
 }
 
 .post-full-image {
-    margin: 0 -10vw -165px;
-    height: 800px;
+    margin: 0 -10vw -30px;
+    height: 400px;
     background: var(--lightgrey) center center;
     background-size: cover;
     border-radius: 5px;
@@ -617,22 +630,22 @@ The first (most recent) post in the list is styled to be bigger than the others 
 
 @media (max-width: 1170px) {
     .post-full-image {
-        margin: 0 -4vw -100px;
-        height: 600px;
+        margin: 0 -4vw -30px;
+        height: 300px;
         border-radius: 0;
     }
 }
 
 @media (max-width: 800px) {
     .post-full-image {
-        height: 400px;
+        height: 200px;
     }
 }
 
 .post-full-content {
     position: relative;
     margin: 0 auto;
-    padding: 70px 100px 0;
+    padding: 50px 100px 0;
     min-height: 230px;
 	font-family: var(--body_fontfamily);
     font-size: 2.2rem;
@@ -659,7 +672,7 @@ The first (most recent) post in the list is styled to be bigger than the others 
     z-index: -1;
     display: block;
     width: 20px;
-    height: 200px;
+    height: 100px;
     background: rgba(39,44,49,0.15);
     filter: blur(5px);
     transform: rotate(-5deg);
@@ -673,7 +686,7 @@ The first (most recent) post in the list is styled to be bigger than the others 
     z-index: -1;
     display: block;
     width: 20px;
-    height: 200px;
+    height: 100px;
     background: rgba(39,44,49,0.15);
     filter: blur(5px);
     transform: rotate(5deg);
@@ -725,22 +738,25 @@ The first (most recent) post in the list is styled to be bigger than the others 
 }
 
 .post-template .kg-card-markdown > p:first-child {
-    font-size: 1.25em;
+    background-color: color(var(--blue) l(+35%));
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 1em;
+    font-weight: bold;
     line-height: 1.5em;
 }
 
 .post-full-content a {
-    color: #000;
-    box-shadow: var(--blue) 0 -1px 0 inset;
+    color: color(var(--darkgrey) l(-5%));
+    box-shadow: var(--links) 0 -1px 0 inset;
 }
 
 .post-full-content a:hover {
-    color: var(--blue);
+    color: var(--links);
     text-decoration: none;
 }
 
-.post-full-content strong,
-.post-full-content em {
+.post-full-content strong {
     color: color(var(--darkgrey) l(-5%));
 }
 
@@ -759,7 +775,7 @@ The first (most recent) post in the list is styled to be bigger than the others 
 .post-full-content img,
 .post-full-content video {
     display: block;
-    margin: 1.5em auto;
+    margin: 1em 0 0.5em 0;
     max-width: 1040px;
 }
 @media (max-width: 1040px) {
@@ -809,7 +825,7 @@ Usage (In Ghost editor):
 .post-full-content blockquote {
     margin: 0 0 1.5em;
     padding: 0 1.5em;
-    border-left: #3eb0ef 3px solid;
+    border-left: var(--darkgreen) 3px solid;
 }
 
 .post-full-content blockquote p {
@@ -824,13 +840,25 @@ Usage (In Ghost editor):
     margin-bottom: 0;
 }
 
-.post-full-content code {
+.post-full-content a code {
     padding: 0 5px 2px;
-    font-size: 0.8em;
+    font-size: 0.9em;
     line-height: 1em;
-    font-weight: 400!important;
+    font-weight: 500!important;
     background: var(--whitegrey);
     border-radius: 3px;
+    color: var(--darkgreen);
+    box-shadow: var(--links) 0 -1px 0 inset;
+}
+
+.post-full-content code {
+    padding: 0 5px 2px;
+    font-size: 0.9em;
+    line-height: 1em;
+    font-weight: 500!important;
+    background: var(--whitegrey);
+    border-radius: 3px;
+    color: var(--darkgreen);
 }
 
 .post-full-content pre {
@@ -838,11 +866,11 @@ Usage (In Ghost editor):
     margin: 1.5em 0 3em;
     padding: 20px;
     max-width: 100%;
-    border: color(var(--darkgrey) l(-10%)) 1px solid;
+    border: color(var(--codebackground) l(-10%)) 1px solid;
     color: var(--whitegrey);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     line-height: 1.5em;
-    background: color(var(--darkgrey) l(-3%));
+    background: var(--codebackground);
     border-radius: 5px;
 }
 
@@ -912,7 +940,7 @@ Usage (In Ghost editor):
 }
 
 .post-full-content h3 {
-    margin: 1em 0 0.5em 0;
+    margin: 0.4em 0 0.3em 0;
     font-size: 2.8rem;
     font-weight: 700;
 }
@@ -923,19 +951,19 @@ Usage (In Ghost editor):
 }
 
 .post-full-content h4 {
-    margin: 0.5em 0 0.2em 0;
-    font-size: 2.8rem;
+    margin: 0.4em 0 0.2em 0;
+    font-size: 2.5rem;
     font-weight: 700;
 }
 @media (max-width: 500px) {
     .post-full-content h4 {
-        font-size: 2.2rem;
+        font-size: 2.0rem;
     }
 }
 
 .post-full-content h5 {
     display: block;
-    margin: 0.5em 0;
+    margin: 0.4em 0;
     padding: 1em 0 1.5em;
     border: 0;
     color: var(--blue);
@@ -981,7 +1009,7 @@ Usage (In Ghost editor):
 }
 
 .footnote-backref {
-    color: var(--blue) !important;
+    color: var(--darkgreen) !important;
     font-size: 1.2rem;
     font-weight: bold;
     text-decoration: none !important;
@@ -1141,10 +1169,10 @@ Usage (In Ghost editor):
     text-align: center;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
     background: linear-gradient(
-    color(var(--blue) whiteness(+7%)),
-    color(var(--blue) lightness(-7%) saturation(-10%)) 60%,
-    color(var(--blue) lightness(-7%) saturation(-10%)) 90%,
-    color(var(--blue) lightness(-4%) saturation(-10%))
+    color(var(--button) whiteness(+7%)),
+    color(var(--button) lightness(-7%) saturation(-10%)) 60%,
+    color(var(--button) lightness(-7%) saturation(-10%)) 90%,
+    color(var(--button) lightness(-4%) saturation(-10%))
     );
     border-radius: 5px;
     box-shadow: 0 0 0 1px inset rgba(0,0,0,0.14);
@@ -1154,7 +1182,7 @@ Usage (In Ghost editor):
 
 .subscribe-form button:active,
 .subscribe-form button:focus {
-    background: color(var(--blue) lightness(-9%) saturation(-10%));
+    background: color(var(--button) lightness(-9%) saturation(-10%));
 }
 
 @media (max-width: 650px) {
@@ -1245,8 +1273,8 @@ Usage (In Ghost editor):
 }
 
 .author-card-button:hover {
-    border-color: var(--blue);
-    color: var(--blue);
+    border-color: var(--button);
+    color: var(--button);
     text-decoration: none;
 }
 
@@ -1539,7 +1567,7 @@ Usage (In Ghost editor):
     width: 100%;
     height: 2px;
     border: none;
-    color: var(--blue);
+    color: var(--progressbar);
     background: transparent;
 
     appearance: none;
@@ -1550,11 +1578,11 @@ Usage (In Ghost editor):
 }
 
 .progress::-webkit-progress-value {
-    background-color: var(--blue);
+    background-color: var(--progressbar);
 }
 
 .progress::-moz-progress-bar {
-    background-color: var(--blue);
+    background-color: var(--progressbar);
 }
 
 .progress-container {
@@ -1571,7 +1599,7 @@ Usage (In Ghost editor):
     display: block;
     width: 50%;
     height: inherit;
-    background-color: var(--blue);
+    background-color: var(--progressbar);
 }
 
 @media (max-width: 900px) {
@@ -1834,10 +1862,10 @@ Usage (In Ghost editor):
     text-align: center;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
     background: linear-gradient(
-    color(var(--blue) whiteness(+7%)),
-    color(var(--blue) lightness(-7%) saturation(-10%)) 60%,
-    color(var(--blue) lightness(-7%) saturation(-10%)) 90%,
-    color(var(--blue) lightness(-4%) saturation(-10%))
+    color(var(--button) whiteness(+7%)),
+    color(var(--button) lightness(-7%) saturation(-10%)) 60%,
+    color(var(--button) lightness(-7%) saturation(-10%)) 90%,
+    color(var(--button) lightness(-4%) saturation(-10%))
     );
     border-radius: 8px;
     box-shadow: 0 0 0 1px inset rgba(0,0,0,0.14);
@@ -1847,7 +1875,7 @@ Usage (In Ghost editor):
 
 .subscribe-overlay button:active,
 .subscribe-overlay button:focus {
-    background: color(var(--blue) lightness(-9%) saturation(-10%));
+    background: color(var(--button) lightness(-9%) saturation(-10%));
 }
 
 .subscribe-overlay-close {
