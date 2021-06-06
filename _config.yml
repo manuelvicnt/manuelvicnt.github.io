@@ -71,8 +71,8 @@ repo: manuelvicnt
 branch: master
 relative_source: ../unprecedental.github.io/
 destination: _site
-production_url:  https://unprecedental.github.io/
-source_url:  https://github.com/unprecedental/manuelvicnt.github.io
+# production_url:  https://unprecedental.github.io/
+# source_url:  https://github.com/unprecedental/manuelvicnt.github.io
 
 exclude:
   - assets/css
