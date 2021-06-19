@@ -12,7 +12,7 @@ subclass: 'post page'
 
 * 🎤 More talks - [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
 * 👨‍💻 Live coding - [2021](#2021-live-coding)
-* 👥 Panels - [2020](#2020-panels)
+* 👥 Panels - [2021](#2021-panels), [2020](#2020-panels)
 * 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
 * 📹 Youtube videos - [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
 * 💬 Interviews - [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
