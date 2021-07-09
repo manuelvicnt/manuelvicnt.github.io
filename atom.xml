@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title> - Articles</title>
+    <description>A place where you can learn about Android development</description>
+    <link>
+    https://manuelvivo.dev</link>
+    
+      
+      <item>
+        <title>repeatOnLifecycle API design story</title>
+        
+          <description>&lt;p&gt;Learn the design decisions behind the Lifecycle.repeatOnLifecycle API.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 01 Jul 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/repeatonlifecycle</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/repeatonlifecycle</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Create an application CoroutineScope using Hilt</title>
+        
+          <description>&lt;p&gt;Inject an application-scoped &lt;code class=&quot;highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; using Hilt.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutinescope-hilt</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutinescope-hilt</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Using Jetpack libraries in Compose talk</title>
+        
+          <description>&lt;p&gt;Using Jetpack libraries in Compose - Google I/O 2021 talk.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/libraries-in-compose-talk</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/libraries-in-compose-talk</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Things to know about Flow’s shareIn and stateIn operators</title>
+        
+          <description>&lt;p&gt;Become familiar with the &lt;code class=&quot;highlighter-rouge&quot;&gt;shareIn&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;stateIn&lt;/code&gt; operators by example.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Fri, 07 May 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/sharein-statein</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/sharein-statein</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Hilt is stable! Easier dependency injection on Android</title>
+        
+          <description>&lt;p&gt;Hilt, Jetpack’s recommended dependency injection (DI) solution for Android apps, is already stable!&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/hilt-stable</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/hilt-stable</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>A safer way to collect flows from Android UIs</title>
+        
+          <description>&lt;p&gt;Learn how to use the &lt;code class=&quot;highlighter-rouge&quot;&gt;Lifecycle.repeatOnLifecycle&lt;/code&gt; API to safely collect flows from the UI layer in Android.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Fri, 26 Mar 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-addrepeatingjob</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-addrepeatingjob</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Cómo la música ha influenciado mi carrera</title>
+        
+          <description>&lt;p&gt;Entrevista sobre cómo la música, la trompeta 🎺 y Las Musas me han influenciado en mi carrera como ingeniero Android.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Sun, 28 Feb 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/musas-interview</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/musas-interview</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Bridging the gap between coroutines, JVM threads, and concurrency problems</title>
+        
+          <description>&lt;p&gt;Learn more about how coroutines are executed in the JVM and concurrency problems.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-and-threads</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-and-threads</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Using Hilt's ViewModelComponent</title>
+        
+          <description>&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; is a component in the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy&quot;&gt;Hilt’s component hierarchy&lt;/a&gt; that follows the lifecycle of a ViewModel and allows scoping types to it.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 21 Jan 2021 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/viewmodelcomponent</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/viewmodelcomponent</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Simplifying APIs with coroutines and Flow</title>
+        
+          <description>&lt;p&gt;Learn how to create your own coroutine adapters and see how they work under the hood&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/simplifying-apis-coroutines</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/simplifying-apis-coroutines</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Migrating from Dagger to Hilt — Is it worth it?</title>
+        
+          <description>&lt;p&gt;Consider whether or not you should migrate your Dagger app to Hilt&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 24 Nov 2020 00:00:01 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/migrating-to-Hilt</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/migrating-to-Hilt</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Going with the Flow</title>
+        
+          <description>&lt;p&gt;Introduction to coroutines Flow&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/going-with-the-flow</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/going-with-the-flow</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Scoping in Android and Hilt</title>
+        
+          <description>&lt;p&gt;Learn about scoping in Android and how that relates to scoping in Hilt&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/scoping-in-android</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/scoping-in-android</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Android Coroutines - How to manage async tasks in Kotlin</title>
+        
+          <description>&lt;p&gt;State of coroutines on Android in 2020&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Mon, 13 Jul 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-in-2020</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-in-2020</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Hilt — Adding components to the hierarchy</title>
+        
+          <description>&lt;p&gt;Get more flexibility in Hilt by adding your own components to the hierarchy&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/hilt-adding-components</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/hilt-adding-components</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Dagger and Hilt navigation support in Android Studio</title>
+        
+          <description>&lt;p&gt;Easily navigate between Dagger and Hilt related code in Android Studio&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 01 Jul 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/dagger-hilt-navigation-android-studio</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/dagger-hilt-navigation-android-studio</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Dependency injection on Android with Hilt</title>
+        
+          <description>&lt;p&gt;Learn about Jetpack’s recommended library for dependency injection&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/di-with-hilt</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/di-with-hilt</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Coroutines &amp; Patterns for work that shouldn’t be cancelled</title>
+        
+          <description>&lt;p&gt;Best practices for work that needs to run beyond its current scope with an applicationScope!&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-cancellation-exceptions-4</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-cancellation-exceptions-4</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Coroutines 101</title>
+        
+          <description>&lt;p&gt;Introduction to the basics of coroutines&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-101-talk</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-101-talk</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Exceptions in coroutines</title>
+        
+          <description>&lt;p&gt;All you need to know about exceptions in coroutines&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 11 Mar 2020 00:00:01 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-cancellation-exceptions-3</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-cancellation-exceptions-3</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Coroutines - First things first</title>
+        
+          <description>&lt;p&gt;Learn about the most basics coroutines concepts&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-cancellation-exceptions-1</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-cancellation-exceptions-1</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Dagger code generation cheat sheets</title>
+        
+          <description>&lt;p&gt;Have you ever wondered what Dagger does under the hood 🤔?&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/dagger-cheat-sheets</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/dagger-cheat-sheets</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Coroutines! Gotta catch 'em all! - KotlinConf 2019</title>
+        
+          <description>&lt;p&gt;All about cancellation and exceptions in coroutines&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/coroutines-gotta-catch-em-all</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/coroutines-gotta-catch-em-all</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app</title>
+        
+          <description>&lt;p&gt;Best practices we found when using Flow in the ADS 2019 app&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 26 Nov 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/lessons-learnt-flow-ads-2019</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/lessons-learnt-flow-ads-2019</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Dependency Injection guidance on Android — ADS 2019</title>
+        
+          <description>&lt;p&gt;Why dependency injection is important on Android and a new guide about it!&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/di-guidance-android</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/di-guidance-android</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Testing coroutines - Android Developer Summit 2019</title>
+        
+          <description>&lt;p&gt;How to test coroutines in 2019!&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 24 Oct 2019 00:00:01 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/testing-coroutines-talk</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/testing-coroutines-talk</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>An opinionated guide to Dependency Injection on Android - Android Developer Summit 2019</title>
+        
+          <description>&lt;p&gt;Why dependency injection is important on Android and a new guide about it!&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/di-guidance-android-talk</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/di-guidance-android-talk</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Testing two consecutive LiveData emissions in Coroutines</title>
+        
+          <description>&lt;p&gt;Learn how to pause and resume a TestCoroutineDispatcher&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 15 Oct 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/testing-two-livedata</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/testing-two-livedata</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Dagger in Kotlin - Gotchas and Optimizations</title>
+        
+          <description>&lt;p&gt;Dagger optimizations come with no cost! Add them and follow best practices&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 30 Jul 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/dagger-kotlin-optimizations</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/dagger-kotlin-optimizations</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>The suspend modifier — under the hood</title>
+        
+          <description>&lt;p&gt;How is the compiler transforming the code to be able to suspend and resume the execution of coroutines?&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Sun, 24 Mar 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/suspend-modifier</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/suspend-modifier</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Easy Coroutines in Android - viewModelScope</title>
+        
+          <description>&lt;p&gt;Learn everything you should know about viewModelScope&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 19 Mar 2019 00:00:00 +0000</pubDate>
+        <link>
+        https://manuelvivo.dev/viewmodelscope</link>
+        <guid isPermaLink="true">https://manuelvivo.dev/viewmodelscope</guid>
+      </item>
+      
+    
+  </channel>
+</rss>
