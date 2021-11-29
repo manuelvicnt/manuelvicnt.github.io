@@ -22,12 +22,17 @@ subclass: 'post page'
 # 2021 <a name="2021"/>
 
 ### 🎤 Talks <a name="2021-talks"/>
+- <b>A Compose State of mind</b> - [Video](https://youtu.be/rmv2ug-wW4U)<br/>_Android Developer Summit 2021 - October 27th, 2021_
+- <b>Kotlin Flows in practice</b> - [Video](https://youtu.be/fSB6_KE95bU)<br/>_Android Developer Summit 2021 - October 27th, 2021_
 - <b>Using Jetpack libraries in Compose</b> - [Video](https://youtu.be/0z_dwBGQQWQ)<br/>_Google I/O 2021 - May 18th, 2021_
 
 ### 👨‍💻 Live Coding <a name="2021-live-coding"/>
+- <b>Jetpack Compose migration Code-Along</b> - [Video](https://youtu.be/wg4NHmxJ78g)<br/>_November 1st, 2021_
 - <b>Android Code-Along: Kotlin coroutines</b> - [Video](https://youtu.be/FWxeDqM_WIU)<br/>_March 10th, 2021_
 
 ### 👥 Panels <a name="2021-panels"/>
+- <b>Modern Android Development #AskAndroid LIVE</b> - [Video](https://youtu.be/QreLkok3Euk)<br/>_October 28th, 2021_
+- <b>Hilt Live Q&A - MAD Skills series</b> - [Video](https://youtu.be/i27aNF-kYR4)<br/>_September 23rd, 2021_
 - <b>Jetpack Q&A</b> - [Video](https://youtu.be/ab7-Z8glx7w)<br/>_Google I/O 2021 - May 19th, 2021_
 - <b>Jetpack Compose Spanish Q&A </b> - [Video](https://youtu.be/9GNYY6kZ2k8)<br/>_Rock&Droid - March 24th, 2021_
 - <b>Jetpack Compose Beta post-show (in Spanish) </b> - [Video](https://youtu.be/6VvGB6GYhg4)<br/>_Rock&Droid - February 24th, 2021_
@@ -37,6 +42,11 @@ subclass: 'post page'
 - [Jetpack Compose Beta (in Spanish)](https://youtu.be/yYoDtkS8JrQ)<br/>_CodalotPodcast - February 26th, 2021_
 
 ### 📹 Youtube videos <a name="2021-youtube"/>
+- [Now in Android episode #49](https://youtu.be/ETwWJy9lEQU)<br/>_October 21st, 2021_
+- [Now in Android episode #46](https://youtu.be/dwywEBrs5Ws)<br/>_September 1st, 2021_
+- [Hilt and dependency injection - MAD Skills series](https://youtu.be/1Zt6aIqZnqU)<br/>_August 23rd, 2021_
+- [Introduction to the Hilt MAD Skills series](https://youtu.be/mnMCgjuMJPA)<br/>_August 23rd, 2021_
+- [Now in Android episode #42](https://youtu.be/_guB_P2BZTI)<br/>_July 9th, 2021_
 - [Now in Android episode #40](https://youtu.be/tj_RbEzMkcY)<br/>_June 3rd, 2021_
 - [Now in Android episode #36](https://youtu.be/8AgGYBV7F8g)<br/>_March 19th, 2021_
 - [Now in Android episode #34](https://youtu.be/boz7_mL1wK4)<br/>_February 19th, 2021_
