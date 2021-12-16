@@ -22,6 +22,7 @@ subclass: 'post page'
 # 2021 <a name="2021"/>
 
 ### 🎤 Talks <a name="2021-talks"/>
+- <b>Una cultura de trabajo de éxito en equipos (Spanish)</b> - [Video](https://youtu.be/DpQP470j9sk?t=623)<br/>_Conecta2 con Las Musas - December 9th, 2021_
 - <b>A Compose State of mind</b> - [Video](https://youtu.be/rmv2ug-wW4U)<br/>_Android Developer Summit 2021 - October 27th, 2021_
 - <b>Kotlin Flows in practice</b> - [Video](https://youtu.be/fSB6_KE95bU)<br/>_Android Developer Summit 2021 - October 27th, 2021_
 - <b>Using Jetpack libraries in Compose</b> - [Video](https://youtu.be/0z_dwBGQQWQ)<br/>_Google I/O 2021 - May 18th, 2021_
