@@ -20,7 +20,7 @@ I'm an Android developer 👨‍💻 currently working at Google.
 
 ## What I do
 
-At Google, I work as an *Android Developer Relations (DevRel)* engineer. It's my focus to help improving the Android developer experience. I'm currently focusing on **Kotlin & Coroutines, Jetpack Compose, general app architecture, and dependency injection** (including Dagger and Hilt).
+At Google, I work as an *Android Developer Relations (DevRel)* engineer. It's my focus to help improve the Android developer experience. I'm currently focusing on **Kotlin & Coroutines, Jetpack Compose, general app architecture, and dependency injection** (including Dagger and Hilt).
 
 My role can be clearly divided into two main tasks: 
 
@@ -61,8 +61,20 @@ The dream came true, **my hobby became my job**.
 	<small>Paying a visit to the Android lawn statues in Mountain View</small>
 </p>
 
+## Main accomplishments
+
+At Google, I've been able to help the Android community with:
+
+* **[Dependency Injection](https://developer.android.com/training/dependency-injection)**: [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) and [Dagger](https://developer.android.com/training/dependency-injection/dagger-basics) guidance.
+
+* **[Coroutines](https://developer.android.com/kotlin/coroutines)**: guidance, best practices, and Jetpack contributions with the lifecycle-aware `repeatOnLifecycle` and `flowWithLifecycle` APIs and [Flow support to databinding](https://developer.android.com/topic/libraries/data-binding/observability#stateflow).
+
+* **[Compose](https://goo.gle/compose-docs)**: guidance and [samples](https://goo.gle/compose-samples).
+
+* **[App Architecture](https://developer.android.com/jetpack/guide)**.
+
 ## Contact
 
-Feel free to reach out to me on [Twitter](https://twitter.com/manuelvicnt) where I'll happily chat with you or answer any questions you may have.
+Feel free to reach out to me on [Twitter](https://twitter.com/manuelvicnt) or [LinkedIn](https://linkedin.com/in/manuel-vicente-vivo-54498653) where I'll happily chat with you or answer any questions you may have.
 
 Thanks all!
