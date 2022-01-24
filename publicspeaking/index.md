@@ -32,6 +32,7 @@ subclass: 'post page'
 - <b>Android Code-Along: Kotlin coroutines</b> - [Video](https://youtu.be/FWxeDqM_WIU)<br/>_March 10th, 2021_
 
 ### 👥 Panels <a name="2021-panels"/>
+- <b>Architecture Wars - Mesa redonda (Spanish)</b> - [Video](https://youtu.be/gkuR6QIFSPw)<br/>_December 16th, 2021_
 - <b>Modern Android Development #AskAndroid LIVE</b> - [Video](https://youtu.be/QreLkok3Euk)<br/>_October 28th, 2021_
 - <b>Hilt Live Q&A - MAD Skills series</b> - [Video](https://youtu.be/i27aNF-kYR4)<br/>_September 23rd, 2021_
 - <b>Jetpack Q&A</b> - [Video](https://youtu.be/ab7-Z8glx7w)<br/>_Google I/O 2021 - May 19th, 2021_
@@ -43,6 +44,7 @@ subclass: 'post page'
 - [Jetpack Compose Beta (in Spanish)](https://youtu.be/yYoDtkS8JrQ)<br/>_CodalotPodcast - February 26th, 2021_
 
 ### 📹 Youtube videos <a name="2021-youtube"/>
+- [Now in Android episode #52](https://youtu.be/7lcIkxLe_g8)<br/>_December 2nd, 2021_
 - [Now in Android episode #49](https://youtu.be/ETwWJy9lEQU)<br/>_October 21st, 2021_
 - [Now in Android episode #46](https://youtu.be/dwywEBrs5Ws)<br/>_September 1st, 2021_
 - [Hilt and dependency injection - MAD Skills series](https://youtu.be/1Zt6aIqZnqU)<br/>_August 23rd, 2021_
@@ -53,7 +55,8 @@ subclass: 'post page'
 - [Now in Android episode #34](https://youtu.be/boz7_mL1wK4)<br/>_February 19th, 2021_
 
 ### 💬 Interviews <a name="2021-interviews"/>
-- [Las Musas's music interview (in Spanish)](https://youtu.be/omnZx3Q8NZ0) - Talking about how music has influenced my career.
+- [Nuevas guías de Arquitecturas Android con Antonio Leiva (Spanish)](https://youtu.be/2Vv7IRD5O-o)<br/>_December 21st, 2021_
+- [Las Musas' music interview (Spanish)](https://youtu.be/omnZx3Q8NZ0) - Talking about how music has influenced my career.<br/>_February 28th, 2021_
 
 
 # 2020 <a name="2020"/>
