@@ -10,14 +10,30 @@ subclass: 'post page'
 
 ## Content
 
-* 🎤 More talks - [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
+* 🎤 More talks - [2022](#2022-talks), [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
 * 👨‍💻 Live coding - [2021](#2021-live-coding)
-* 👥 Panels - [2021](#2021-panels), [2020](#2020-panels)
+* 👥 Panels - [2022](#2022-panels), [2021](#2021-panels), [2020](#2020-panels)
 * 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
-* 📹 Youtube videos - [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
+* 📹 Youtube videos - [2022](#2022-youtube), [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
 * 💬 Interviews - [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
 
 ---
+
+# 2022 <a name="2022"/>
+
+### 🎤 Talks <a name="2022-talks"/>
+- <b>State in Jetpack Compose workshop</b> - [Video](https://youtu.be/PMMY23F0CFg)<br/>_Google I/O 2022 - May 11th, 2022_
+
+### 👥 Panels <a name="2022-panels"/>
+- <b>Architecture: Live Q&A - MAD Skills</b> - [Video](https://youtu.be/_2BtE1P6MPE)<br/>_April 28th, 2022_
+- <b>Learn from developers: Duolingo and Headspace share their new Android architecture stories</b> - [Video](https://youtu.be/m1F_Jl9bDA4)<br/>_April 12th, 2022_
+
+### 📹 Youtube videos <a name="2022-youtube"/>
+- [Architecture: Handling UI events - MAD Skills](https://youtu.be/lwGtp0Yr0PE)<br/>_March 28th, 2022_
+- [Introduction to Architecture - MAD Skills](https://youtu.be/TPWmfJq16rA)<br/>_March 14th, 2022_
+- [Now in Android episode #55](https://youtu.be/Hc79sDi3f0U)<br/>_February 10th, 2022_
+
+
 
 # 2021 <a name="2021"/>
 
