@@ -30,3 +30,7 @@ coroutines:
   name: coroutines
   description: Android's recommended solution for async programming
   cover: assets/images/blog-cover.jpg
+architecture:
+  name: architecture
+  description: Architecture best practices
+  cover: assets/images/blog-cover.jpg

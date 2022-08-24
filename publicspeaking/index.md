@@ -29,10 +29,11 @@ subclass: 'post page'
 - <b>Learn from developers: Duolingo and Headspace share their new Android architecture stories</b> - [Video](https://youtu.be/m1F_Jl9bDA4)<br/>_April 12th, 2022_
 
 ### 📹 Youtube videos <a name="2022-youtube"/>
+- [Now in Android episode #65](https://youtu.be/I00YEO1J1bo)<br/>_August 3rd, 2022_
+- [Now in Android episode #62](https://youtu.be/n_qx3stTsqw)<br/>_June 8th, 2022_
 - [Architecture: Handling UI events - MAD Skills](https://youtu.be/lwGtp0Yr0PE)<br/>_March 28th, 2022_
 - [Introduction to Architecture - MAD Skills](https://youtu.be/TPWmfJq16rA)<br/>_March 14th, 2022_
 - [Now in Android episode #55](https://youtu.be/Hc79sDi3f0U)<br/>_February 10th, 2022_
-
 
 
 # 2021 <a name="2021"/>
