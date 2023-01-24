@@ -14,14 +14,23 @@ subclass: 'post page'
 * 👨‍💻 Live coding - [2021](#2021-live-coding)
 * 👥 Panels - [2022](#2022-panels), [2021](#2021-panels), [2020](#2020-panels)
 * 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
-* 📹 Youtube videos - [2022](#2022-youtube), [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
-* 💬 Interviews - [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
+* 📹 Youtube videos - [2023](#2023-youtube), [2022](#2022-youtube), [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
+* 💬 Interviews - [2022](#2022-interviews), [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
 
 ---
+
+# 2023 <a name="2023"/>
+
+### 📹 Youtube videos <a name="2023-youtube"/>
+- [Now in Android episode #75](https://youtu.be/o6OQh1_PFsw)<br/>_January 18th, 2023_
+
 
 # 2022 <a name="2022"/>
 
 ### 🎤 Talks <a name="2022-talks"/>
+- <b>State holders and state production in the UI Layer</b> - [Video](https://youtu.be/pCX9wvu-Bq0)<br/>_Android Developer Summit 2022 - October 24th, 2022_
+- <b>Collecting flows in a lifecycle-aware manner</b> - [Video](https://youtu.be/6hNXFs1fYaY)<br/>_Android Developer Summit 2022 - October 24th, 2022_
+- <b>Implementing modern Android Architecture</b> - [Video](https://www.droidcon.com/2022/08/01/implementing-modern-android-architecture)<br/>_Droidcon Berlin - July 7th, 2022_
 - <b>State in Jetpack Compose workshop</b> - [Video](https://youtu.be/PMMY23F0CFg)<br/>_Google I/O 2022 - May 11th, 2022_
 
 ### 👥 Panels <a name="2022-panels"/>
@@ -29,12 +38,16 @@ subclass: 'post page'
 - <b>Learn from developers: Duolingo and Headspace share their new Android architecture stories</b> - [Video](https://youtu.be/m1F_Jl9bDA4)<br/>_April 12th, 2022_
 
 ### 📹 Youtube videos <a name="2022-youtube"/>
+- [Now in Android episode #71](https://youtu.be/WgxwzyMuKkQ)<br/>_November 4th, 2022_
+- [Now in Android episode #68](https://youtu.be/SHEbEakgr5w)<br/>_September 14th, 2022_
 - [Now in Android episode #65](https://youtu.be/I00YEO1J1bo)<br/>_August 3rd, 2022_
 - [Now in Android episode #62](https://youtu.be/n_qx3stTsqw)<br/>_June 8th, 2022_
 - [Architecture: Handling UI events - MAD Skills](https://youtu.be/lwGtp0Yr0PE)<br/>_March 28th, 2022_
 - [Introduction to Architecture - MAD Skills](https://youtu.be/TPWmfJq16rA)<br/>_March 14th, 2022_
 - [Now in Android episode #55](https://youtu.be/Hc79sDi3f0U)<br/>_February 10th, 2022_
 
+### 💬 Interviews <a name="2022-interviews"/>
+- [Entrevista en Los Androides (Spanish)](https://youtu.be/ROTdBOHyyxc)<br/>_November 28th, 2022_
 
 # 2021 <a name="2021"/>
 
