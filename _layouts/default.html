@@ -41,6 +41,7 @@
     
     <!-- This tag outputs SEO meta+structured data and other important settings -->
     {% include head.html %}
+    {% seo %}
 
 </head>
 <body class="{% if paginator.page > 1 %}paged archive-template{% elsif page.class %}{{ page.class }}{% else %}home-template{% endif %}">
