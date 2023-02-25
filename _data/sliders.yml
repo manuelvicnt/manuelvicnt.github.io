@@ -1,0 +1,41 @@
+- selector: slider_personal_pics
+  bullets: false
+  captions: true
+  images:
+    - src: /assets/images/pics_13_ADS22_1.jpg
+      alt: Talking at Android Developer Summit 2022
+    - src: /assets/images/pics_14_ADS22_2.jpg
+      alt: Talking at Android Developer Summit 2022
+    - src: /assets/images/pics_15_ADS22_3.jpg
+      alt: Talking at Android Developer Summit 2022
+    - src: /assets/images/pics_12_Recoding.jpg
+      alt: Recording a video in the Google office
+    - src: /assets/images/pics_6_DCBerlin22_1.jpg
+      alt: Talking at Droidcon Berlin 2022
+    - src: /assets/images/pics_7_DCBerlin22_2.jpg
+      alt: Talking at Droidcon Berlin 2022
+    - src: /assets/images/pics_8_DCBerlin22_3.jpg
+      alt: Talking at Droidcon Berlin 2022
+    - src: /assets/images/pics_9_DCBerlin22_4.jpg
+      alt: Panelist at Droidcon Berlin 2022
+    - src: /assets/images/pics_10_DCBerlin22_5.jpg
+      alt: Panelist at Droidcon Berlin 2022
+    - src: /assets/images/pics_11_DCBerlin22_6.jpg
+      alt: Community interview at Droidcon Berlin 2022
+    - src: /assets/images/pics_3_ADS19_1.jpg
+      alt: Talking at Android Developer Summit 2019
+    - src: /assets/images/pics_4_ADS19_2.jpg
+      alt: Talking at Android Developer Summit 2019
+    - src: /assets/images/pics_5_ADS19_3.jpg
+      alt: Talking at Android Developer Summit 2019
+    - src: /assets/images/pics_1_DCBerlin19_1.jpg
+      alt: Talking at Droidcon Berlin 2019
+    - src: /assets/images/pics_2_DCBerlin19_2.jpg
+      alt: Talking at Droidcon Berlin 2019
+  settings:
+    height: "550"
+    interval: 4000
+    transitionDuration: 700
+    effect: "'fade'"
+    disableNav: false
+    keyboardNav: true
