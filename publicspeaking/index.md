@@ -10,20 +10,26 @@ subclass: 'post page'
 
 ## Content
 
-* 🎤 More talks - [2022](#2022-talks), [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
+* 🎤 More talks - [2023](#2023-talks), [2022](#2022-talks), [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
 * 👨‍💻 Live coding - [2021](#2021-live-coding)
 * 👥 Panels - [2022](#2022-panels), [2021](#2021-panels), [2020](#2020-panels)
 * 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
 * 📹 Youtube videos - [2023](#2023-youtube), [2022](#2022-youtube), [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
-* 💬 Interviews - [2022](#2022-interviews), [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
+* 💬 Interviews - [2023](#2023-interviews), [2022](#2022-interviews), [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
 
 ---
 
 # 2023 <a name="2023"/>
 
+### 🎤 Talks <a name="2023-talks"/>
+- <b>Saving UI state on Android</b> - [Video](https://youtu.be/V-s4z7B_Gnc)<br/>_Google I/O 2023 - May 10th, 2023_
+- <b>Advanced state and side effects in Jetpack Compose</b> - [Video](https://youtu.be/TbxCz5AljQk)<br/>_Google I/O 2023 - May 10th, 2023_
+
 ### 📹 Youtube videos <a name="2023-youtube"/>
 - [Now in Android episode #75](https://youtu.be/o6OQh1_PFsw)<br/>_January 18th, 2023_
 
+### 💬 Interviews <a name="2023-interviews"/>
+- [Effective interviews episode by Jorge Castillo](https://newsletter.jorgecastillo.dev/p/effective-interviews-manuel-vivo)<br/>_April 11th, 2023_
 
 # 2022 <a name="2022"/>
 
