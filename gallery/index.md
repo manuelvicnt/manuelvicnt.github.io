@@ -12,7 +12,7 @@ image_sliders:
 ---
 
 <p align="center">
-Hi there 👋 Here are some pictures about me!
+Hi there 👋 Here are some pictures of me!
 </p>
 
 {% include slider.html selector="slider_personal_pics" %}
