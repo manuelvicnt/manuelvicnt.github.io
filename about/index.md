@@ -16,18 +16,23 @@ image_sliders:
 </p>
 
 <p align="center">
-I'm an Android developer 👨‍💻 currently working at Google.
+I'm an Android developer 👨‍💻 currently working at Bumble Inc.
 </p>
 
 &nbsp;
 
 ## What I do
 
-At Google, I work as an *Android Developer Relations (DevRel)* engineer. It's my focus to help improve the Android developer experience. I'm currently focusing on **Kotlin & Coroutines, Jetpack Compose, general app architecture, and dependency injection** (including Dagger and Hilt).
+I currently work as a Staff Android Engineer at Bumble Inc. where I work with other Android developers to deliver a first-in-class user experience.
 
-My role can be clearly divided into two main tasks: 
 
-* **Feedback to other teams**. DevRel is the *0th customer* for libraries and framework SDK updates. We're the first ones trying out what's coming next in Android development and deliver feedback accordingly. **Always with the Android community in mind**, I pay attention to API usability and how certain features could be misused, discuss trade offs and alternatives to different solutions, file bugs, etc.
+## What I did at Google
+
+At Google, I worked as an *Android Developer Relations (DevRel)* engineer from 2019 to 2023. It was my focus to help improve the Android developer experience focusing on **Kotlin & Coroutines, Jetpack Compose, general app architecture, and dependency injection** (including Dagger and Hilt).
+
+My role couldbe be clearly divided into two main tasks:
+
+* **Feedback to other teams**. DevRel is the *0th customer* for libraries and framework SDK updates. We were the first ones trying out what's coming next in Android development and deliver feedback accordingly. **Always with the Android community in mind**, I pay attention to API usability and how certain features could be misused, discuss trade offs and alternatives to different solutions, file bugs, etc.
 
 * **Outreach and guidance**. Apart from the content you can find in this website, I contribute with documentation to [developers.android.com](https://developers.android.com), [codelabs](https://codelabs.developers.google.com/), and [code samples](https://github.com/android). I love getting involved with the community by going and speaking in conferences, writing articles, and helping others as much as I can.
 
@@ -57,14 +62,14 @@ During that time at Capital One, I got the chance of architecting an app from sc
 
 After almost 5 amazing years working at Capital One, I got the opportunity to join a stellar team at Google focusing on what I'm passionate about: Android, the community, outreach, and helping others. On top of that, the position was in Spain, I was coming home!
 
-The dream came true, **my hobby became my job**.
-
 <p align="center">
 	<img width="500" src="../assets/images/android-statues.jpg">
 	<small>Paying a visit to the Android lawn statues in Mountain View</small>
 </p>
 
-## Main accomplishments
+After another 5 years, I decided to go back to product development and joined the amazing Android team at Bumble Inc.
+
+## Main accomplishments at Google
 
 At Google, I've been able to help the Android community with:
 
