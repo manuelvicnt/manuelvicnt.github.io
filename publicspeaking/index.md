@@ -22,6 +22,7 @@ subclass: 'post page'
 # 2023 <a name="2023"/>
 
 ### 🎤 Talks <a name="2023-talks"/>
+- <b>Peeling back the layers: Exploring the UI-nknown</b> - [Video](https://www.droidcon.com/2023/11/15/peeling-back-the-layers-unmasking-the-ui-nknown)<br/>_Droidcon London 2023 - October 26th, 2023_
 - <b>Saving UI state on Android</b> - [Video](https://youtu.be/V-s4z7B_Gnc)<br/>_Google I/O 2023 - May 10th, 2023_
 - <b>Advanced state and side effects in Jetpack Compose</b> - [Video](https://youtu.be/TbxCz5AljQk)<br/>_Google I/O 2023 - May 10th, 2023_
 
