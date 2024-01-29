@@ -10,7 +10,7 @@ To deploy and verify changes locally, run the `gulp` command to pickup CSS style
 
 ## Setup
 
-GitHub actions was set up following [this post](https://jekyllrb.com/docs/continuous-integration/github-actions/)m and the redirect fromg GitHub pages to [manuelvivo.dev](https://manuelvivo.dev) following [this one](https://dev.to/trentyang/how-to-setup-google-domain-for-github-pages-1p58).
+GitHub actions was set up following [this post](https://jekyllrb.com/docs/continuous-integration/github-actions/) and the redirect from GitHub pages to [manuelvivo.dev](https://manuelvivo.dev) following [this one](https://dev.to/trentyang/how-to-setup-google-domain-for-github-pages-1p58).
 
 ## Live Demo
 

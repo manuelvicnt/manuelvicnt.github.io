@@ -255,6 +255,13 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
     list-style: none;
 }
 
+.nav .nav-book {
+    border-radius: 12px;
+    background: #fff;
+    margin: 0 10px 0 10px;
+    opacity: 0.92;
+}
+
 .nav li {
     display: block;
     margin: 0;
@@ -268,11 +275,19 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
     margin: 0;
     padding: 10px 12px;
     color: #fff;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .nav li a:hover {
     text-decoration: none;
+    opacity: 1;
+}
+
+.nav .nav-book a {
+    color: #000;
+}
+
+.nav .nav-book a:hover {
     opacity: 1;
 }
 

@@ -9,6 +9,11 @@
     <!-- Base Meta -->
     {% include dynamic_title.html %}
     <title>{% if title %}{{ title }}{% elsif page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    {% include head.html %}
+    {% seo %}
+
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Styles'n'Scripts -->
@@ -38,11 +43,6 @@
             }
         </style>
     <![endif]-->
-    
-    <!-- This tag outputs SEO meta+structured data and other important settings -->
-    {% include head.html %}
-    {% seo %}
-
 </head>
 <body class="{% if paginator.page > 1 %}paged archive-template{% elsif page.class %}{{ page.class }}{% else %}home-template{% endif %}">
 
