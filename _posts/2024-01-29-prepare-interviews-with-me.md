@@ -11,7 +11,7 @@ subclass: 'post'
 author: manuel
 ---
 
-Mock interviews, 1:1 sessions, tips, and more!
+Mock interviews, cheat sheets, 1:1 sessions, tips, and more!
 
 ## Let me help you!
 
@@ -20,6 +20,8 @@ Got an interview coming up and feeling a bit shaky? Don't worry—I've got your 
 On [my services website](https://topmate.io/manuelvivo), I offer personalized sessions that can help you nail your next interview.
 
 I can help you with:
+
+* [Mobile System Design cheat sheets](https://topmate.io/manuelvivo/799730).
 
 * [Interview preparation and tips](https://topmate.io/manuelvivo/772854) sessions.
 
