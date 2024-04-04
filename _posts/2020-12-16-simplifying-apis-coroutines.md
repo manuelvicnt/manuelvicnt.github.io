@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2019-03-24-suspend-modifier.png
+cover: assets/images/2019-03-24-suspend-modifier.webp
 navigation: True
 title: Simplifying APIs with coroutines and Flow
 date: 2020-12-16 00:00:00

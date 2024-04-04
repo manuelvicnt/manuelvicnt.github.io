@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2020-03-30-dagger-cheat-sheets.png
+cover: assets/images/2020-03-30-dagger-cheat-sheets.webp
 navigation: True
 title: Dependency Injection guidance on Android — ADS 2019
 date: 2019-11-06 00:00:00
