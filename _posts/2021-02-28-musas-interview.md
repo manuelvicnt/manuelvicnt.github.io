@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2021-02-28-musas-interview.png
+cover: assets/images/2021-02-28-musas-interview.webp
 navigation: True
 title: Cómo la música ha influenciado mi carrera
 date: 2021-02-28 00:00:00

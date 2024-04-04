@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2019-12-04-Coroutines-gotta-catch-em-all.png
+cover: assets/images/2019-12-04-Coroutines-gotta-catch-em-all.webp
 navigation: True
 title: Coroutines! Gotta catch 'em all! - KotlinConf 2019
 date: 2019-12-04 00:00:00

@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2021-07-01-repeatonlifecycle.png
+cover: assets/images/2021-07-01-repeatonlifecycle.webp
 navigation: True
 title: repeatOnLifecycle API design story
 date: 2021-07-01 00:00:00

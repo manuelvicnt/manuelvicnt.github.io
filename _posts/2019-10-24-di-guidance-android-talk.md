@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2019-10-24-di-guidance-android.png
+cover: assets/images/2019-10-24-di-guidance-android.webp
 navigation: True
 title: An opinionated guide to Dependency Injection on Android - Android Developer Summit 2019
 date: 2019-10-24 00:00:00

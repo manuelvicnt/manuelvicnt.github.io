@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2021-06-10-coroutinescope-hilt.png
+cover: assets/images/2021-06-10-coroutinescope-hilt.webp
 navigation: True
 title: Create an application CoroutineScope using Hilt
 date: 2021-06-10 00:00:00

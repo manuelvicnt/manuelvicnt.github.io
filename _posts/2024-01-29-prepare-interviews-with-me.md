@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2024-01-29-prepare-interviews-with-me.png
+cover: assets/images/2024-01-29-prepare-interviews-with-me.webp
 navigation: True
 title: Prepare your interviews with me
 date: 2024-01-29 00:00:00

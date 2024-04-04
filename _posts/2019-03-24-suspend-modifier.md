@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2019-03-24-suspend-modifier.png
+cover: assets/images/2019-03-24-suspend-modifier.webp
 navigation: True
 title: The suspend modifier — under the hood
 date: 2019-03-24 00:00:00

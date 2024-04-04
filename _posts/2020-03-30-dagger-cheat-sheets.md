@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-cover: assets/images/2020-03-30-dagger-cheat-sheets.png
+cover: assets/images/2020-03-30-dagger-cheat-sheets.webp
 navigation: True
 title: Dagger code generation cheat sheets
 date: 2020-03-03 00:00:00
@@ -28,7 +28,7 @@ Also, if you’re interested in the future of Dagger in Android, watch this Andr
 [Download file](https://developer.android.com/images/training/dependency-injection/dagger-codegen-basics.png)
 
 <p align="center">
-  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_1.png">
+  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_1.webp">
 	<small>Dagger basic annotations cheat sheet</small>
 </p>
 
@@ -37,7 +37,7 @@ Also, if you’re interested in the future of Dagger in Android, watch this Andr
 [Download file](https://developer.android.com/images/training/dependency-injection/dagger-codegen-subcomponents.png)
 
 <p align="center">
-  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_2.png">
+  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_2.webp">
 	<small>Dagger subcomponents cheat sheet</small>
 </p>
 
@@ -46,6 +46,6 @@ Also, if you’re interested in the future of Dagger in Android, watch this Andr
 [Download file](https://developer.android.com/images/training/dependency-injection/dagger-codegen-component-dependencies.png)
 
 <p align="center">
-  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_3.png">
+  	<img src="assets/images/2020-03-30-dagger-cheat-sheets_3.webp">
 	<small>Dagger component dependencies cheat sheet</small>
 </p>

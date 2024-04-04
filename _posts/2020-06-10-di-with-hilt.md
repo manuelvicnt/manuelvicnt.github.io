@@ -131,5 +131,5 @@ This cheat sheet allows you to quickly see ***what*** the different Hilt and Dag
 
 [**Download cheat sheet in PDF**](https://developer.android.com/images/training/dependency-injection/hilt-annotations.pdf)
 
-![img](assets/images/2020-06-10-di-with-hilt.png)
+![img](assets/images/2020-06-10-di-with-hilt.webp)
 <small>Hilt and Dagger annotations cheat sheet. [Download in PDF here]((https://developer.android.com/images/training/dependency-injection/hilt-annotations.pdf)).</small>
