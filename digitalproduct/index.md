@@ -1,7 +1,7 @@
 ---
 layout: page
 current: digitalproduct
-title: Digital Products
+title: Products
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template
@@ -10,9 +10,23 @@ subclass: 'post page'
 ---
 
 <p align="center">
-Hi there 👋 Here are my available digital products!
+Hi there 👋 Here are my available products!
 </p>
 &nbsp;
+
+## 📚 Mobile System Design Interview book
+
+* [Product link](https://geni.us/bbg-msd)
+* [Product link in India](https://www.shroffpublishers.com/books/9789368082255/)
+
+Nail your next mobile system design interview! Whether you’re facing questions like “Design YouTube” or “Build a chat app,” you’ll learn a proven framework that works for both Android and iOS platforms. Real-world case studies walk you through complete solutions step by step, covering a broad range of mobile system design topics.
+
+**This book is perfect for mobile engineers preparing for interviews and for engineering leaders, including managers and CTOs, who want to refine their architecture skills**. You’ll tackle mobile-specific challenges like offline sync, performance optimization, and scalable data flow. Each chapter breaks down complex problems into manageable pieces, giving you the confidence to tackle any mobile system design question that comes your way.
+
+More info in [the post](../mobile-system-design-interview)
+
+&nbsp;
+
 
 ## 📑 Mobile System Design Interview Cheat Sheets
 
