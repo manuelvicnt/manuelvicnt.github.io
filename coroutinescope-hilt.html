@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Create an application CoroutineScope using Hilt</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/coroutinescope-hilt" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Create an application CoroutineScope using Hilt" />
+    <meta property="og:description" content="Inject an application-scoped CoroutineScope using Hilt. Following coroutine’s best practices, you might need to inject an application-scoped CoroutineScope in some classes to launch new coroutines that follow the app lifecycle or to make certain work outlive the caller’s scope. In this article, you’ll learn how to create an application-scoped CoroutineScope" />
+    <meta property="og:url" content="https://manuelvivo.dev/coroutinescope-hilt" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2021-06-10-coroutinescope-hilt.webp" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2021-06-10T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2021-06-10T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Create an application CoroutineScope using Hilt" />
+    <meta name="twitter:description" content="Inject an application-scoped CoroutineScope using Hilt. Following coroutine’s best practices, you might need to inject an application-scoped CoroutineScope in some classes to launch new coroutines that follow the app lifecycle or to make certain work outlive the caller’s scope. In this article, you’ll learn how to create an application-scoped CoroutineScope" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2021-06-10-coroutinescope-hilt.webp" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/coroutinescope-hilt",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2021-06-10-coroutinescope-hilt.webp",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/coroutinescope-hilt"
+    },
+    "description": "Inject an application-scoped CoroutineScope using Hilt. Following coroutine’s best practices, you might need to inject an application-scoped CoroutineScope in some classes to launch new coroutines that follow the app lifecycle or to make certain work outlive the caller’s scope. In this article, you’ll learn how to create an application-scoped CoroutineScope"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Create an application CoroutineScope using Hilt" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Create an application CoroutineScope using Hilt | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Create an application CoroutineScope using Hilt" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Inject an application-scoped CoroutineScope using Hilt." />
+<meta property="og:description" content="Inject an application-scoped CoroutineScope using Hilt." />
+<link rel="canonical" href="https://manuelvivo.dev/coroutinescope-hilt" />
+<meta property="og:url" content="https://manuelvivo.dev/coroutinescope-hilt" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-06-10T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Create an application CoroutineScope using Hilt" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2021-06-10T00:00:00+00:00","datePublished":"2021-06-10T00:00:00+00:00","description":"Inject an application-scoped CoroutineScope using Hilt.","headline":"Create an application CoroutineScope using Hilt","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/coroutinescope-hilt"},"url":"https://manuelvivo.dev/coroutinescope-hilt"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines tag-hilt post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="10 June 2021">10 June 2021</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/hilt/'>Hilt</a></span>
+                  
+              
+                <h1 class="post-full-title">Create an application CoroutineScope using Hilt</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2021-06-10-coroutinescope-hilt.webp)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Inject an application-scoped <code class="language-plaintext highlighter-rouge">CoroutineScope</code> using Hilt.</p>
+
+<p>Following <a href="https://developer.android.com/kotlin/coroutines/coroutines-best-practices">coroutine’s best practices</a>, you might need to inject an application-scoped <code class="language-plaintext highlighter-rouge">CoroutineScope</code> in some classes to <a href="https://developer.android.com/kotlin/coroutines/coroutines-best-practices#create-coroutines-data-layer">launch new coroutines that follow the app lifecycle or to make certain work outlive the caller’s scope</a>.</p>
+
+<p>In this article, you’ll learn how to create an application-scoped <code class="language-plaintext highlighter-rouge">CoroutineScope</code> using Hilt, and how to inject it as a dependency. To further improve the way we work with Coroutines, we’ll see how to inject the different <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code>s and replace their implementations in tests.</p>
+
+<h2 id="manual-dependency-injection">Manual dependency injection</h2>
+
+<p>To create an <a href="https://medium.com/androiddevelopers/scoping-in-android-and-hilt-c2e5222317c0">application-scoped</a> <code class="language-plaintext highlighter-rouge">CoroutineScope</code> following dependency injection (DI) best practices <a href="https://developer.android.com/training/dependency-injection/manual">manually</a> without any library, you’d typically add a new variable to your application class with an instance of a <code class="language-plaintext highlighter-rouge">CoroutineScope</code>. The same instance would be manually passed around when creating other objects.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyRepository</span><span class="p">(</span><span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MyApplication</span> <span class="p">:</span> <span class="nc">Application</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// Application-scoped types that any class in the app could access</span>
+    <span class="c1">// using the applicationContext.</span>
+    <span class="kd">val</span> <span class="py">applicationScope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">myRepository</span> <span class="p">=</span> <span class="nc">MyRepository</span><span class="p">(</span><span class="n">applicationScope</span><span class="p">)</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Since there isn’t a reliable way to know when the <code class="language-plaintext highlighter-rouge">Application</code> is destroyed in Android, you don’t need to call <code class="language-plaintext highlighter-rouge">applicationScope.cancel()</code> manually as the scope and all ongoing work will be destroyed when the application process finishes.</p>
+
+<p>A better option for doing this manually is to create an <code class="language-plaintext highlighter-rouge">ApplicationContainer</code> class that holds the application-scoped types. This helps with separation of concerns since these <em>Container</em> classes are responsible for:</p>
+
+<ul>
+  <li>handling the logic of <em>how</em> to build certain types,</li>
+  <li>holding container-scoped types instances, and</li>
+  <li>returning instances of scoped and unscoped types.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ApplicationDiContainer</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">applicationScope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">myRepository</span> <span class="p">=</span> <span class="nc">MyRepository</span><span class="p">(</span><span class="n">applicationScope</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MyApplication</span> <span class="p">:</span> <span class="nc">Application</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">applicationDiContainer</span> <span class="p">=</span> <span class="nc">ApplicationDiContainer</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note: A container always returns the same instance of a scoped type, and always returns a different instance for unscoped types. Scoping types to containers is <a href="https://developer.android.com/training/dependency-injection/hilt-android#component-scopes">costly</a> since the scoped object stays in memory until the component is destroyed, so only scope what’s really needed.</p>
+</blockquote>
+
+<p>In the <code class="language-plaintext highlighter-rouge">ApplicationDiContainer</code> example above, all types were scoped. If <code class="language-plaintext highlighter-rouge">MyRepository</code> didn’t need to be scoped to the application, we’d have:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ApplicationDiContainer</span> <span class="p">{</span>
+    <span class="c1">// Scoped type. Same instance is always returned</span>
+    <span class="kd">val</span> <span class="py">applicationScope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span>
+
+    <span class="c1">// Unscoped type. Always returns a different instance</span>
+    <span class="k">fun</span> <span class="nf">getMyRepository</span><span class="p">():</span> <span class="nc">MyRepository</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nc">MyRepository</span><span class="p">(</span><span class="n">applicationScope</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="using-hilt-in-your-app">Using Hilt in your app</h2>
+
+<p>Hilt generates what you can see in <code class="language-plaintext highlighter-rouge">ApplicationDiContainer</code> (and more!) at compile time using annotations. Moreover, Hilt provides containers for <a href="https://developer.android.com/training/dependency-injection/hilt-android#generated-components">most Android framework classes</a> not only for the <code class="language-plaintext highlighter-rouge">Application</code> class.</p>
+
+<p>To set up Hilt in your app and create the container for the <code class="language-plaintext highlighter-rouge">Application</code> class, annotate your <code class="language-plaintext highlighter-rouge">Application</code> class with <code class="language-plaintext highlighter-rouge">@HiltAndroidApp</code>.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@HiltAndroidApp</span>
+<span class="kd">class</span> <span class="nc">MyApplication</span> <span class="p">:</span> <span class="nc">Application</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>With this, the application DI container is ready to be used. We just need to let Hilt know how to provide instances of different types.</p>
+
+<blockquote>
+  <p>Note: In Hilt, Container classes are referenced as Components. The container associated with the <code class="language-plaintext highlighter-rouge">Application</code> class is called <code class="language-plaintext highlighter-rouge">SingletonComponent</code>. Check out the <a href="https://developer.android.com/training/dependency-injection/hilt-android#generated-components">list of all available Hilt components</a>.</p>
+</blockquote>
+
+<h2 id="construction-injection">Construction injection</h2>
+
+<p>Construction injection is the easiest way to let Hilt know how to provide instances of a type if we have access to the constructor of a class as we only need to annotate the constructor with <code class="language-plaintext highlighter-rouge">@Inject</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Singleton</span> <span class="c1">// Scopes this type to the SingletonComponent</span>
+<span class="kd">class</span> <span class="nc">MyRepository</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span>
+   <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span>
+<span class="p">)</span> <span class="p">{</span> 
+    <span class="cm">/* ... */</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This lets Hilt know that in order to provide an instance of the <code class="language-plaintext highlighter-rouge">MyRepository</code> class, an instance of <code class="language-plaintext highlighter-rouge">CoroutineScope</code> needs to be passed as a dependency. Hilt generates code at compile time to make sure dependencies are satisfied and passed in when creating an instance of a type or give errors in case it doesn’t have enough information. <code class="language-plaintext highlighter-rouge">@Singleton</code> is used to scope this class to the <code class="language-plaintext highlighter-rouge">SingletonContainer</code>.</p>
+
+<p>At this point, Hilt doesn’t know how to satisfy the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> dependency because we haven’t told Hilt how to do that. The following sections will explain how we can let Hilt know what to pass as a dependency.</p>
+
+<blockquote>
+  <p>Note: Hilt provides a different annotation to scope types to the different Hilt available components. Check out the <a href="https://developer.android.com/training/dependency-injection/hilt-android#component-scopes">list of all available component scopes</a>.</p>
+</blockquote>
+
+<h2 id="bindings">Bindings</h2>
+
+<p>A <em>binding</em> is a commonly-used term in Hilt that denotes the <strong>information</strong> Hilt knows about how to provide instances of a type as a dependency. We could say that we added a binding to Hilt with the <code class="language-plaintext highlighter-rouge">@Inject</code> annotation of the code snippet above.</p>
+
+<p>Bindings flow through <a href="https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy">Hilt’s components hierarchy</a>. Bindings that are available in the <code class="language-plaintext highlighter-rouge">SingletonComponent</code> are also available in the <code class="language-plaintext highlighter-rouge">ActivityComponent</code>.</p>
+
+<p>Bindings for unscoped types (an example of this could’ve been the <code class="language-plaintext highlighter-rouge">MyRepository</code> code above if it wasn’t annotated with <code class="language-plaintext highlighter-rouge">@Singleton</code>), are available in all Hilt components. Bindings that are scoped to a component, such as <code class="language-plaintext highlighter-rouge">MyRepository</code> that is annotated with <code class="language-plaintext highlighter-rouge">@Singleton</code>, are available to the scoped component and the components below it in the hierarchy.</p>
+
+<h2 id="providing-types-with-modules">Providing types with modules</h2>
+
+<p>As mentioned above, we need to let Hilt know how to satisfy the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> dependency. However, <code class="language-plaintext highlighter-rouge">CoroutineScope</code> is an interface type that comes from an external library, so we cannot use constructor injection as we did before with the <code class="language-plaintext highlighter-rouge">MyRepository</code> class. The alternative is letting Hilt know what code to run when providing the instance of a type <a href="https://developer.android.com/training/dependency-injection/hilt-android#hilt-modules">using Modules</a>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@InstallIn</span><span class="p">(</span><span class="nc">SingletonComponent</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Module</span>
+<span class="kd">object</span> <span class="nc">CoroutinesScopesModule</span> <span class="p">{</span>
+
+    <span class="nd">@Singleton</span> <span class="c1">// Provide always the same instance </span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesCoroutineScope</span><span class="p">():</span> <span class="nc">CoroutineScope</span> <span class="p">{</span>
+        <span class="c1">// Run this code when providing an instance of CoroutineScope</span>
+        <span class="k">return</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://developer.android.com/training/dependency-injection/hilt-android#inject-provides">The <code class="language-plaintext highlighter-rouge">@Provides</code> method</a> is annotated with <code class="language-plaintext highlighter-rouge">@Singleton</code> to make Hilt always return the same instance of that <code class="language-plaintext highlighter-rouge">CoroutineScope</code>. This is because any work that needs to follow the application lifetime should be created using the same instance of a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> that follows the <code class="language-plaintext highlighter-rouge">Application</code>’s lifecycle.</p>
+
+<p>Hilt modules are annotated with <code class="language-plaintext highlighter-rouge">@InstallIn</code> that indicates in which Hilt component (and components below in the hierarchy) the binding is installed. In our case, as the application <code class="language-plaintext highlighter-rouge">CoroutineScope</code> is needed by <code class="language-plaintext highlighter-rouge">MyRepository</code> which is scoped to the <code class="language-plaintext highlighter-rouge">SingletonComponent</code>, this binding needs to be installed in the <code class="language-plaintext highlighter-rouge">SingletonComponent</code> as well.</p>
+
+<p>In Hilt jargon, we could say that we added a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> binding, as now, Hilt knows how to provide instances of <code class="language-plaintext highlighter-rouge">CoroutineScope</code>.</p>
+
+<p>However, the code snippet above could be improved. <a href="https://developer.android.com/kotlin/coroutines/coroutines-best-practices#inject-dispatchers">Hardcoding dispatchers is a bad practice in coroutines</a>, we should inject them to <strong>make them configurable and make testing easier</strong>. Following the previous code, we can create a new Hilt module to let it know which Dispatcher to inject for each case: main, default, and IO.</p>
+
+<h2 id="providing-implementations-for-coroutinedispatcher">Providing implementations for CoroutineDispatcher</h2>
+
+<p>We have to provide different implementations for the same type: <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code>. In other words, we need different bindings for the same type.</p>
+
+<p>We use <a href="https://developer.android.com/training/dependency-injection/hilt-android#multiple-bindings"><em>qualifiers</em></a> to let Hilt know which binding, or implementation, to use each time. Qualifiers are just annotations that you and Hilt use to identify specific bindings. Let’s create one qualifier per <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> implementation:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// CoroutinesQualifiers.kt file</span>
+
+<span class="nd">@Retention</span><span class="p">(</span><span class="nc">AnnotationRetention</span><span class="p">.</span><span class="nc">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Qualifier</span>
+<span class="k">annotation</span> <span class="kd">class</span> <span class="nc">DefaultDispatcher</span>
+
+<span class="nd">@Retention</span><span class="p">(</span><span class="nc">AnnotationRetention</span><span class="p">.</span><span class="nc">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Qualifier</span>
+<span class="k">annotation</span> <span class="kd">class</span> <span class="nc">IoDispatcher</span>
+
+<span class="nd">@Retention</span><span class="p">(</span><span class="nc">AnnotationRetention</span><span class="p">.</span><span class="nc">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Qualifier</span>
+<span class="k">annotation</span> <span class="kd">class</span> <span class="nc">MainDispatcher</span>
+
+<span class="nd">@Retention</span><span class="p">(</span><span class="nc">AnnotationRetention</span><span class="p">.</span><span class="nc">BINARY</span><span class="p">)</span>
+<span class="nd">@Qualifier</span>
+<span class="k">annotation</span> <span class="kd">class</span> <span class="nc">MainImmediateDispatcher</span>
+</code></pre></div></div>
+
+<p>Then, these qualifiers annotate the different <code class="language-plaintext highlighter-rouge">@Provides</code> methods to identify a specific binding in Hilt modules. The <code class="language-plaintext highlighter-rouge">@DefaultDispatcher</code> qualifier annotates the method that returns the default dispatcher, and so on.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@InstallIn</span><span class="p">(</span><span class="nc">SingletonComponent</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Module</span>
+<span class="kd">object</span> <span class="nc">CoroutinesDispatchersModule</span> <span class="p">{</span>
+
+    <span class="nd">@DefaultDispatcher</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesDefaultDispatcher</span><span class="p">():</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span>
+
+    <span class="nd">@IoDispatcher</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesIoDispatcher</span><span class="p">():</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">IO</span>
+
+    <span class="nd">@MainDispatcher</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesMainDispatcher</span><span class="p">():</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Main</span>
+
+    <span class="nd">@MainImmediateDispatcher</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesMainImmediateDispatcher</span><span class="p">():</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Main</span><span class="p">.</span><span class="n">immediate</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note that these <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code>s don’t need to be scoped to the <code class="language-plaintext highlighter-rouge">SingletonComponent</code>. Every time these dependencies are needed, Hilt calls the <code class="language-plaintext highlighter-rouge">@Provides</code> method and returns the corresponding <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code>.</p>
+
+<h2 id="providing-an-application-scoped-coroutinescope">Providing an application-scoped CoroutineScope</h2>
+
+<p>To get rid of the hardcoded <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> from our previous application-scoped <code class="language-plaintext highlighter-rouge">CoroutineScope</code> code, we need to inject the Hilt-provided default dispatcher. For that, we can pass in the type we want to inject, <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code>, using the corresponding qualifier, <code class="language-plaintext highlighter-rouge">@DefaultDispatcher</code>, as a dependency in the method that provides the application <code class="language-plaintext highlighter-rouge">CoroutineScope</code>.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@InstallIn</span><span class="p">(</span><span class="nc">SingletonComponent</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Module</span>
+<span class="kd">object</span> <span class="nc">CoroutinesScopesModule</span> <span class="p">{</span>
+
+    <span class="nd">@Singleton</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesCoroutineScope</span><span class="p">(</span>
+        <span class="nd">@DefaultDispatcher</span> <span class="n">defaultDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span>
+    <span class="p">):</span> <span class="nc">CoroutineScope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="n">defaultDispatcher</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As Hilt has multiple bindings for the <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> type, we disambiguate it using the <code class="language-plaintext highlighter-rouge">@DefaultDispatcher</code> annotation when <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> is used as a dependency.</p>
+
+<h2 id="a-qualifier-for-applicationscope">A qualifier for ApplicationScope</h2>
+
+<p>Even though we don’t need multiple bindings for <code class="language-plaintext highlighter-rouge">CoroutineScope</code> at the moment (this could change in the future if we ever need something like a <code class="language-plaintext highlighter-rouge">UserCoroutineScope</code>), adding a qualifier to the application <code class="language-plaintext highlighter-rouge">CoroutineScope</code> helps with readability when injecting it as a dependency.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Retention</span><span class="p">(</span><span class="nc">AnnotationRetention</span><span class="p">.</span><span class="nc">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Qualifier</span>
+<span class="k">annotation</span> <span class="kd">class</span> <span class="nc">ApplicationScope</span>
+
+<span class="nd">@InstallIn</span><span class="p">(</span><span class="nc">SingletonComponent</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Module</span>
+<span class="kd">object</span> <span class="nc">CoroutinesScopesModule</span> <span class="p">{</span>
+
+    <span class="nd">@Singleton</span>
+    <span class="nd">@ApplicationScope</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesCoroutineScope</span><span class="p">(</span>
+        <span class="nd">@DefaultDispatcher</span> <span class="n">defaultDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span>
+    <span class="p">):</span> <span class="nc">CoroutineScope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="n">defaultDispatcher</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As <code class="language-plaintext highlighter-rouge">MyRepository</code> depends on this scope, it’s very clear which external scope uses as implementation:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Singleton</span>
+<span class="kd">class</span> <span class="nc">MyRepository</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span>
+    <span class="nd">@ApplicationScope</span> <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span>
+<span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="replacing-dispatchers-for-instrumentation-tests">Replacing Dispatchers for instrumentation tests</h2>
+
+<p>We said before that we should inject dispatchers to make testing easier and have full control over what’s happening. For instrumentation tests, we’d want to make Espresso wait for coroutines to finish.</p>
+
+<p>Instead of creating a custom <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> with some <a href="https://developer.android.com/training/testing/espresso/idling-resource">Espresso Idling resource</a> to make it wait for the coroutines to finish, we can take advantage of the <a href="https://developer.android.com/reference/android/os/AsyncTask">AsyncTask</a> API. Even though AsyncTask was deprecated in Android API 30, Espresso hooks into its thread pool to check for idleness. Therefore, any coroutine that should be executed in a background thread could be executed in the AsyncTask’s thread pool.</p>
+
+<p>Use Hilt’s <code class="language-plaintext highlighter-rouge">TestInstallIn</code> API to make Hilt provide a different implementation of a type in tests. Similar to how we provided the different Dispatchers above, we can create a new file under the <code class="language-plaintext highlighter-rouge">androidTest</code> package to provide different implementations for those Dispatchers.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// androidTest/projectPath/TestCoroutinesDispatchersModule.kt file</span>
+
+<span class="nd">@TestInstallIn</span><span class="p">(</span>
+    <span class="n">components</span> <span class="p">=</span> <span class="p">[</span><span class="nc">SingletonComponent</span><span class="o">::</span><span class="k">class</span><span class="p">],</span>
+    <span class="n">replaces</span> <span class="p">=</span> <span class="p">[</span><span class="nc">CoroutinesDispatchersModule</span><span class="o">::</span><span class="k">class</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nd">@Module</span>
+<span class="kd">object</span> <span class="nc">TestCoroutinesDispatchersModule</span> <span class="p">{</span>
+
+    <span class="nd">@DefaultDispatcher</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesDefaultDispatcher</span><span class="p">():</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span>
+        <span class="nc">AsyncTask</span><span class="p">.</span><span class="nc">THREAD_POOL_EXECUTOR</span><span class="p">.</span><span class="nf">asCoroutineDispatcher</span><span class="p">()</span>
+
+    <span class="nd">@IoDispatcher</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesIoDispatcher</span><span class="p">():</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span>
+        <span class="nc">AsyncTask</span><span class="p">.</span><span class="nc">THREAD_POOL_EXECUTOR</span><span class="p">.</span><span class="nf">asCoroutineDispatcher</span><span class="p">()</span>
+
+    <span class="nd">@MainDispatcher</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">providesMainDispatcher</span><span class="p">():</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Main</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>With the code above, we’re making Hilt “forget” the <code class="language-plaintext highlighter-rouge">CoroutinesDispatchersModule</code> used in production code in tests. That module will be replaced with <code class="language-plaintext highlighter-rouge">TestCoroutinesDispatchersModule</code> which uses the Async Task’s thread pool for work that needs to happen in the background, and <code class="language-plaintext highlighter-rouge">Dispatchers.Main</code> for work that needs to happen on the main thread which Espresso also waits for.</p>
+
+<blockquote>
+  <p>Warning: This implementation is obviously a hack that we’re not proud of. However, coroutines don’t currently integrate well with Espresso as there isn’t a way to know if a <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> is idle or not at the moment (<a href="https://github.com/Kotlin/kotlinx.coroutines/issues/242">Link to bug</a>). <code class="language-plaintext highlighter-rouge">AsyncTask.THREAD_POOL_EXECUTOR</code> is the best alternative to use at the moment since Espresso doesn’t use Idling resources to check if this executor is idle, Espresso uses a different heuristic that takes into account what’s in the message queue. That makes it a better option than something like <a href="https://developer.android.com/reference/androidx/test/espresso/idling/concurrent/IdlingThreadPoolExecutor"><code class="language-plaintext highlighter-rouge">IdlingThreadPoolExecutor</code></a> which unfortunately considers the thread pool idle when a coroutine is suspended due to how coroutines are compiled down to a state machine.</p>
+</blockquote>
+
+<p>For more information about testing, check out <a href="https://developer.android.com/training/dependency-injection/hilt-testing">Hilt’s testing guide</a>.</p>
+
+<hr />
+
+<p>In this article, you learnt how to create an application-scoped <code class="language-plaintext highlighter-rouge">CoroutineScope</code> using Hilt, inject it as a dependency, inject the different <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> instances, and replace their implementations in tests.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/coroutinescope-hilt';
+                            this.page.identifier = '/coroutinescope-hilt';
+                            this.page.title = 'Create an application CoroutineScope using Hilt';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/sharein-statein">Things to know about Flow’s shareIn and stateIn operators</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/repeatonlifecycle">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-07-01-repeatonlifecycle.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/repeatonlifecycle">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">repeatOnLifecycle API design story</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/libraries-in-compose-talk">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-05-18-libraries-in-compose-talk.jpeg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/libraries-in-compose-talk">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Compose</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Using Jetpack libraries in Compose talk</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Create an application CoroutineScope using Hilt</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Create+an+application+CoroutineScope+using+Hilt&amp;url=https://manuelvivo.dev/coroutinescope-hilt"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/coroutinescope-hilt"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

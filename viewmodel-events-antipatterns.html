@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>ViewModel One-off event antipatterns</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/viewmodel-events-antipatterns" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ViewModel One-off event antipatterns" />
+    <meta property="og:description" content="You should handle ViewModel events immediately, causing a UI state update. ViewModel events are actions originated from the ViewModel that the UI should perform. For example, displaying an informative message to the user, or navigating to a different screen when the application state changes. Our guidance on ViewModel events is" />
+    <meta property="og:url" content="https://manuelvivo.dev/viewmodel-events-antipatterns" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2022-06-01-viewmodel-events-antipatterns.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2022-06-01T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2022-06-01T00:00:00+00:00" />
+    <meta property="article:tag" content="Architecture" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ViewModel One-off event antipatterns" />
+    <meta name="twitter:description" content="You should handle ViewModel events immediately, causing a UI state update. ViewModel events are actions originated from the ViewModel that the UI should perform. For example, displaying an informative message to the user, or navigating to a different screen when the application state changes. Our guidance on ViewModel events is" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2022-06-01-viewmodel-events-antipatterns.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Architecture" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/viewmodel-events-antipatterns",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2022-06-01-viewmodel-events-antipatterns.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/viewmodel-events-antipatterns"
+    },
+    "description": "You should handle ViewModel events immediately, causing a UI state update. ViewModel events are actions originated from the ViewModel that the UI should perform. For example, displaying an informative message to the user, or navigating to a different screen when the application state changes. Our guidance on ViewModel events is"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="ViewModel One-off event antipatterns" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ViewModel One-off event antipatterns | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="ViewModel One-off event antipatterns" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="You should handle ViewModel events immediately, causing a UI state update." />
+<meta property="og:description" content="You should handle ViewModel events immediately, causing a UI state update." />
+<link rel="canonical" href="https://manuelvivo.dev/viewmodel-events-antipatterns" />
+<meta property="og:url" content="https://manuelvivo.dev/viewmodel-events-antipatterns" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-06-01T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ViewModel One-off event antipatterns" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2022-06-01T00:00:00+00:00","datePublished":"2022-06-01T00:00:00+00:00","description":"You should handle ViewModel events immediately, causing a UI state update.","headline":"ViewModel One-off event antipatterns","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/viewmodel-events-antipatterns"},"url":"https://manuelvivo.dev/viewmodel-events-antipatterns"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-architecture post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime=" 1 June 2022"> 1 June 2022</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/architecture/'>Architecture</a></span>
+                  
+              
+                <h1 class="post-full-title">ViewModel One-off event antipatterns</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2022-06-01-viewmodel-events-antipatterns.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>You should handle ViewModel events immediately, causing a UI state update.</p>
+
+<p><a href="https://developer.android.com/topic/architecture/ui-layer/events#handle-viewmodel-events">ViewModel events</a> are actions originated from the ViewModel that the UI should perform. For example, displaying an informative message to the user, or navigating to a different screen when the application state changes.</p>
+
+<p>Our guidance on ViewModel events is opinionated in two different ways:</p>
+
+<ol>
+  <li>
+    <p>Whenever a one-off event originates in the ViewModel, <strong>the ViewModel should handle that event immediately causing a state update</strong>. The ViewModel should only expose application state. Exposing events that haven’t been <em>reduced</em> to state from a ViewModel means the ViewModel is not the <a href="https://en.wikipedia.org/wiki/Single_source_of_truth">source of truth</a> for the state derived from those events; <a href="https://developer.android.com/jetpack/compose/architecture#udf">Unidirectional Data Flow</a> (UDF) describes the advantages of sending events only to consumers that outlive their producers.</p>
+  </li>
+  <li>
+    <p>State should be exposed using an observable data holder type.</p>
+  </li>
+</ol>
+
+<p align="center">
+  <img src="assets/images/2022-06-01-viewmodel-events-antipatterns-1.png" />
+  <small>Following UDF, state flows down from the ViewModel to the UI, and events go up from the UI to the ViewModel</small>
+</p>
+
+<p>In your app, you might be exposing ViewModel events to the UI using <a href="https://kotlinlang.org/docs/channels.html">Kotlin Channels</a> or other reactive streams such as <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-shared-flow/"><code class="language-plaintext highlighter-rouge">SharedFlow</code></a>, or maybe this is a pattern you’ve seen in other projects. When the producer (the <code class="language-plaintext highlighter-rouge">ViewModel</code>) outlives the consumer (UI—Compose or Views), which can be the case with ViewModel events, <strong>these APIs <a href="https://github.com/Kotlin/kotlinx.coroutines/issues/2886">don’t guarantee</a> the delivery and processing of those events. This can result in bugs and future problems for the developer, and it’s also an unacceptable user experience for most apps</strong>.</p>
+
+<blockquote>
+  <p>You should handle ViewModel events immediately, causing a UI state update. Trying to expose events as an object using other reactive solutions such as Channel or SharedFlow doesn’t guarantee the delivery and processing of the events.</p>
+</blockquote>
+
+<h2 id="case-study">Case Study</h2>
+
+<p>Here’s an example of the implementation of a ViewModel in an app’s typical payments flow. In the following code snippets, the <code class="language-plaintext highlighter-rouge">MakePaymentViewModel</code> directly tells the UI to navigate to the payment result screen when the result of the payment request comes back. We’ll use this example to explore why handling one-off ViewModel events like this brings problems and higher engineering costs.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MakePaymentViewModel</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">val</span> <span class="py">uiState</span><span class="p">:</span> <span class="nc">StateFlow</span><span class="p">&lt;</span><span class="nc">MakePaymentUiState</span><span class="p">&gt;</span> <span class="p">=</span> <span class="cm">/* ... */</span>
+
+    <span class="c1">// ⚠️⚠️ DO NOT DO THIS!! ⚠️⚠️</span>
+    <span class="c1">// This one-off ViewModel event hasn't been handled nor reduced to state</span>
+    <span class="c1">// Boolean represents whether or not the payment was successful</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">_navigateToPaymentResultScreen</span> <span class="p">=</span> <span class="nc">Channel</span><span class="p">&lt;</span><span class="nc">Boolean</span><span class="p">&gt;()</span>
+
+    <span class="c1">// `receiveAsFlow` makes sure only one collector will process each</span>
+    <span class="c1">// navigation event to avoid multiple back stack entries</span>
+    <span class="kd">val</span> <span class="py">navigateToPaymentResultScreen</span> <span class="p">=</span> <span class="n">_navigateToPaymentResultScreen</span><span class="p">.</span><span class="nf">receiveAsFlow</span><span class="p">()</span>
+
+    <span class="c1">// Protecting makePayment from concurrent callers</span>
+    <span class="c1">// If a payment is in progress, don't trigger it again</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">makePaymentJob</span><span class="p">:</span> <span class="nc">Job</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+    <span class="k">fun</span> <span class="nf">makePayment</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">makePaymentJob</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="k">return</span>
+        
+        <span class="n">makePaymentJob</span> <span class="p">=</span> <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="n">_uiState</span><span class="p">.</span><span class="nf">update</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">isLoading</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="p">}</span> <span class="c1">// Show loading spinner</span>
+                <span class="kd">val</span> <span class="py">isPaymentSuccessful</span> <span class="p">=</span> <span class="n">paymentsRepository</span><span class="p">.</span><span class="nf">makePayment</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span>
+                <span class="n">_navigateToPaymentResultScreen</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">isPaymentSuccessful</span><span class="p">)</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">ioe</span><span class="p">:</span> <span class="nc">IOException</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+            <span class="k">finally</span> <span class="p">{</span> <span class="n">makePaymentJob</span> <span class="p">=</span> <span class="k">null</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The UI would then consume this event and navigate accordingly:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//////////////////////////////////////////////</span>
+<span class="c1">// Jetpack Compose code</span>
+<span class="c1">//////////////////////////////////////////////</span>
+
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">MakePaymentScreen</span><span class="p">(</span>
+    <span class="n">onPaymentMade</span><span class="p">:</span> <span class="p">(</span><span class="nc">Boolean</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">viewModel</span><span class="p">:</span> <span class="nc">MakePaymentViewModel</span> <span class="p">=</span> <span class="nf">viewModel</span><span class="p">()</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">currentOnPaymentMade</span> <span class="k">by</span> <span class="nf">rememberUpdatedState</span><span class="p">(</span><span class="n">onPaymentMade</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">lifecycle</span> <span class="p">=</span> <span class="nc">LocalLifecycleOwner</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">lifecycle</span>
+
+    <span class="c1">// Check whenever navigateToPaymentResultScreen emits a new value</span>
+    <span class="c1">// to tell the caller composable the payment was made</span>
+    <span class="nc">LaunchedEffect</span><span class="p">(</span><span class="n">viewModel</span><span class="p">,</span> <span class="n">lifecycle</span><span class="p">)</span>  <span class="p">{</span>
+        <span class="n">lifecycle</span><span class="p">.</span><span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="n">state</span> <span class="p">=</span> <span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">viewModel</span><span class="p">.</span><span class="n">navigateToPaymentResultScreen</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span> <span class="n">isPaymentSuccessful</span> <span class="p">-&gt;</span>
+                <span class="nf">currentOnPaymentMade</span><span class="p">(</span><span class="n">isPaymentSuccessful</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Rest of the UI for the login screen.</span>
+<span class="p">}</span>
+
+
+<span class="c1">//////////////////////////////////////////////</span>
+<span class="c1">// Activity / Views code</span>
+<span class="c1">//////////////////////////////////////////////</span>
+
+<span class="kd">class</span> <span class="nc">MakePaymentActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">viewModel</span><span class="p">:</span> <span class="nc">MakePaymentViewModel</span> <span class="k">by</span> <span class="nf">viewModels</span><span class="p">()</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="cm">/* ... */</span>
+        <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">viewModel</span><span class="p">.</span><span class="n">navigateToPaymentResultScreen</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span> <span class="n">isPaymentSuccessful</span> <span class="p">-&gt;</span>
+                    <span class="kd">val</span> <span class="py">intent</span> <span class="p">=</span> <span class="nc">Intent</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">PaymentResultActivity</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span>
+                    <span class="n">intent</span><span class="p">.</span><span class="nf">putExtra</span><span class="p">(</span><span class="s">"PAYMENT_RESULT"</span><span class="p">,</span> <span class="n">isPaymentSuccessful</span><span class="p">)</span>
+                    <span class="nf">startActivity</span><span class="p">(</span><span class="n">intent</span><span class="p">)</span>
+                    <span class="nf">finish</span><span class="p">()</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">navigateToPaymentResultScreen</code> implementation seen above has multiple design flaws.</p>
+
+<h2 id="antipattern-1-state-about-payment-completion-can-be-lost">Antipattern #1: State about payment completion can be lost</h2>
+
+<p>A Channel <a href="https://github.com/Kotlin/kotlinx.coroutines/issues/2886">doesn’t guarantee</a> the delivery and processing of the events. Therefore, <strong>events can be lost, leaving the UI in an inconsistent state</strong>. An example of this could happen when the UI (consumer) goes to the background and stops the <code class="language-plaintext highlighter-rouge">Channel</code> collection just after the <code class="language-plaintext highlighter-rouge">ViewModel</code> (producer) sends an event. The same can be said for other APIs that aren’t an observable data holder type such as <code class="language-plaintext highlighter-rouge">SharedFlow</code>, which could emit events even if there are no consumers listening to them.</p>
+
+<p>This is an antipattern because the <em>payment result state</em> modeled in the UI layer isn’t <strong>durable</strong> or <strong>atomic</strong> if we think about it in terms of an <a href="https://en.wikipedia.org/wiki/ACID">ACID transaction</a>. The payment may have succeeded as far as the repository is concerned, but we never moved to the proper next screen.</p>
+
+<p><em>Note: This antipattern could be mitigated by using Dispatchers.Main.immediate when sending and receiving events. However, if that’s not enforced by a lint check, this solution could be error-prone as devs could easily forget it.</em></p>
+
+<h2 id="antipattern-2-telling-the-ui-to-take-an-action">Antipattern #2: Telling the UI to take an action</h2>
+
+<p>For an app that supports multiple screen sizes, the UI action to perform given a ViewModel event might be different depending on the screen size. For example, the case study app should navigate to the payment result screen when running on a mobile phone; but if the app is running on a tablet, the action could show the result in a different part of the same screen.</p>
+
+<p><strong>The ViewModel should tell the UI <em>what</em> the app state is and the UI should determine <em>how</em> to reflect that</strong>. The ViewModel shouldn’t tell the UI which actions it should take.</p>
+
+<h2 id="antipattern-3-not-handling-the-one-off-event-immediately">Antipattern #3: Not handling the one-off event immediately</h2>
+
+<p><strong>Modeling the event as something that is <em>fire and forget</em>—in flight—is what leads to problems</strong>. It’s harder to comply with <a href="https://en.wikipedia.org/wiki/ACID">ACID properties</a>, so the highest possible data reliability and integrity cannot be ensured. State <em>is</em>, events <em>happen</em>. The longer an event isn’t handled, the harder the problem becomes. <strong>For ViewModel events, process the event as soon as possible and generate a new UI state from it</strong>.</p>
+
+<p>In the case study, we created an object for the event—represented as a <code class="language-plaintext highlighter-rouge">Boolean</code>—and exposed it using a <code class="language-plaintext highlighter-rouge">Channel</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create Channel with the event modeled as a Boolean</span>
+<span class="kd">val</span> <span class="py">_navigateToPaymentResultScreen</span> <span class="p">=</span> <span class="nc">Channel</span><span class="p">&lt;</span><span class="nc">Boolean</span><span class="p">&gt;()</span>
+
+<span class="c1">// Trigger event</span>
+<span class="n">_navigateToPaymentResultScreen</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">isPaymentSuccessful</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Once you do this, you’ve taken responsibility for ensuring things like exactly-once delivery and handling. If you must model an event as an object for some reason, limit its lifespan to be as short as possible so that it doesn’t have a chance to get lost.</p>
+
+<p><strong>Handling a one-off event in the ViewModel usually comes down to a method call</strong> — for example, updating the UI state. Once you call that method, you know whether it completed successfully or threw an exception, and you know that it happened exactly once.</p>
+
+<h2 id="case-study-improvements">Case Study Improvements</h2>
+
+<p>If you’re in one of these situations, <strong>reconsider <em>what</em> that one-off ViewModel event actually means for your UI</strong>. Handle them immediately and reduce them to UI state which is exposed using an observable data holder such as <code class="language-plaintext highlighter-rouge">StateFlow</code> or <code class="language-plaintext highlighter-rouge">mutableStateOf</code>.</p>
+
+<p><strong>UI state better represents the UI at a given point in time, it gives you more delivery and processing guarantees, it’s usually easier to test, and it integrates consistently with the rest of your app</strong>.</p>
+
+<blockquote>
+  <p>If you struggle to find a way to reduce one-off ViewModel events to state, reconsider what that event actually means for your UI.</p>
+</blockquote>
+
+<p>In the example above, the ViewModel <em>should</em> expose what’s the actual application data — the payment data in this case — instead of telling the UI the action to take. The following is a better representation of that ViewModel event handled and reduced to state, and exposed using an observable data holder type.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">MakePaymentUiState</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">paymentInformation</span><span class="p">:</span> <span class="nc">PaymentModel</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">isLoading</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+    <span class="c1">// PaymentResult models the application state of this particular payment attempt,</span>
+    <span class="c1">// `null` represents the payment hasn't been made yet.</span>
+    <span class="kd">val</span> <span class="py">paymentResult</span><span class="p">:</span> <span class="nc">PaymentResult</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="p">)</span>
+
+<span class="kd">class</span> <span class="nc">MakePaymentViewModel</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">_uiState</span> <span class="p">=</span> <span class="nc">MutableStateFlow</span><span class="p">&lt;</span><span class="nc">MakePaymentUiState</span><span class="p">&gt;(</span><span class="o">..</span><span class="p">.)</span>
+    <span class="kd">val</span> <span class="py">uiState</span><span class="p">:</span> <span class="nc">StateFlow</span><span class="p">&lt;</span><span class="nc">MakePaymentUiState</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">_uiState</span><span class="p">.</span><span class="nf">asStateFlow</span><span class="p">()</span>
+
+    <span class="c1">// Protecting makePayment from concurrent callers</span>
+    <span class="c1">// If a payment is in progress, don't trigger it again</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">makePaymentJob</span><span class="p">:</span> <span class="nc">Job</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+    <span class="k">fun</span> <span class="nf">makePayment</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">makePaymentJob</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="k">return</span>
+
+        <span class="n">makePaymentJob</span> <span class="p">=</span> <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="n">_uiState</span><span class="p">.</span><span class="nf">update</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">isLoading</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="p">}</span>
+                <span class="kd">val</span> <span class="py">isPaymentSuccessful</span> <span class="p">=</span> <span class="n">paymentsRepository</span><span class="p">.</span><span class="nf">makePayment</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span>
+
+                <span class="c1">// The event of what to do when the payment response comes back</span>
+                <span class="c1">// is immediately handled here. It causes a UI state update.</span>
+                <span class="n">_uiState</span><span class="p">.</span><span class="nf">update</span> <span class="p">{</span>
+                    <span class="n">it</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span>
+                        <span class="n">isLoading</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+                        <span class="n">paymentResult</span> <span class="p">=</span> <span class="nc">PaymentResult</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">paymentInfo</span><span class="p">,</span> <span class="n">isPaymentSuccessful</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">ioe</span><span class="p">:</span> <span class="nc">IOException</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+            <span class="k">finally</span> <span class="p">{</span> <span class="n">makePaymentJob</span> <span class="p">=</span> <span class="k">null</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In the code above, <strong>the event is handled immediately by calling <code class="language-plaintext highlighter-rouge">_uiState.update</code></strong> (#L27) with the new <code class="language-plaintext highlighter-rouge">paymentResult</code> data (#L30); there’s no way for this event to get lost now. The event has been reduced to state, and the <code class="language-plaintext highlighter-rouge">paymentResult</code> field in <code class="language-plaintext highlighter-rouge">MakePaymentUiState</code> reflects the payment result application data.</p>
+
+<p>With this, the UI would react to paymentResult changes and act accordingly:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//////////////////////////////////////////////</span>
+<span class="c1">// Jetpack Compose code</span>
+<span class="c1">//////////////////////////////////////////////</span>
+
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">MakePaymentScreen</span><span class="p">(</span>
+    <span class="n">onPaymentMade</span><span class="p">:</span> <span class="p">(</span><span class="nc">PaymentModel</span><span class="p">,</span> <span class="nc">Boolean</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">viewModel</span><span class="p">:</span> <span class="nc">MakePaymentViewModel</span> <span class="p">=</span> <span class="nf">viewModel</span><span class="p">()</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">uiState</span> <span class="k">by</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">uiState</span><span class="p">.</span><span class="nf">collectAsState</span><span class="p">()</span>
+
+    <span class="n">uiState</span><span class="p">.</span><span class="n">paymentResult</span><span class="o">?.</span><span class="nf">let</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">currentOnPaymentMade</span> <span class="k">by</span> <span class="nf">rememberUpdatedState</span><span class="p">(</span><span class="n">onPaymentMade</span><span class="p">)</span>
+        <span class="nc">LaunchedEffect</span><span class="p">(</span><span class="n">uiState</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Tell the caller composable that the payment was made.</span>
+            <span class="c1">// the parent composable will act accordingly.</span>
+            <span class="nf">currentOnPaymentMade</span><span class="p">(</span>
+                <span class="n">uiState</span><span class="p">.</span><span class="n">paymentResult</span><span class="p">.</span><span class="n">paymentModel</span><span class="p">,</span> 
+                <span class="n">uiState</span><span class="p">.</span><span class="n">paymentResult</span><span class="p">.</span><span class="n">isPaymentSuccessful</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Rest of the UI for the login screen.</span>
+<span class="p">}</span>
+
+
+<span class="c1">//////////////////////////////////////////////</span>
+<span class="c1">// Activity / Views code</span>
+<span class="c1">//////////////////////////////////////////////</span>
+
+<span class="kd">class</span> <span class="nc">MakePaymentActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">viewModel</span><span class="p">:</span> <span class="nc">MakePaymentViewModel</span> <span class="k">by</span> <span class="nf">viewModels</span><span class="p">()</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="cm">/* ... */</span>
+        <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">viewModel</span><span class="p">.</span><span class="n">uiState</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span> <span class="n">uiState</span> <span class="p">-&gt;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">uiState</span><span class="p">.</span><span class="n">paymentResult</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="kd">val</span> <span class="py">intent</span> <span class="p">=</span> <span class="nc">Intent</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">PaymentResultActivity</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span>
+                        <span class="n">intent</span><span class="p">.</span><span class="nf">putExtra</span><span class="p">(</span>
+                            <span class="s">"PAYMENT_RESULT"</span><span class="p">,</span> 
+                            <span class="n">uiState</span><span class="p">.</span><span class="n">paymentResult</span><span class="p">.</span><span class="n">isPaymentSuccessful</span>
+                        <span class="p">)</span>
+                        <span class="nf">startActivity</span><span class="p">(</span><span class="n">intent</span><span class="p">)</span>
+                        <span class="nf">finish</span><span class="p">()</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Note</strong>: If in your use case the Activity doesn’t <code class="language-plaintext highlighter-rouge">finish()</code> and is kept in the backstack, your ViewModel would need to expose a function to clear the <code class="language-plaintext highlighter-rouge">paymentResult</code> from the UiState (i.e. setting the field to null) that will be called after the Activity starts the other one. An example of this can be found in the <a href="https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates">Consuming events can trigger state updates section</a> of the docs.</p>
+
+<p>As mentioned in the <a href="https://developer.android.com/topic/architecture/ui-layer#additional-considerations">UI layer’s additional considerations section</a>, you can expose the UI state of your screen with multiple streams if that’s what your use case requires. What’s important is that those streams are observable data holder types. In the example above, a unique UI state stream is exposed because the <code class="language-plaintext highlighter-rouge">isLoading</code> flag and the <code class="language-plaintext highlighter-rouge">paymentResult</code> property are highly intertwined. Separating them out could cause inconsistencies in the UI—for example, if <code class="language-plaintext highlighter-rouge">isLoading</code> is <code class="language-plaintext highlighter-rouge">true</code> and <code class="language-plaintext highlighter-rouge">paymentResult</code> isn’t <code class="language-plaintext highlighter-rouge">null</code>. By having them together in the same UiState class, we are more conscious of the different fields that make the UI state of the screen which lead us to fewer bugs.</p>
+
+<hr />
+
+<p>Hopefully, this blog post helped you understand the reasons why <strong>we recommend 1) handling one-off ViewModel events immediately and reducing them to state, and 2) exposing state using an observable data holder type</strong>. We believe this approach gives you more delivery and processing guarantees, it’s usually easier to test, and it integrates consistently with the rest of your app.</p>
+
+<p><em>Disclaimer: As with the rest of our Architecture guidance, treat this as a guideline and adapt it to your requirements as needed.</em></p>
+
+<p>For more information about this topic, check out the <a href="https://developer.android.com/topic/architecture/ui-layer/events">UI events documentation</a>.</p>
+
+<hr />
+
+<p>Special thanks to <a href="https://twitter.com/adamwp">Adam Powell</a> for the endless discussions, knowledge, and input he’s given to this blog post. Also, to <a href="https://twitter.com/astamatok">Ale Stamato</a> and <a href="https://twitter.com/ppvi">Jose Alcérreca</a> for their thorough reviews.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/viewmodel-events-antipatterns';
+                            this.page.identifier = '/viewmodel-events-antipatterns';
+                            this.page.title = 'ViewModel One-off event antipatterns';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/architecture/">Architecture</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/mobile-system-design-interview">Mobile System Design Interview book</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/crash-course-ui-layer-part-2">Crash Course on the Android UI Layer | Part 2</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/crash-course-ui-layer-part-1">Crash Course on the Android UI Layer | Part 1</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/architecture/">
+                                
+                                    See all 9 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/consuming-flows-compose">
+                <div class="post-card-image" style="background-image: url(/assets/images/2022-08-10-consuming-flows-compose.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/consuming-flows-compose">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Architecture</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Consuming flows safely in Jetpack Compose</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/blueprints-migration-compose">
+                <div class="post-card-image" style="background-image: url(/assets/images/2022-04-11-blueprints-migration-compose.jpeg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/blueprints-migration-compose">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Architecture</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Compose</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Migrating Architecture Blueprints to Jetpack Compose</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">ViewModel One-off event antipatterns</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=ViewModel+One-off+event+antipatterns&amp;url=https://manuelvivo.dev/viewmodel-events-antipatterns"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/viewmodel-events-antipatterns"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>
