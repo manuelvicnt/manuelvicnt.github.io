@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Exceptions in coroutines</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/coroutines-cancellation-exceptions-3" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Exceptions in coroutines" />
+    <meta property="og:description" content="All you need to know about exceptions in coroutines We, developers, usually spend a lot of time polishing the happy path of our app. However, it’s equally important to provide a proper user experience whenever things don’t go as expected. On one hand, seeing an application crash is a bad" />
+    <meta property="og:url" content="https://manuelvivo.dev/coroutines-cancellation-exceptions-3" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2020-coroutines.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2020-03-11T00:00:01+00:00" />
+    <meta property="article:modified_time" content="2020-03-11T00:00:01+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Exceptions in coroutines" />
+    <meta name="twitter:description" content="All you need to know about exceptions in coroutines We, developers, usually spend a lot of time polishing the happy path of our app. However, it’s equally important to provide a proper user experience whenever things don’t go as expected. On one hand, seeing an application crash is a bad" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2020-coroutines.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/coroutines-cancellation-exceptions-3",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2020-coroutines.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/coroutines-cancellation-exceptions-3"
+    },
+    "description": "All you need to know about exceptions in coroutines We, developers, usually spend a lot of time polishing the happy path of our app. However, it’s equally important to provide a proper user experience whenever things don’t go as expected. On one hand, seeing an application crash is a bad"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Exceptions in coroutines" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Exceptions in coroutines | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Exceptions in coroutines" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="All you need to know about exceptions in coroutines" />
+<meta property="og:description" content="All you need to know about exceptions in coroutines" />
+<link rel="canonical" href="https://manuelvivo.dev/coroutines-cancellation-exceptions-3" />
+<meta property="og:url" content="https://manuelvivo.dev/coroutines-cancellation-exceptions-3" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-11T00:00:01+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Exceptions in coroutines" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2020-03-11T00:00:01+00:00","datePublished":"2020-03-11T00:00:01+00:00","description":"All you need to know about exceptions in coroutines","headline":"Exceptions in coroutines","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/coroutines-cancellation-exceptions-3"},"url":"https://manuelvivo.dev/coroutines-cancellation-exceptions-3"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="11 March 2020">11 March 2020</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">Exceptions in coroutines</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2020-coroutines.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>All you need to know about exceptions in coroutines</p>
+
+<p>We, developers, usually spend a lot of time polishing the happy path of our app. However, it’s equally important to provide a proper user experience whenever things don’t go as expected. On one hand, seeing an application crash is a bad experience for the user; on the other hand, showing the right message to the user when an action didn’t succeed is indispensable.</p>
+
+<p>Handling exceptions properly has a huge impact on how users perceive your application. In this article, we’ll explain how exceptions are propagated in coroutines and how you can always be in control, including the different ways to handle them.</p>
+
+<p>If you prefer video, check out this talk from KotlinConf’19 by <a href="https://twitter.com/FMuntenescu">Florina Muntenescu</a> and I:</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w0kfnydnFWI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<blockquote>
+  <p>⚠️ In order to follow the rest of the article without any problems, reading and understanding <a href="https://manuelvivo.dev/coroutines-cancellation-exceptions-1">Part 1</a> of the series is required.</p>
+</blockquote>
+
+<h2 id="a-coroutine-suddenly-failed-what-now-">A coroutine suddenly failed! What now? 😱</h2>
+
+<p>When a coroutine fails with an exception, it will propagate said exception up to its parent! Then, the parent will 1) cancel the rest of its children, 2) cancel itself and 3) propagate the exception up to its parent.</p>
+
+<p>The exception will reach the root of the hierarchy and all the coroutines that the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> started will get cancelled too.</p>
+
+<p align="center">
+  <img src="assets/images/2020-03-11-coroutines-cancellation-exceptions-3_1.gif" />
+  <small>An exception in a coroutine will be propagated throughout the coroutines hierarchy</small>
+</p>
+
+<p>While propagating an exception can make sense in some cases, there are other cases when that’s undesirable. Imagine a UI-related <code class="language-plaintext highlighter-rouge">CoroutineScope</code> that processes user interactions. If a child coroutine throws an exception, the UI scope will be cancelled and the whole UI component will become unresponsive as a cancelled scope cannot start more coroutines.</p>
+
+<p>What if you don’t want that behavior? Alternatively, you can use a different implementation of <code class="language-plaintext highlighter-rouge">Job</code>, namely <code class="language-plaintext highlighter-rouge">SupervisorJob</code>, in the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> that creates these coroutines.</p>
+
+<h3 id="supervisorjob-to-the-rescue">SupervisorJob to the rescue</h3>
+
+<p>With a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html"><code class="language-plaintext highlighter-rouge">SupervisorJob</code></a>, the failure of a child doesn’t affect other children. A <code class="language-plaintext highlighter-rouge">SupervisorJob</code> won’t cancel itself or the rest of its children. Moreover, <code class="language-plaintext highlighter-rouge">SupervisorJob</code> won’t propagate the exception either, and will let the child coroutine handle it.</p>
+
+<p>You can create a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> like this <code class="language-plaintext highlighter-rouge">val uiScope = CoroutineScope(SupervisorJob())</code> to not propagate cancellation when a coroutine fails as this image depicts:</p>
+
+<p align="center">
+  <img src="assets/images/2020-03-11-coroutines-cancellation-exceptions-3_2.png" />
+  <small>A SupervisorJob won’t cancel itself or the rest of its children</small>
+</p>
+
+<p>If the exception is not handled and the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> doesn’t have a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-exception-handler/index.html"><code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code></a> (as we’ll see later), it will reach the default thread’s <code class="language-plaintext highlighter-rouge">ExceptionHandler</code>. In the JVM, the exception will be logged to console; and in Android, it will make your app crash regardless of the Dispatcher this happens on.</p>
+
+<blockquote>
+  <p>💥 Uncaught exceptions will always be thrown regardless of the kind of Job you use</p>
+</blockquote>
+
+<p>The same behavior applies to the scope builders <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/coroutine-scope.html"><code class="language-plaintext highlighter-rouge">coroutineScope</code></a> and <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/supervisor-scope.html"><code class="language-plaintext highlighter-rouge">supervisorScope</code></a>. These will create a sub-scope (with a <code class="language-plaintext highlighter-rouge">Job</code> or a <code class="language-plaintext highlighter-rouge">SupervisorJob</code> accordingly as a parent) with which you can logically group coroutines (e.g. if you want to do parallel computations or you want them to be or not be affected by each other).</p>
+
+<p><strong><em>Warning</em></strong>: A <code class="language-plaintext highlighter-rouge">SupervisorJob</code> <strong>only</strong> works as described when it’s part of a scope: either created using <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/supervisor-scope.html"><code class="language-plaintext highlighter-rouge">supervisorScope</code></a> or <code class="language-plaintext highlighter-rouge">CoroutineScope(SupervisorJob())</code>.</p>
+
+<h3 id="job-or-supervisorjob-">Job or SupervisorJob? 🤔</h3>
+
+<p>When should you use a <code class="language-plaintext highlighter-rouge">Job</code> or a <code class="language-plaintext highlighter-rouge">SupervisorJob</code>? Use a <code class="language-plaintext highlighter-rouge">SupervisorJob</code> or <code class="language-plaintext highlighter-rouge">supervisorScope</code> when you don’t want a failure to cancel the parent and siblings.</p>
+
+<p>Some examples:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Scope handling coroutines for a particular layer of my app</span>
+<span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span>
+
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="c1">// Child 1</span>
+<span class="p">}</span>
+
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="c1">// Child 2</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this case, if <code class="language-plaintext highlighter-rouge">child#1</code> fails, <em>neither</em> scope nor <code class="language-plaintext highlighter-rouge">child#2</code> will be cancelled.</p>
+
+<p>Another example:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Scope handling coroutines for a particular layer of my app</span>
+<span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Job</span><span class="p">())</span>
+
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="nf">supervisorScope</span> <span class="p">{</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="c1">// Child 1</span>
+        <span class="p">}</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="c1">// Child 2</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this case, as <code class="language-plaintext highlighter-rouge">supervisorScope</code> creates a sub-scope with a <code class="language-plaintext highlighter-rouge">SupervisorJob</code>, if <code class="language-plaintext highlighter-rouge">child#1</code> fails, <code class="language-plaintext highlighter-rouge">child#2</code> will not be cancelled. If instead you use a <code class="language-plaintext highlighter-rouge">coroutineScope</code> in the implementation, the failure will get propagated and will end up cancelling scope too.</p>
+
+<h3 id="watch-out-quiz-whos-my-parent-">Watch out quiz! Who’s my parent? 🎯</h3>
+
+<p>Given the following snippet of code, can you identify what kind of <code class="language-plaintext highlighter-rouge">Job</code> <code class="language-plaintext highlighter-rouge">child#1</code> has as a parent?</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Job</span><span class="p">())</span>
+
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// new coroutine -&gt; can suspend</span>
+   <span class="nf">launch</span> <span class="p">{</span>
+        <span class="c1">// Child 1</span>
+    <span class="p">}</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="c1">// Child 2</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">child#1</code>’s parentJob is of type Job! Hope you got it right! Even though at first impression, you might’ve thought that it can be a <code class="language-plaintext highlighter-rouge">SupervisorJob</code>, it is not because a new coroutine always gets assigned a new <code class="language-plaintext highlighter-rouge">Job()</code> which in this case overrides the <code class="language-plaintext highlighter-rouge">SupervisorJob</code>. <code class="language-plaintext highlighter-rouge">SupervisorJob</code> is the parent of the coroutine created with <code class="language-plaintext highlighter-rouge">scope.launch</code>; so literally, <code class="language-plaintext highlighter-rouge">SupervisorJob</code> does nothing in that code!</p>
+
+<p align="center">
+  <img src="assets/images/2020-03-11-coroutines-cancellation-exceptions-3_3.png" />
+  <small>The parent of `child#1` and `child#2` is of type `Job`, not `SupervisorJob`</small>
+</p>
+
+<p>Therefore, if either <code class="language-plaintext highlighter-rouge">child#1</code> or <code class="language-plaintext highlighter-rouge">child#2</code> fails, the failure will reach scope and all work started by that scope will be cancelled.</p>
+
+<p>Remember that a <code class="language-plaintext highlighter-rouge">SupervisorJob</code> <strong>only</strong> works as described when it’s part of a scope: either created using <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/supervisor-scope.html"><code class="language-plaintext highlighter-rouge">supervisorScope</code></a> or <code class="language-plaintext highlighter-rouge">CoroutineScope(SupervisorJob())</code>. Passing a <code class="language-plaintext highlighter-rouge">SupervisorJob</code> as a parameter of a coroutine builder will not have the desired effect you would’ve thought for cancellation.</p>
+
+<p>Regarding exceptions, if any child throws an exception, that <code class="language-plaintext highlighter-rouge">SupervisorJob</code> won’t propagate the exception up in the hierarchy and will let its coroutine handle it.</p>
+
+<h3 id="under-the-hood">Under the hood</h3>
+
+<p>If you’re curious about how <code class="language-plaintext highlighter-rouge">Job</code> works under the hood, check out the implementation of the functions <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/JobSupport.kt#L645"><code class="language-plaintext highlighter-rouge">childCancelled</code></a> and <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/JobSupport.kt#L326"><code class="language-plaintext highlighter-rouge">notifyCancelling</code></a> in the <code class="language-plaintext highlighter-rouge">JobSupport.kt</code> file.</p>
+
+<p>In the <code class="language-plaintext highlighter-rouge">SupervisorJob</code> implementation, the <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/Supervisor.kt#L64"><code class="language-plaintext highlighter-rouge">childCancelled</code></a> method just returns <code class="language-plaintext highlighter-rouge">false</code>, meaning that it doesn’t propagate cancellation but it doesn’t handle the exception either.</p>
+
+<h2 id="dealing-with-exceptions-">Dealing with Exceptions 👩‍🚒</h2>
+
+<p>Coroutines use the regular Kotlin syntax for handling exceptions: <code class="language-plaintext highlighter-rouge">try/catch</code> or built-in helper functions like <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/run-catching.html"><code class="language-plaintext highlighter-rouge">runCatching</code></a> (which uses <code class="language-plaintext highlighter-rouge">try/catch</code> internally).</p>
+
+<p>We said before that <strong>uncaught exceptions will always be thrown</strong>. However, different coroutines builders treat exceptions in different ways.</p>
+
+<h3 id="launch">Launch</h3>
+
+<p>With launch, <strong>exceptions will be thrown as soon as they happen</strong>. Therefore, you can wrap the code that can throw exceptions inside a <code class="language-plaintext highlighter-rouge">try/catch</code>, like in this example:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nf">codeThatCanThrowExceptions</span><span class="p">()</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Handle exception</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>With <code class="language-plaintext highlighter-rouge">launch</code>, exceptions will be thrown as soon as they happen.</p>
+</blockquote>
+
+<h3 id="async">Async</h3>
+
+<p>When <code class="language-plaintext highlighter-rouge">async</code> is used as a root coroutine (coroutines that are a direct child of a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> instance or <code class="language-plaintext highlighter-rouge">supervisorScope</code>), <strong>exceptions are not thrown automatically, instead, they’re thrown when you call <code class="language-plaintext highlighter-rouge">.await()</code></strong>.</p>
+
+<p>To handle exceptions thrown in <code class="language-plaintext highlighter-rouge">async</code> whenever it’s a root coroutine, you can wrap the <code class="language-plaintext highlighter-rouge">.await()</code> call inside a <code class="language-plaintext highlighter-rouge">try/catch</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">supervisorScope</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">deferred</span> <span class="p">=</span> <span class="nf">async</span> <span class="p">{</span>
+        <span class="nf">codeThatCanThrowExceptions</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">deferred</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Handle exception thrown in async</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this case, notice that calling <code class="language-plaintext highlighter-rouge">async</code> will <em>never</em> throw the exception, that’s why it’s not necessary to wrap it as well. <code class="language-plaintext highlighter-rouge">await</code> will throw the exception that happened inside the <code class="language-plaintext highlighter-rouge">async</code> coroutine.</p>
+
+<blockquote>
+  <p>When <code class="language-plaintext highlighter-rouge">async</code> is used as a root coroutine, exceptions are thrown when you call <code class="language-plaintext highlighter-rouge">.await()</code></p>
+</blockquote>
+
+<p>Also, notice that we’re using a <code class="language-plaintext highlighter-rouge">supervisorScope</code> to call <code class="language-plaintext highlighter-rouge">async</code> and <code class="language-plaintext highlighter-rouge">await</code>. As we said before, a <code class="language-plaintext highlighter-rouge">SupervisorJob</code> lets the coroutine handle the exception; as opposed to <code class="language-plaintext highlighter-rouge">Job</code> that will automatically propagate it up in the hierarchy so the <code class="language-plaintext highlighter-rouge">catch</code> block won’t be called:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">coroutineScope</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">deferred</span> <span class="p">=</span> <span class="nf">async</span> <span class="p">{</span>
+            <span class="nf">codeThatCanThrowExceptions</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="n">deferred</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Exception thrown in async WILL NOT be caught here </span>
+        <span class="c1">// but propagated up to the scope</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Furthermore, exceptions that happen in coroutines created by other coroutines will always be propagated regardless of the coroutine builder. For example:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Job</span><span class="p">())</span>
+
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="nf">async</span> <span class="p">{</span>
+        <span class="c1">// If async throws, launch throws without calling .await()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this case, if <code class="language-plaintext highlighter-rouge">async</code> throws an exception, it will get thrown as soon as it happens because the coroutine that is the direct child of the scope is <code class="language-plaintext highlighter-rouge">launch</code>. The reason is that <code class="language-plaintext highlighter-rouge">async</code> (with a <code class="language-plaintext highlighter-rouge">Job</code> in its <code class="language-plaintext highlighter-rouge">CoroutineContext</code>) will automatically propagate the exception up to its parent (<code class="language-plaintext highlighter-rouge">launch</code>) that will throw the exception.</p>
+
+<blockquote>
+  <p>⚠️ Exceptions thrown in a <code class="language-plaintext highlighter-rouge">coroutineScope</code> builder or in coroutines created by other coroutines won’t be caught in a try/catch!</p>
+</blockquote>
+
+<p>In the <code class="language-plaintext highlighter-rouge">SupervisorJob</code> section, we mention the existence of <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>. Let’s dive into it!</p>
+
+<h3 id="coroutineexceptionhandler">CoroutineExceptionHandler</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code> is an optional element of a <code class="language-plaintext highlighter-rouge">CoroutineContext</code> allowing you to <strong>handle uncaught exceptions</strong>.</p>
+
+<p>Here’s how you can define a <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>, whenever an exception is caught, you have information about the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> where the exception happened and the exception itself:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">handler</span> <span class="p">=</span> <span class="nc">CoroutineExceptionHandler</span> <span class="p">{</span>
+    <span class="n">context</span><span class="p">,</span> <span class="n">exception</span> <span class="p">-&gt;</span> <span class="nf">println</span><span class="p">(</span><span class="s">"Caught $exception"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Exceptions will be caught if these requirements are met:</p>
+
+<ul>
+  <li>
+    <p><strong>When</strong> ⏰: The exception is thrown by a coroutine that <em>automatically</em> throws exceptions (works with <code class="language-plaintext highlighter-rouge">launch</code>, not with <code class="language-plaintext highlighter-rouge">async</code>).</p>
+  </li>
+  <li>
+    <p><strong>Where</strong> 🌍: If it’s in the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> or a root coroutine (direct child of <code class="language-plaintext highlighter-rouge">CoroutineScope</code> or a <code class="language-plaintext highlighter-rouge">supervisorScope</code>).</p>
+  </li>
+</ul>
+
+<p>Let’s see some examples using the <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code> defined above. In the following example, the exception will be caught by the handler:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Job</span><span class="p">())</span>
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"Failed coroutine"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this other case in which the handler is installed in a inner coroutine, it <em>won’t</em> be caught:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Job</span><span class="p">())</span>
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="nf">launch</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"Failed coroutine"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The exception isn’t caught because the handler is not installed in the right <code class="language-plaintext highlighter-rouge">CoroutineContext</code>. The inner launch will propagate the exception up to the parent as soon as it happens, since the parent doesn’t know anything about the handler, the exception will be thrown.</p>
+
+<hr />
+
+<p>Dealing with exceptions gracefully in your application is important to have a good user experience, even when things don’t go as expected.</p>
+
+<p>Remember to use <code class="language-plaintext highlighter-rouge">SupervisorJob</code> when you want to avoid propagating cancellation when an exception happens, and Job otherwise.</p>
+
+<p>Uncaught exceptions will be propagated, catch them to provide a great UX!</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/coroutines-cancellation-exceptions-3';
+                            this.page.identifier = '/coroutines-cancellation-exceptions-3';
+                            this.page.title = 'Exceptions in coroutines';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/coroutines-101-talk">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-04-02-coroutines-101-talk.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-101-talk">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines 101</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/coroutines-cancellation-exceptions-1">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-coroutines.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-cancellation-exceptions-1">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines - First things first</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Exceptions in coroutines</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Exceptions+in+coroutines&amp;url=https://manuelvivo.dev/coroutines-cancellation-exceptions-3"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/coroutines-cancellation-exceptions-3"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

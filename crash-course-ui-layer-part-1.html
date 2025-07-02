@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Crash Course on the Android UI Layer | Part 1</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/crash-course-ui-layer-part-1" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Crash Course on the Android UI Layer | Part 1" />
+    <meta property="og:description" content="Part 1 - The UI and UI State Description This blog post series aims to summarise the Android Developer guidance on the UI layer. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices. Note: By the end of this series, you" />
+    <meta property="og:url" content="https://manuelvivo.dev/crash-course-ui-layer-part-1" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2023-12-13-crash-course-ui-layer-part-1.webp" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2023-12-13T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2023-12-13T00:00:00+00:00" />
+    <meta property="article:tag" content="Architecture" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Crash Course on the Android UI Layer | Part 1" />
+    <meta name="twitter:description" content="Part 1 - The UI and UI State Description This blog post series aims to summarise the Android Developer guidance on the UI layer. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices. Note: By the end of this series, you" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2023-12-13-crash-course-ui-layer-part-1.webp" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Architecture" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/crash-course-ui-layer-part-1",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2023-12-13-crash-course-ui-layer-part-1.webp",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/crash-course-ui-layer-part-1"
+    },
+    "description": "Part 1 - The UI and UI State Description This blog post series aims to summarise the Android Developer guidance on the UI layer. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices. Note: By the end of this series, you"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Crash Course on the Android UI Layer | Part 1" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Crash Course on the Android UI Layer Part 1 | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Crash Course on the Android UI Layer Part 1" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Part 1 - The UI and UI State" />
+<meta property="og:description" content="Part 1 - The UI and UI State" />
+<link rel="canonical" href="https://manuelvivo.dev/crash-course-ui-layer-part-1" />
+<meta property="og:url" content="https://manuelvivo.dev/crash-course-ui-layer-part-1" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-12-13T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Crash Course on the Android UI Layer Part 1" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2023-12-13T00:00:00+00:00","datePublished":"2023-12-13T00:00:00+00:00","description":"Part 1 - The UI and UI State","headline":"Crash Course on the Android UI Layer Part 1","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/crash-course-ui-layer-part-1"},"url":"https://manuelvivo.dev/crash-course-ui-layer-part-1"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-architecture post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="13 December 2023">13 December 2023</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/architecture/'>Architecture</a></span>
+                  
+              
+                <h1 class="post-full-title">Crash Course on the Android UI Layer | Part 1</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2023-12-13-crash-course-ui-layer-part-1.webp)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Part 1 - The UI and UI State</p>
+
+<h2 id="description">Description</h2>
+
+<p>This blog post series aims to summarise the <a href="https://developer.android.com/topic/architecture/ui-layer">Android Developer guidance on the UI layer</a>. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices.</p>
+
+<blockquote>
+  <p>Note: By the end of this series, you will have a general understanding of what happens on the UI layer and how to best handle state and logic within it, the various APIs involved, and how to use them. Additionally, we’ll provide decision trees to assist you when you’re in doubt.</p>
+</blockquote>
+
+<p>This is <strong>part 1</strong>, where we’re covering the UI and the UI state. <a href="https://manuelvivo.dev/crash-course-ui-layer-part-2"><strong>Part 2</strong> covers state holders</a> and other UI layer-related topics such as where to hoist state and save state on Android.</p>
+
+<blockquote>
+  <p>If you prefer to consume this content in video format, check out <a href="https://www.droidcon.com/2023/11/15/peeling-back-the-layers-unmasking-the-ui-nknown">the talk I delivered at Droidcon London 2023</a>.</p>
+</blockquote>
+
+<h2 id="the-ui-layer-in-the-grand-scheme-of-things">The UI layer in the grand scheme of things</h2>
+
+<p>The UI layer isn’t the only layer you can find in a <a href="https://developer.android.com/topic/architecture#modern-app-architecture">typical app architecture</a>. Alongside it, you can also find the <a href="https://developer.android.com/topic/architecture/data-layer">data layer</a> and sometimes, the <a href="https://developer.android.com/topic/architecture/domain-layer">domain layer</a>. According to the <a href="http://goo.gle/mad-architecture-guide">Android Architecture documentation</a>:</p>
+
+<ul>
+  <li>
+    <p>The <strong>UI layer</strong> displays data on the screen.</p>
+  </li>
+  <li>
+    <p>The <strong>data layer</strong> exposes application data and contains the vast majority of the business logic of the app.</p>
+  </li>
+  <li>
+    <p>The <strong>domain layer</strong> is an <em>optional</em> layer that aims to 1) simplify and 2) reuse the potential business logic complexity of the UI layer. No less, no more.</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Note: The business logic is what gives value to your application. It’s the implementation of product requirements that determines how your app fetches, stores, and modifies data.</p>
+</blockquote>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_1.webp" />
+  <small>Architecture layers in a typical Android app: The UI, data, and domain layers</small>
+</p>
+
+<h2 id="entities-in-the-ui-layer">Entities in the UI layer</h2>
+
+<p>The UI layer consists of three distinct entities with clearly defined responsibilities. This distinction helps with separation of concerns, enhances testability, and promotes reusability.</p>
+
+<ul>
+  <li>
+    <p>The <strong>UI</strong>, or <strong>UI elements</strong>, render data on the screen.</p>
+  </li>
+  <li>
+    <p>The <strong>UI state</strong> describes the data to render on the screen. If the UI represents what the user sees, the UI state is what the app specifies the user should see.</p>
+  </li>
+  <li>
+    <p>An optional <strong>state holder</strong> is introduced to simplify the UI by managing a portion of its logic, holding its UI state, and exposing it to the UI. State holders are employed when the complexity of state and logic within the UI increases, making it more challenging to reason about.</p>
+  </li>
+</ul>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_2.webp" />
+  <small>Entities in the UI layer: The UI, UI state, and state holder</small>
+</p>
+
+<h2 id="unidirectional-data-flow">Unidirectional data flow</h2>
+
+<p>However, an app doesn’t show static information. Users regularly interact with it to perform operations that could potentially modify the application state. User events are typically handled by the state holder, and after processing them, they may result in a change in the UI state. In such cases, the UI state is not static. The state holder would expose a stream of UI state, and its emissions would be immediately reflected in the UI. This concept is also referred to as <a href="https://developer.android.com/topic/architecture#unidirectional-data-flow"><strong>Unidirectional Data Flow (UDF)</strong></a> in the documentation.</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_3.webp" />
+  <small>In Unidirectional Data Flow, Events flow from the UI to the state holder, and state flows from the state holder to the UI</small>
+</p>
+
+<h2 id="the-ui">The UI</h2>
+
+<p>The guidance in the <a href="https://developer.android.com/topic/architecture/ui-layer">documentation</a> and this blog post <strong>applies to both the View system and Jetpack Compose</strong>. The role of the UI in the UI layer remains independent of your choice of UI toolkit.</p>
+
+<p>When considering the UI layer, Developers tend to imagine the UI layer just at the screen level — that part of the UI tree that shows application data in most parts of the available display. And typically, Developers use the <a href="https://developer.android.com/topic/libraries/architecture/viewmodel"><code class="language-plaintext highlighter-rouge">androidx.ViewModel</code></a> as a state holder implementation detail.</p>
+
+<p>However, just as you create “multiple” data layers for handling different types of data (e.g. <code class="language-plaintext highlighter-rouge">PaymentsRepository</code>, <code class="language-plaintext highlighter-rouge">UserRepository</code>, etc.), you have the flexibility to introduce UI layer entities at any point in the UI tree, or UI hierarchy, where they are needed. The granularity of this decision depends on the complexity of your UI.</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_4.webp" />
+  <small>You can introduce the different entities in the UI layer in any part of the UI tree. For example, in the screen, the navigation rail, or simply in a button.</small>
+</p>
+
+<p>As we’ll see in the state holder sections, you can introduce a state holder at any point within the UI tree to simplify the UI. In fact, this is recommended in certain scenarios.</p>
+
+<h2 id="the-ui-state">The UI state</h2>
+
+<p>The UI state describes the information to be displayed on the screen. In this section, we’ll see how to model, produce, and observe the UI state.</p>
+
+<h3 id="types-of-ui-state">Types* of UI state</h3>
+
+<p>There’s a <em>subtype</em> of UI state that usually requires special treatment—the <strong>Screen UI state</strong>. This is often derived from the application state exposed from the data layer. This shout-out is because it contains most of the information displayed on the screen, which aligns with what the user is usually most interested in.</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_5.webp" />
+  <small>As a special type of UI state, the Screen UI state usually contains application data exposed by the data layer</small>
+</p>
+
+<p>As a sneak peek of what’s to come later, it’s important to note that the Screen UI state should persist or be cached across configuration changes.</p>
+
+<h2 id="how-to-produce-ui-state">How to produce UI state</h2>
+
+<p>Producing UI state is the <strong>output of the state holder processing some inputs</strong>. These inputs can be: 1) events, 2) local sources of state change, or 3) external sources of state change.</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_6.webp" />
+  <small>The UI state is the output of the state holder processing some inputs</small>
+</p>
+
+<p>Which APIs should we use in different cases?</p>
+
+<ul>
+  <li>
+    <p>The UI state should be exposed as an <strong>observable data holder</strong> class (e.g. <code class="language-plaintext highlighter-rouge">StateFlow</code>, Compose <code class="language-plaintext highlighter-rouge">State&lt;T&gt;</code>, or <code class="language-plaintext highlighter-rouge">LiveData</code>). This type ensures that the UI always has a UI state to render on the screen.</p>
+  </li>
+  <li>
+    <p>Inputs can take various forms, primarily as streams of data or one-shot APIs.</p>
+  </li>
+</ul>
+
+<p>Let’s see some examples of this!</p>
+
+<h3 id="producing-ui-state-with-local-source-of-state-change">Producing UI state with local source of state change</h3>
+
+<p>Imagine we’re on a screen that allows the user to roll two dice. Besides displaying the dice values, we also want to keep track of how many times the user rolls the dice. Our UI state could look like the following:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">DiceRollUiState</span><span class="p">(</span>
+  <span class="kd">val</span> <span class="py">firstDiceValue</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+  <span class="kd">val</span> <span class="py">secondDiceValue</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+  <span class="kd">val</span> <span class="py">numberOfRolls</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>The business logic for rolling the dice is implemented through a one-shot call to the Random API.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">firstDiceValue</span> <span class="p">=</span> <span class="nc">Random</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">6</span><span class="p">),</span>
+<span class="n">secondDiceValue</span> <span class="p">=</span> <span class="nc">Random</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">6</span><span class="p">),</span>
+<span class="n">numberOfRolls</span> <span class="p">=</span> <span class="n">currentUiState</span><span class="p">.</span><span class="n">numberOfRolls</span> <span class="p">+</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>So, how do we hold this UI state in the state holder? Creating an observable data holder class! In this example, we’re using the <code class="language-plaintext highlighter-rouge">MutableStateFlow</code> API to achieve this. To avoid direct dependencies on the <code class="language-plaintext highlighter-rouge">Random</code> API, which could potentially impact reusability and testability, we introduce a more generic <code class="language-plaintext highlighter-rouge">RandomProvider</code> interface, with its implementation being the <code class="language-plaintext highlighter-rouge">Random</code> API.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">DiceRollStateHolder</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">randomProvider</span><span class="p">:</span> <span class="nc">RandomProvider</span>
+<span class="p">)</span> <span class="p">{</span>
+
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">_uiState</span> <span class="p">=</span> <span class="nc">MutableStateFlow</span><span class="p">(</span><span class="nc">DiceRollUiState</span><span class="p">())</span>
+  <span class="kd">val</span> <span class="py">uiState</span><span class="p">:</span> <span class="nc">StateFlow</span><span class="p">&lt;</span><span class="nc">DiceRollUiState</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">_uiState</span><span class="p">.</span><span class="nf">asStateFlow</span><span class="p">()</span>
+
+  <span class="k">fun</span> <span class="nf">rollDice</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">_uiState</span><span class="p">.</span><span class="nf">update</span> <span class="p">{</span> <span class="n">currentState</span> <span class="p">-&gt;</span>
+      <span class="n">currentState</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span>
+        <span class="n">firstDiceValue</span> <span class="p">=</span> <span class="n">randomProvider</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">6</span><span class="p">),</span>
+        <span class="n">secondDiceValue</span> <span class="p">=</span> <span class="n">randomProvider</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">6</span><span class="p">),</span>
+        <span class="n">numberOfRolls</span> <span class="p">=</span> <span class="n">currentState</span><span class="p">.</span><span class="n">numberOfRolls</span> <span class="p">+</span> <span class="mi">1</span>
+      <span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The business logic for generating this UI state is <strong>local</strong> to the state holder. To prevent exposing a mutable version of the observable state holder that would allow direct modification of the UI state and violate the single source of truth principle, we expose the UI state as <code class="language-plaintext highlighter-rouge">StateFlow.uiState</code> is the read-only version of our mutable state that we convert using the <code class="language-plaintext highlighter-rouge">.asStateFlow</code> operator.</p>
+
+<blockquote>
+  <p>Note: Instead of <code class="language-plaintext highlighter-rouge">MutableStateFlow</code>, we could’ve also modelled our Ui State using Compose <code class="language-plaintext highlighter-rouge">State&lt;T&gt;</code> or even <code class="language-plaintext highlighter-rouge">LiveData</code>. For patterns and best practices concerning the use of Compose <code class="language-plaintext highlighter-rouge">State&lt;T&gt;</code> in this context, check out the <a href="https://developer.android.com/topic/architecture/ui-layer/state-production#compose-state">State production docs</a>.</p>
+</blockquote>
+
+<h3 id="producing-ui-state-with-external-source-of-state-change">Producing UI state with external source of state change</h3>
+
+<p>Application data comes from other layers of the hierarchy in the form of streams of data. To adapt this data to UI state, we must transform it into an observable data holder type. In the following example, we greet the user by displaying their name on the screen.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">DiceRollViewModel</span><span class="p">(</span>
+  <span class="n">userRepository</span><span class="p">:</span> <span class="nc">UserRepository</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="kd">val</span> <span class="py">userUiState</span><span class="p">:</span> <span class="nc">StateFlow</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;</span> <span class="p">=</span>
+    <span class="n">userRepository</span><span class="p">.</span><span class="n">userStream</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="n">user</span> <span class="p">-&gt;</span> <span class="n">user</span><span class="p">.</span><span class="n">name</span> <span class="p">}</span>
+      <span class="p">.</span><span class="nf">stateIn</span><span class="p">(</span>
+        <span class="n">scope</span> <span class="p">=</span> <span class="n">viewModelScope</span><span class="p">,</span>
+        <span class="n">started</span> <span class="p">=</span> <span class="nc">SharingStarted</span><span class="p">.</span><span class="nc">WhileSubscribed</span><span class="p">(</span><span class="mi">5_000</span><span class="p">),</span>
+        <span class="n">initialValue</span> <span class="p">=</span> <span class="s">""</span>
+      <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The state holder gets an instance of the data layer (i.e. <code class="language-plaintext highlighter-rouge">UserRepository</code>) as a dependency. It then maps the <code class="language-plaintext highlighter-rouge">userStream: Flow</code> to extract the specific information we are interested in, which in this case, is the user’s name. Since the <code class="language-plaintext highlighter-rouge">map</code> operator returns a Flow, we use the <code class="language-plaintext highlighter-rouge">.stateIn</code> operator to convert the <code class="language-plaintext highlighter-rouge">Flow</code> to a <code class="language-plaintext highlighter-rouge">StateFlow</code>, an observable data holder type.</p>
+
+<p><a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/state-in.html"><code class="language-plaintext highlighter-rouge">.stateIn</code></a> is a common operator used in state holders when dealing with Flows from other layers of the hierarchy and/or combining multiple data streams. Its method definition contains:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">scope</code>: defines the lifecycle of the resulting StateFlow.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">started</code>: determines the strategy for starting and stopping sharing. In the code snippet, we use <code class="language-plaintext highlighter-rouge">WhileSubscribed(5_000)</code> to stop collecting data from upstream flows (e.g. the one coming from <code class="language-plaintext highlighter-rouge">UserRepository</code>) when there are no collectors/observers for a specific period, in this case, 5 seconds. In this way, if the UI is not visible to the user for more than 5 seconds, we can cancel those data layer flow collections and save resources to protect the device’s health.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">initialValue</code>: specifies the initial value of the <code class="language-plaintext highlighter-rouge">StateFlow</code>. As mentioned earlier, using an observable state holder type guarantees that the UI always has a UI state to render on the screen, and this parameter plays a crucial role in achieving that.</p>
+  </li>
+</ul>
+
+<h3 id="summary-of-producing-ui-state">Summary of producing UI state</h3>
+
+<p>Let’s see a summary of what types to expose based on the type of input and the source API:</p>
+
+<ol>
+  <li>
+    <p>If you’re using one-shot APIs or local business logic, use a <code class="language-plaintext highlighter-rouge">MutableStateFlow</code> or Compose <code class="language-plaintext highlighter-rouge">MutableState&lt;T&gt;</code> to store the state in your state holder. Then, expose it as <code class="language-plaintext highlighter-rouge">StateFlow</code> or Compose <code class="language-plaintext highlighter-rouge">State&lt;T&gt;</code>.</p>
+  </li>
+  <li>
+    <p>When the source type is an external stream provided as a <code class="language-plaintext highlighter-rouge">Flow</code>, you should expose a <code class="language-plaintext highlighter-rouge">StateFlow</code>.</p>
+  </li>
+  <li>
+    <p>If you are dealing with both types of input, such as having at least one external stream, combine all the inputs and expose the UI state as a <code class="language-plaintext highlighter-rouge">StateFlow</code>.</p>
+  </li>
+</ol>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_7.webp" />
+  <small>Summary of the UI state exposed type given the source type and API</small>
+</p>
+
+<p>For more information about this topic, check out the <a href="http://goo.gle/android-arch-producing-state">State holders and state production talk</a> or the <a href="https://developer.android.com/topic/architecture/ui-layer/state-production">UI layer State production docs</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pCX9wvu-Bq0?si=IXGzPbEY1ScL1PLZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<h2 id="how-to-model-ui-state">How to model UI state</h2>
+
+<p>The UI state describes the UI at a certain point in time. The UI is the visual representation of the UI state. We previously defined a UI state defined as a data class in the <code class="language-plaintext highlighter-rouge">DiceRollUiState</code> code snippet above. Here it is again:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">DiceRollUiState</span><span class="p">(</span>
+  <span class="kd">val</span> <span class="py">firstDiceValue</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+  <span class="kd">val</span> <span class="py">secondDiceValue</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+  <span class="kd">val</span> <span class="py">numberOfRolls</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>It’s crucial that the fields in the UI state are immutable (i.e. vals) to ensure timing and consistency guarantees. Typically, UI state fields have sensible default values to facilitate creation and copying. However, not all UI states are that straightforward as the previous one.</p>
+
+<p>Let’s consider a different scenario where we want to enable the user to roll the dice only when they are logged in. When the user lands on the screen, we check the user state and make a decision. Here’s a possible UI state for this case:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="kd">interface</span> <span class="nc">DiceRollUiState</span> <span class="p">{</span>
+
+  <span class="n">data</span> <span class="kd">object</span> <span class="nc">Loading</span> <span class="p">:</span> <span class="nc">DiceRollUiState</span>
+
+  <span class="kd">data class</span> <span class="nc">DiceRoll</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">username</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">numberOfRolls</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">firstDiceValue</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">secondDiceValue</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+  <span class="p">)</span> <span class="p">:</span> <span class="nc">DiceRollUiState</span>
+
+  <span class="n">data</span> <span class="kd">object</span> <span class="nc">LogUserIn</span> <span class="p">:</span> <span class="nc">DiceRollUiState</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The UI state would be either loading (<code class="language-plaintext highlighter-rouge">Loading</code>), indicating that the user needs to log in (<code class="language-plaintext highlighter-rouge">LogUserIn</code>), or displaying the dice roll values with the username on the screen (<code class="language-plaintext highlighter-rouge">DiceRoll</code>).</p>
+
+<p>When should you use a <code class="language-plaintext highlighter-rouge">data class</code>, <code class="language-plaintext highlighter-rouge">sealed interface</code>/<code class="language-plaintext highlighter-rouge">class</code> or a combination of both?</p>
+
+<ul>
+  <li>
+    <p>Use a <code class="language-plaintext highlighter-rouge">sealed interface</code>/<code class="language-plaintext highlighter-rouge">class</code> when the screen can be in multiple <strong>exclusive</strong> states.</p>
+  </li>
+  <li>
+    <p>Use a <code class="language-plaintext highlighter-rouge">data class</code> when the data inside it can mutate. This is particularly useful in screens following an <a href="https://developer.android.com/topic/architecture/data-layer/offline-first">offline-fist</a> approach where the screen might simultaneously display loading indicators, data, and error messages.</p>
+  </li>
+</ul>
+
+<h3 id="how-to-model-complex-ui-state">How to model complex UI state</h3>
+
+<p>When dealing with complex screens, you need to make sure you don’t create UI inconsistencies. As an exercise, let’s try to model the home screen of <a href="https://github.com/android/compose-samples/tree/main/JetNews">Jetnews</a>, a Compose sample app.</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-13-crash-course-ui-layer-part-1_8.webp" />
+  <small>Home screen of Jetnews displayed on a tablet</small>
+</p>
+
+<p>The primary content of the screen presents a feed of articles and an open article details section where users can read the article. As a preliminary step to model the entire UI screen, one might define the following UI state:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">data class</span> <span class="nc">HomeViewModelState</span><span class="p">(</span>
+  <span class="kd">val</span> <span class="py">postsFeed</span><span class="p">:</span> <span class="nc">PostsFeed</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">selectedPostId</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">isArticleOpen</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">favorites</span><span class="p">:</span> <span class="nc">Set</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">emptySet</span><span class="p">(),</span>
+  <span class="kd">val</span> <span class="py">isLoading</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">errorMessages</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">ErrorMessage</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">emptyList</span><span class="p">(),</span>
+  <span class="kd">val</span> <span class="py">searchInput</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">""</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>However, there’s a problem. Can you spot it? Due to the default values, we could create UI inconsistencies! We could have a UI state with a <code class="language-plaintext highlighter-rouge">selectedPostId</code> <em>without</em> <code class="language-plaintext highlighter-rouge">postsFeed</code>. That wouldn’t be realistic, that should never occur. To resolve this issue, we need to introduce a more strongly typed state to prevent these problems. Considering that our business requirements allow either posts or nothing to be displayed on the screen, we can introduce a <code class="language-plaintext highlighter-rouge">sealed interface</code> on top of this state:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="kd">interface</span> <span class="nc">HomeUiState</span> <span class="p">{</span>
+
+  <span class="kd">val</span> <span class="py">isLoading</span><span class="p">:</span> <span class="nc">Boolean</span>
+  <span class="kd">val</span> <span class="py">errorMessages</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">ErrorMessage</span><span class="p">&gt;</span>
+  <span class="kd">val</span> <span class="py">searchInput</span><span class="p">:</span> <span class="nc">String</span>
+
+  <span class="kd">data class</span> <span class="nc">NoPosts</span><span class="p">(</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">isLoading</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">errorMessages</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">ErrorMessage</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">emptyList</span><span class="p">(),</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">searchInput</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">""</span>
+  <span class="p">)</span> <span class="p">:</span> <span class="nc">HomeUiState</span>
+
+  <span class="kd">data class</span> <span class="nc">HasPosts</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">postsFeed</span><span class="p">:</span> <span class="nc">PostsFeed</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">selectedPost</span><span class="p">:</span> <span class="nc">Post</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">isArticleOpen</span><span class="p">:</span> <span class="nc">Boolean</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">favorites</span><span class="p">:</span> <span class="nc">Set</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;,</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">isLoading</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">errorMessages</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">ErrorMessage</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">emptyList</span><span class="p">(),</span>
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">searchInput</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">""</span>
+  <span class="p">)</span> <span class="p">:</span> <span class="nc">HomeUiState</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now our UI would either show <code class="language-plaintext highlighter-rouge">HasPosts</code> or <code class="language-plaintext highlighter-rouge">NoPosts</code>. In the <code class="language-plaintext highlighter-rouge">HasPosts</code> variant, it’s not possible to have a <code class="language-plaintext highlighter-rouge">selectedPost</code> without an existing <code class="language-plaintext highlighter-rouge">postsFeed</code>. Problem solved! While the initial approximation of our UI state could still prove useful for modelling the entire UI state privately, this type is never exposed. Ultimately, you would map that state to <code class="language-plaintext highlighter-rouge">HomeUiState</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">data class</span> <span class="nc">HomeViewModelState</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span> <span class="p">{</span>
+
+  <span class="k">fun</span> <span class="nf">toUiState</span><span class="p">():</span> <span class="nc">HomeUiState</span> <span class="p">=</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">postsFeed</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nc">HomeUiState</span><span class="p">.</span><span class="nc">NoPosts</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nc">HomeUiState</span><span class="p">.</span><span class="nc">HasPosts</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="exposing-single-vs-multiple-ui-state-streams">Exposing single vs multiple UI state streams</h3>
+
+<p>We often engage in discussions regarding whether a state holder should expose a single or multiple streams of data.</p>
+
+<p>What we’ve been advising people so far is that you’d <strong>expose a single stream of UI state if fields depend on each other</strong>. On the other hand, if those fields are independent of each other and do not lead to UI inconsistencies, it’s acceptable to expose multiple streams.</p>
+
+<p>Some may argue that if they are entirely independent, it implies they affect different parts of the UI, and each of those parts could have their own state holders. Sure, I agree. But if you don’t want to create multiple state holders and expose multiple UI states from a higher level one, that’s acceptable as well.</p>
+
+<h2 id="how-to-consume-ui-state">How to consume UI state</h2>
+
+<p>Ideally, UI state should be consumed from the UI in a lifecycle-aware manner. That is, only when the UI is visible on the screen. In the Android lifecycle, that is when the lifecycle is above the <code class="language-plaintext highlighter-rouge">STARTED</code> and <code class="language-plaintext highlighter-rouge">STOPPED</code> states. There are different APIs available to do this in an easy way.</p>
+
+<p>For Android Views, you can use the <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#(androidx.lifecycle.Lifecycle).repeatOnLifecycle(androidx.lifecycle.Lifecycle.State,kotlin.coroutines.SuspendFunction1)"><code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code></a> or <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#(kotlinx.coroutines.flow.Flow).flowWithLifecycle(androidx.lifecycle.Lifecycle,androidx.lifecycle.Lifecycle.State)"><code class="language-plaintext highlighter-rouge">flowWithLifecycle</code></a> APIs, which are found in the <code class="language-plaintext highlighter-rouge">androidx.lifecycle.lifecycle-runtime-ktx</code> artifact. Here’s how you’d use <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SomeActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+      <span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">viewModel</span><span class="p">.</span><span class="n">uiState</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span>
+          <span class="c1">// New UI state! Update the UI</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Inside the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> coroutine block, you collect from the UI state. <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> automatically creates a new coroutine that executes the block when the lifecycle reaches that state, and cancels the coroutine running the block when it falls below that Lifecycle state.</p>
+
+<p>In Compose, use the <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/compose/package-summary#(kotlinx.coroutines.flow.StateFlow).collectAsStateWithLifecycle(androidx.lifecycle.Lifecycle,androidx.lifecycle.Lifecycle.State,kotlin.coroutines.CoroutineContext)"><code class="language-plaintext highlighter-rouge">collectAsStateWithLifecycle</code></a> API that uses the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> API under the hood. This is available in the <code class="language-plaintext highlighter-rouge">androidx.lifecycle.lifecycle-runtime-compose</code> artifact. This API collects the underlying flow given a certain lifecycle State, and represents the latest value of the flow as Compose <code class="language-plaintext highlighter-rouge">State&lt;T&gt;</code>. This allows the composable function to recompose whenever a new element is emitted.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">SomeScreen</span><span class="p">(</span>
+  <span class="n">modifier</span><span class="p">:</span> <span class="nc">Modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">,</span>
+  <span class="n">viewModel</span><span class="p">:</span> <span class="nc">SomeViewModel</span> <span class="p">=</span> <span class="nf">viewModel</span><span class="p">()</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="kd">val</span> <span class="py">uiState</span><span class="p">:</span> <span class="nc">SomeUiState</span> <span class="k">by</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">uiState</span>
+                  <span class="p">.</span><span class="nf">collectAsStateWithLifecycle</span><span class="p">()</span>
+
+  <span class="c1">// Emit UI given uiState. SomeScreen will recompose</span>
+  <span class="c1">// whenever `viewModel.uiState` emits a new value.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For more information about collecting in a lifecycle-aware manner, watch the <a href="http://goo.gle/android-arch-consume-state">Collect flows on Android talk</a> or read the <a href="https://manuelvivo.dev/coroutines-addrepeatingjob"><code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code></a> and <a href="https://manuelvivo.dev/consuming-flows-compose"><code class="language-plaintext highlighter-rouge">collectAsStateWithLifecycle</code></a> articles. If you’re interested in how these APIs were created, read the <a href="https://medium.com/androiddevelopers/repeatonlifecycle-api-design-story-8670d1a7d333">repeatOnLifecycle API design story blog post</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6hNXFs1fYaY?si=oVVx8arIw35C9ceW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<hr />
+
+<p>Now that you’ve read part 1 of the crash course on the UI layer, you should have a general understanding of the different entities present on this layer, and how to think about the UI and UI state effectively.</p>
+
+<p><a href="(https://manuelvivo.dev/crash-course-ui-layer-part-2)"><strong>In part 2</strong></a>, we’ll cover state holders and other UI layer-related topics such as where to hoist state and saving state on Android.</p>
+
+<p>👋 See you there!</p>
+
+<blockquote>
+  <p>Remember that if you prefer to consume this content in video format, check out <a href="https://www.droidcon.com/2023/11/15/peeling-back-the-layers-unmasking-the-ui-nknown">the talk I delivered at Droidcon London 2023</a>.</p>
+</blockquote>
+
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/crash-course-ui-layer-part-1';
+                            this.page.identifier = '/crash-course-ui-layer-part-1';
+                            this.page.title = 'Crash Course on the Android UI Layer | Part 1';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/architecture/">Architecture</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/mobile-system-design-interview">Mobile System Design Interview book</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/crash-course-ui-layer-part-2">Crash Course on the Android UI Layer | Part 2</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/saving-ui-state">Saving UI state on Android</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/architecture/">
+                                
+                                    See all 9 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/crash-course-ui-layer-part-2">
+                <div class="post-card-image" style="background-image: url(/assets/images/2023-12-19-crash-course-ui-layer-part-2.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/crash-course-ui-layer-part-2">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Architecture</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Crash Course on the Android UI Layer | Part 2</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/saving-ui-state">
+                <div class="post-card-image" style="background-image: url(/assets/images/2023-05-10-saving-ui-state.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/saving-ui-state">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Architecture</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Saving UI state on Android</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Crash Course on the Android UI Layer | Part 1</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Crash+Course+on+the+Android+UI+Layer+%7C+Part+1&amp;url=https://manuelvivo.dev/crash-course-ui-layer-part-1"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/crash-course-ui-layer-part-1"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>
