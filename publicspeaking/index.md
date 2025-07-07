@@ -10,7 +10,7 @@ subclass: 'post page'
 
 ## Content
 
-* 🎤 More talks - [2023](#2023-talks), [2022](#2022-talks), [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
+* 🎤 More talks - [2025](#2025-talks), [2023](#2023-talks), [2022](#2022-talks), [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
 * 👨‍💻 Live coding - [2021](#2021-live-coding)
 * 👥 Panels - [2022](#2022-panels), [2021](#2021-panels), [2020](#2020-panels)
 * 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
@@ -18,6 +18,12 @@ subclass: 'post page'
 * 💬 Interviews - [2023](#2023-interviews), [2022](#2022-interviews), [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
 
 ---
+
+# 2025 <a name="2025"/>
+
+### 🎤 Talks <a name="2025-talks"/>
+
+- <b>Collect Like a Pro: a deep dive on the lifecycle-aware coroutines APIs</b> - [Video](https://www.youtube.com/watch?v=qJB5iX2cOu0)<br/>_KotlinConf 2025 - May 23rd, 2025_
 
 # 2023 <a name="2023"/>
 
