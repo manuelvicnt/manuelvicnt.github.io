@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Migrating from Dagger to Hilt — Is it worth it?</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/migrating-to-Hilt" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Migrating from Dagger to Hilt — Is it worth it?" />
+    <meta property="og:description" content="Consider whether or not you should migrate your Dagger app to Hilt Hilt got released in June 2020 as a way to standardize dependency injection (DI) in Android. For new projects, Hilt provides compile time correctness, runtime performance and scalability (read more about that here)! However, what are the benefits" />
+    <meta property="og:url" content="https://manuelvivo.dev/migrating-to-Hilt" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2020-11-24-migrating-to-Hilt.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2020-11-24T00:00:01+00:00" />
+    <meta property="article:modified_time" content="2020-11-24T00:00:01+00:00" />
+    <meta property="article:tag" content="Hilt" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Migrating from Dagger to Hilt — Is it worth it?" />
+    <meta name="twitter:description" content="Consider whether or not you should migrate your Dagger app to Hilt Hilt got released in June 2020 as a way to standardize dependency injection (DI) in Android. For new projects, Hilt provides compile time correctness, runtime performance and scalability (read more about that here)! However, what are the benefits" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2020-11-24-migrating-to-Hilt.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Hilt" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/migrating-to-Hilt",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2020-11-24-migrating-to-Hilt.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/migrating-to-Hilt"
+    },
+    "description": "Consider whether or not you should migrate your Dagger app to Hilt Hilt got released in June 2020 as a way to standardize dependency injection (DI) in Android. For new projects, Hilt provides compile time correctness, runtime performance and scalability (read more about that here)! However, what are the benefits"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Migrating from Dagger to Hilt — Is it worth it?" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Migrating from Dagger to Hilt — Is it worth it? | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Migrating from Dagger to Hilt — Is it worth it?" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Consider whether or not you should migrate your Dagger app to Hilt" />
+<meta property="og:description" content="Consider whether or not you should migrate your Dagger app to Hilt" />
+<link rel="canonical" href="https://manuelvivo.dev/migrating-to-Hilt" />
+<meta property="og:url" content="https://manuelvivo.dev/migrating-to-Hilt" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-24T00:00:01+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Migrating from Dagger to Hilt — Is it worth it?" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2020-11-24T00:00:01+00:00","datePublished":"2020-11-24T00:00:01+00:00","description":"Consider whether or not you should migrate your Dagger app to Hilt","headline":"Migrating from Dagger to Hilt — Is it worth it?","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/migrating-to-Hilt"},"url":"https://manuelvivo.dev/migrating-to-Hilt"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-hilt post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="24 November 2020">24 November 2020</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/hilt/'>Hilt</a></span>
+                  
+              
+                <h1 class="post-full-title">Migrating from Dagger to Hilt — Is it worth it?</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2020-11-24-migrating-to-Hilt.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Consider whether or not you should migrate your Dagger app to Hilt</p>
+
+<p>Hilt got released in June 2020 as a way to standardize dependency injection (DI) in Android. For new projects, Hilt provides compile time correctness, runtime performance and scalability (read more about that <a href="https://manuelvivo.dev/di-with-hilt">here</a>)! However, what are the benefits for an application that already uses Dagger? <strong>Should you be migrating</strong> your current app to Hilt? The following are some reasons whether your team should invest migrating from Dagger to Hilt.</p>
+
+<h2 id="-androidx-extensions">✅ AndroidX extensions</h2>
+
+<p>If you already have Dagger working with ViewModels or WorkManager, you saw that wiring up your ViewModelFactory and WorkerFactory requires quite a lot of boilerplate code and Dagger knowledge. The most common implementation uses <a href="https://dagger.dev/dev-guide/multibindings.html">multibindings</a> which is one of the most complex features in Dagger that developers often struggle to understand. Hilt makes working with AndroidX a lot easier by removing that boilerplate code. What’s even better is that you don’t even need to inject the Factory in the Android framework class, you call it as if Hilt wasn’t there. With <code class="language-plaintext highlighter-rouge">@ViewModelInject</code>, Hilt generates the right <code class="language-plaintext highlighter-rouge">ViewModelProvider.Factory</code> for you that <code class="language-plaintext highlighter-rouge">@AndroidEntryPoint</code> activities and fragments can use directly.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">PlayViewModel</span> <span class="nd">@ViewModelInject</span> <span class="k">constructor</span><span class="p">(</span>
+  <span class="kd">val</span> <span class="py">db</span><span class="p">:</span> <span class="nc">MusicDatabase</span><span class="p">,</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span><span class="cm">/* ... */</span><span class="p">}</span>
+
+<span class="nd">@AndroidEntryPoint</span>
+<span class="kd">class</span> <span class="nc">PlayActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="kd">val</span> <span class="py">viewModel</span><span class="p">:</span> <span class="nc">PlayViewModel</span> <span class="k">by</span> <span class="nf">viewModels</span><span class="p">()</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
+    <span class="n">viewModel</span><span class="p">.</span><span class="nf">play</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="-testing-apis">✅ Testing APIs</h2>
+
+<p>DI is supposed to make testing easier but ironically, having Dagger working in tests requires <a href="https://developer.android.com/training/dependency-injection/dagger-android#dagger-testing">a lot of work</a>. The fact that you have to maintain both the prod and test Dagger graph at the same time makes it notably worse than <a href="https://developer.android.com/training/dependency-injection/hilt-testing">Hilt’s approach</a>.</p>
+
+<p>Hilt tests can explicitly modify the DI graph using the <a href="https://developer.android.com/training/dependency-injection/hilt-testing#replace-binding"><code class="language-plaintext highlighter-rouge">@UninstallModules</code></a> functionality. Apart from that, you get other perks like <a href="https://developer.android.com/training/dependency-injection/hilt-testing#binding-new"><code class="language-plaintext highlighter-rouge">@BindValue</code></a> that allows you to easily bind fields of your tests into the DI graph.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@UninstallModules</span><span class="p">(</span><span class="nc">AnalyticsModule</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@HiltAndroidTest</span>
+<span class="kd">class</span> <span class="nc">ExampleTest</span> <span class="p">{</span>
+  
+  <span class="err">@</span><span class="k">get</span><span class="p">:</span><span class="nc">Rule</span>
+  <span class="kd">var</span> <span class="py">hiltRule</span> <span class="p">=</span> <span class="nc">HiltAndroidRule</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+  
+  <span class="nd">@BindValue</span> <span class="nd">@JvmField</span>
+  <span class="kd">val</span> <span class="py">analyticsRepository</span> <span class="p">=</span> <span class="nc">FakeAnalyticsRepository</span><span class="p">()</span>
+  
+  <span class="nd">@Test</span> 
+  <span class="k">fun</span> <span class="nf">myTest</span><span class="p">()</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="-consistency">✅ Consistency</h2>
+
+<p>There are multiple ways to have the same functionality working in Dagger. The historical lack of guidance for Android apps (that we <a href="https://developer.android.com/training/dependency-injection/dagger-basics">tackled</a> last year) has caused multiple debates in the community and ultimately created inconsistencies in the way developers use and set up Dagger in their Android apps.</p>
+
+<p>You might argue that your current Dagger setup is really good and you perfectly know how everything works and how everything is getting injected. Therefore, migrating to Hilt is not worth it! That might be true in your case, but is it the same for the rest of the team (and potentially future colleagues)? Will you know how everything works when switching to a new project? Understanding the setup and usage of Dagger in an app can be challenging and time consuming.</p>
+
+<p>That time can be dramatically reduced by using Hilt into your app as the same setup is used by all Hilt applications. A new developer joining your team won’t be surprised about your Hilt setup because it’ll be pretty much the same as what they’re used to.</p>
+
+<h2 id="-custom-components">✅ Custom Components</h2>
+
+<p>Apart from the defined standard components, Hilt also gives you a way to create custom components and add them to the hierarchy which you can read more about <a href="https://manuelvivo.dev/hilt-adding-components">here</a>.</p>
+
+<p>Even though custom components reduce consistency, you still get a lot of benefits! The module auto-discoverability (i.e. the <a href="https://developer.android.com/training/dependency-injection/hilt-android#hilt-modules"><code class="language-plaintext highlighter-rouge">@InstallIn</code></a> annotation functionality) feature as well as the test replacement features also work with custom components.</p>
+
+<p>However, the difference between custom components and the Hilt built-in components is that you lose the ability to automatically inject those components into Android framework classes (i.e. what <code class="language-plaintext highlighter-rouge">@AndroidEntryPoint</code> does).</p>
+
+<h2 id="-dagger-and-hilt-interop">✅ Dagger and Hilt interop</h2>
+
+<p>Hilt and Dagger can co-exist together! You can benefit from Hilt in certain parts of your app while keeping the other most niche parts using Dagger if you allow Hilt to take over your <code class="language-plaintext highlighter-rouge">SingletonComponent</code>. This also means that the <a href="https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt#0">migration to Hilt can be done gradually</a>.</p>
+
+<h2 id="-component-dependencies">❌ Component dependencies</h2>
+
+<p>Hilt being opinionated means it makes decisions for you. Hilt uses subcomponents for the component relationships, ready why <a href="https://dagger.dev/hilt/monolithic">here</a>. If you’re a strong believer that your app is better off using component dependencies, Hilt is not the right tool for your app.</p>
+
+<hr />
+
+<p>Migrating from Dagger to Hilt is worth it in most projects. The benefits Hilt brings to your application outnumbers the efforts of having to update. But you are not on your own! We provided lots of resources to help you out in this journey:</p>
+
+<ul>
+  <li>
+    <p>Comprehensive migration <a href="https://dagger.dev/hilt/migration-guide">documentation</a>.</p>
+  </li>
+  <li>
+    <p>Migrating from Dagger to Hilt <a href="https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt#0">codelab</a>.</p>
+  </li>
+  <li>
+    <p>Migrating the Google I/O app to Hilt <a href="https://medium.com/androiddevelopers/migrating-the-google-i-o-app-to-hilt-f3edf03affe5">blog post</a> and <a href="https://github.com/google/iosched/commit/9c20fdd52d446e5fdb03369e50fb196c31ae16e3">commit</a>.</p>
+  </li>
+  <li>
+    <p>Hilt and Assisted Injection working together <a href="https://gist.github.com/manuelvicnt/437668cda3a891d347e134b1de29aee1">gist</a>.</p>
+  </li>
+</ul>
+
+<p>Leave a comment below if you have any questions or you’re missing any more information about this!</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/migrating-to-Hilt';
+                            this.page.identifier = '/migrating-to-Hilt';
+                            this.page.title = 'Migrating from Dagger to Hilt — Is it worth it?';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/hilt/">Hilt</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/hilt-stable">Hilt is stable! Easier dependency injection on Android</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/viewmodelcomponent">Using Hilt's ViewModelComponent</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/hilt/">
+                                
+                                    See all 7 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/simplifying-apis-coroutines">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-03-24-suspend-modifier.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/simplifying-apis-coroutines">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Simplifying APIs with coroutines and Flow</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/going-with-the-flow">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-11-24-going-with-the-flow.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/going-with-the-flow">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Going with the Flow</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Migrating from Dagger to Hilt — Is it worth it?</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Migrating+from+Dagger+to+Hilt+%E2%80%94+Is+it+worth+it%3F&amp;url=https://manuelvivo.dev/migrating-to-Hilt"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/migrating-to-Hilt"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

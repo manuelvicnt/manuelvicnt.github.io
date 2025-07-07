@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Dagger in Kotlin - Gotchas and Optimizations</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/dagger-kotlin-optimizations" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Dagger in Kotlin - Gotchas and Optimizations" />
+    <meta property="og:description" content="Dagger optimizations come with no cost! Add them and follow best practices Dagger is a popular Dependency Injection framework commonly used in Android. It provides fully static and compile-time dependencies addressing many of the development and performance issues that have reflection-based solutions. This month, a new tutorial was released to" />
+    <meta property="og:url" content="https://manuelvivo.dev/dagger-kotlin-optimizations" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2019-07-30-dagger-kotlin-optimizations.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2019-07-30T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2019-07-30T00:00:00+00:00" />
+    <meta property="article:tag" content="Dagger" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dagger in Kotlin - Gotchas and Optimizations" />
+    <meta name="twitter:description" content="Dagger optimizations come with no cost! Add them and follow best practices Dagger is a popular Dependency Injection framework commonly used in Android. It provides fully static and compile-time dependencies addressing many of the development and performance issues that have reflection-based solutions. This month, a new tutorial was released to" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2019-07-30-dagger-kotlin-optimizations.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Dagger" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/dagger-kotlin-optimizations",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2019-07-30-dagger-kotlin-optimizations.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/dagger-kotlin-optimizations"
+    },
+    "description": "Dagger optimizations come with no cost! Add them and follow best practices Dagger is a popular Dependency Injection framework commonly used in Android. It provides fully static and compile-time dependencies addressing many of the development and performance issues that have reflection-based solutions. This month, a new tutorial was released to"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Dagger in Kotlin - Gotchas and Optimizations" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Dagger in Kotlin - Gotchas and Optimizations | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Dagger in Kotlin - Gotchas and Optimizations" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Dagger optimizations come with no cost! Add them and follow best practices" />
+<meta property="og:description" content="Dagger optimizations come with no cost! Add them and follow best practices" />
+<link rel="canonical" href="https://manuelvivo.dev/dagger-kotlin-optimizations" />
+<meta property="og:url" content="https://manuelvivo.dev/dagger-kotlin-optimizations" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-07-30T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Dagger in Kotlin - Gotchas and Optimizations" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2019-07-30T00:00:00+00:00","datePublished":"2019-07-30T00:00:00+00:00","description":"Dagger optimizations come with no cost! Add them and follow best practices","headline":"Dagger in Kotlin - Gotchas and Optimizations","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/dagger-kotlin-optimizations"},"url":"https://manuelvivo.dev/dagger-kotlin-optimizations"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-dagger post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="30 July 2019">30 July 2019</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/dagger/'>Dagger</a></span>
+                  
+              
+                <h1 class="post-full-title">Dagger in Kotlin - Gotchas and Optimizations</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2019-07-30-dagger-kotlin-optimizations.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Dagger optimizations come with no cost! Add them and follow best practices</p>
+
+<p><a href="https://dagger.dev/">Dagger</a> is a popular Dependency Injection framework commonly used in Android. It provides fully static and compile-time dependencies addressing many of the development and performance issues that have reflection-based solutions.</p>
+
+<p>This month, a <a href="https://dagger.dev/tutorial/">new tutorial</a> was released to help you better understand how it works. This article focuses on using <strong>Dagger with Kotlin</strong>, including <strong>best practices</strong> to optimize your build time and <strong>gotchas</strong> you might encounter.</p>
+
+<p>Dagger is implemented using Java’s annotations model and annotations in Kotlin are not always directly parallel with how equivalent Java code would be written. This post will highlight areas where they differ and how you can use Dagger with Kotlin without having a headache.</p>
+
+<p>This post was inspired by some of the suggestions in this <a href="https://github.com/google/dagger/issues/900">Dagger issue</a> that goes through best practices and pain points of Dagger in Kotlin. Thanks to all of the contributors that commented there!</p>
+
+<h2 id="kapt-build-improvements">kapt build improvements</h2>
+
+<p>To improve your build time, Dagger added support for <strong>gradle’s incremental annotation processing</strong> in <a href="https://github.com/google/dagger/releases/tag/dagger-2.18">v2.18</a>! This is enabled by default in Dagger <a href="https://github.com/google/dagger/releases/tag/dagger-2.24">v2.24</a>. In case you’re using a lower version, you need to add a few lines of code (as shown below) if you want to benefit from it.</p>
+
+<p>Also, you can tell Dagger not to format the generated code. This option was added in Dagger <a href="https://github.com/google/dagger/releases/tag/dagger-2.18">v2.18</a> and it’s the default behavior (doesn’t generate formatted code) in <a href="https://github.com/google/dagger/releases/tag/dagger-2.23">v2.23</a>. If you’re using a lower version, disable code formatting to improve your build time (see code below).</p>
+
+<p>Include these compiler arguments in your <code class="language-plaintext highlighter-rouge">build.gradle</code> file to make Dagger more performant at build time:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">allprojects</span> <span class="o">{</span>
+    <span class="n">afterEvaluate</span> <span class="o">{</span>
+        <span class="n">extensions</span><span class="o">.</span><span class="na">findByName</span><span class="o">(</span><span class="s1">'kapt'</span><span class="o">)?.</span><span class="na">arguments</span> <span class="o">{</span>
+            <span class="n">arg</span><span class="o">(</span><span class="s2">"dagger.formatGeneratedSource"</span><span class="o">,</span> <span class="s2">"disabled"</span><span class="o">)</span>
+            <span class="n">arg</span><span class="o">(</span><span class="s2">"dagger.gradle.incremental"</span><span class="o">,</span> <span class="s2">"enabled"</span><span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Alternatively, if you use Kotlin DSL script files, include them like this in the <code class="language-plaintext highlighter-rouge">build.gradle.kts</code> file of the modules that use Dagger:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">kapt</span> <span class="o">{</span>
+    <span class="n">arguments</span> <span class="o">{</span>
+        <span class="n">arg</span><span class="o">(</span><span class="s2">"dagger.formatGeneratedSource"</span><span class="o">,</span> <span class="s2">"disabled"</span><span class="o">)</span>
+        <span class="n">arg</span><span class="o">(</span><span class="s2">"dagger.gradle.incremental"</span><span class="o">,</span> <span class="s2">"enabled"</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="qualifiers-for-field-attributes">Qualifiers for field attributes</h2>
+
+<p>When an annotation is placed on a property in Kotlin, it’s not clear whether Java will see that annotation on the <em>field</em> of the property or the method for that property. Setting the <code class="language-plaintext highlighter-rouge">field:</code> prefix on the annotation ensures that the qualifier ends up in the right place (<a href="https://kotlinlang.org/docs/reference/annotations.html#annotation-use-site-targets">see documentation</a> for more details).</p>
+
+<p>✅ The way to apply qualifiers on an injected field is:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Inject</span> <span class="err">@</span><span class="n">field</span><span class="p">:</span><span class="nc">MinimumBalance</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">minimumBalance</span><span class="p">:</span> <span class="nc">BigDecimal</span>
+</code></pre></div></div>
+
+<p>❌ As opposed to:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Inject</span> <span class="nd">@MinimumBalance</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">minimumBalance</span><span class="p">:</span> <span class="nc">BigDecimal</span> 
+<span class="c1">// @MinimumBalance is ignored!</span>
+</code></pre></div></div>
+
+<p>Forgetting to add <code class="language-plaintext highlighter-rouge">field:</code> could lead to injecting the wrong object if there’s an unqualified instance of that type available in the Dagger graph.</p>
+
+<p><strong>Update 10/28/19</strong>: This was fixed in Dagger v2.25. If you use this version, you can just type what wasn’t working before:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Inject</span> <span class="nd">@MinimumBalance</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">minimumBalance</span><span class="p">:</span> <span class="nc">BigDecimal</span> 
+<span class="c1">// FIXED: @MinimumBalance is NOT ignored!</span>
+</code></pre></div></div>
+
+<h2 id="static-provides-functions-optimization">Static @Provides functions optimization</h2>
+
+<p>Dagger’s generated code will be more performant if <code class="language-plaintext highlighter-rouge">@Provides</code> methods are <code class="language-plaintext highlighter-rouge">static</code>. To achieve this in Kotlin, use a Kotlin <code class="language-plaintext highlighter-rouge">object</code> instead of a <code class="language-plaintext highlighter-rouge">class</code> and annotate your methods with <code class="language-plaintext highlighter-rouge">@JvmStatic</code>. This is a <strong><em>best practice</em></strong> that you should follow as much as possible.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Module</span>
+<span class="kd">object</span> <span class="nc">NetworkModule</span> <span class="p">{</span>
+
+    <span class="nd">@JvmStatic</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">provideOkHttpClient</span><span class="p">():</span> <span class="nc">OkHttpClient</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nc">OkHttpClient</span><span class="p">.</span><span class="nc">Builder</span><span class="p">().</span><span class="nf">build</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In case you need an abstract method, you’ll need to add the <code class="language-plaintext highlighter-rouge">@JvmStatic</code> method to a companion object and annotate it with <code class="language-plaintext highlighter-rouge">@Module</code> too.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Module</span>
+<span class="k">abstract</span> <span class="kd">class</span> <span class="nc">NetworkModule</span> <span class="p">{</span>
+
+    <span class="nd">@Binds</span> <span class="k">abstract</span> <span class="k">fun</span> <span class="nf">provideService</span><span class="p">(</span><span class="n">retrofitService</span><span class="p">:</span> <span class="nc">RetrofitService</span><span class="p">):</span> <span class="nc">Service</span>
+
+    <span class="nd">@Module</span>
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+
+        <span class="nd">@JvmStatic</span>
+        <span class="nd">@Provides</span>
+        <span class="k">fun</span> <span class="nf">provideOkHttpClient</span><span class="p">():</span> <span class="nc">OkHttpClient</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">return</span> <span class="nc">OkHttpClient</span><span class="p">.</span><span class="nc">Builder</span><span class="p">().</span><span class="nf">build</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Alternatively, you can extract the object module out and include it in the abstract one:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Module</span><span class="p">(</span><span class="n">includes</span> <span class="p">=</span> <span class="p">[</span><span class="nc">OkHttpClientModule</span><span class="o">::</span><span class="n">java</span><span class="p">])</span>
+<span class="k">abstract</span> <span class="kd">class</span> <span class="nc">NetworkModule</span> <span class="p">{</span>
+    
+    <span class="nd">@Binds</span> <span class="k">abstract</span> <span class="k">fun</span> <span class="nf">provideService</span><span class="p">(</span><span class="n">retrofitService</span><span class="p">:</span> <span class="nc">RetrofitService</span><span class="p">):</span> <span class="nc">Service</span>
+<span class="p">}</span>
+
+<span class="nd">@Module</span>
+<span class="kd">object</span> <span class="nc">OkHttpClientModule</span> <span class="p">{</span>
+
+    <span class="nd">@JvmStatic</span>
+    <span class="nd">@Provides</span>
+    <span class="k">fun</span> <span class="nf">provideOkHttpClient</span><span class="p">():</span> <span class="nc">OkHttpClient</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nc">OkHttpClient</span><span class="p">.</span><span class="nc">Builder</span><span class="p">().</span><span class="nf">build</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Update 10/28/19</strong>: With Dagger v2.25.2, you don’t need to tag the <code class="language-plaintext highlighter-rouge">@Provides</code> function with <code class="language-plaintext highlighter-rouge">@JvmStatic</code>. Dagger will understand it properly.</p>
+
+<h2 id="injecting-generics">Injecting Generics</h2>
+
+<p>Kotlin compiles generics with wildcards to make Kotlin APIs work with Java. These are generated when a type appears as a parameter (<a href="https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#variant-generics">more info here</a>) or as fields. For example, a Kotlin <code class="language-plaintext highlighter-rouge">List&lt;Foo&gt;</code> parameter shows up as <code class="language-plaintext highlighter-rouge">List&lt;? super Foo&gt;</code> in Java.</p>
+
+<p>This causes problems with Dagger because it expects an exact (aka <a href="https://en.wikipedia.org/wiki/Class_invariant">invariant</a>) type match. Using <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-suppress-wildcards/index.html"><code class="language-plaintext highlighter-rouge">@JvmSuppressWildcards</code></a> will ensure that Dagger sees the type without wildcards.</p>
+
+<p>This is a common issue when you inject collections using <a href="https://dagger.dev/multibindings.html">Dagger’s multibinding feature</a>, for example:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyVMFactory</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">vmMap</span><span class="p">:</span> <span class="nc">Map</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">,</span> <span class="err">@</span><span class="nc">JvmSuppressWildcards</span> <span class="nc">Provider</span><span class="p">&lt;</span><span class="nc">ViewModel</span><span class="p">&gt;&gt;</span>
+<span class="p">)</span> <span class="p">{</span> 
+    <span class="cm">/* ... */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="inline-method-bodies">Inline method bodies</h2>
+
+<p>Dagger determines the types that are configured by <code class="language-plaintext highlighter-rouge">@Provides</code> methods by inspecting the return type. Specifying the return type in Kotlin functions is optional and even the IDE sometimes encourages you to refactor your code to have inline method bodies that hide the return type declaration.</p>
+
+<p>This can lead to bugs if the inferred type is different from the one you meant. Let’s see some examples:</p>
+
+<p>If you want to add a specific type to the graph, inlining works as expected. See the different ways to do the same in Kotlin:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Provides</span> 
+<span class="k">fun</span> <span class="nf">provideNetworkPrinter</span><span class="p">()</span> <span class="p">=</span> <span class="nc">NetworkPrinter</span><span class="p">()</span>
+
+<span class="nd">@Provides</span> 
+<span class="k">fun</span> <span class="nf">provideNetworkPrinter</span><span class="p">():</span> <span class="nc">NetworkPrinter</span> <span class="p">=</span> <span class="nc">NetworkPrinter</span><span class="p">()</span>
+
+<span class="nd">@Provides</span> 
+<span class="k">fun</span> <span class="nf">provideNetworkPrinter</span><span class="p">():</span> <span class="nc">NetworkPrinter</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nc">NetworkPrinter</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you want to provide an implementation of an interface, then you must explicitly specify the return type. Not doing it can lead to problems and bugs:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Provides</span>
+<span class="c1">// configures a `Printer`</span>
+<span class="k">fun</span> <span class="nf">providePrinter</span><span class="p">():</span> <span class="nc">Printer</span> <span class="p">=</span> <span class="nc">NetworkPrinter</span><span class="p">()</span> 
+
+<span class="nd">@Provides</span>
+<span class="c1">// configures a `NetworkPrinter`, not a plain `Printer`!</span>
+<span class="k">fun</span> <span class="nf">providePrinter</span><span class="p">()</span> <span class="p">=</span> <span class="nc">NetworkPrinter</span><span class="p">()</span> 
+</code></pre></div></div>
+
+<hr />
+
+<p>Dagger mostly works with Kotlin out of the box. However, you have to watch out for a few things just to make sure you’re doing what you really mean to do: <code class="language-plaintext highlighter-rouge">@field:</code> for qualifiers on field attributes, inline method bodies, and <code class="language-plaintext highlighter-rouge">@JvmSuppressWildcards</code> when injecting collections.</p>
+
+<p>Dagger optimizations come with no cost, add them and follow best practices to improve your build time: enabling incremental annotation processing, disabling formatting and using static <code class="language-plaintext highlighter-rouge">@Provides</code> methods in your Dagger modules.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/dagger-kotlin-optimizations';
+                            this.page.identifier = '/dagger-kotlin-optimizations';
+                            this.page.title = 'Dagger in Kotlin - Gotchas and Optimizations';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/dagger/">Dagger</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/dagger-hilt-navigation-android-studio">Dagger and Hilt navigation support in Android Studio</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/dagger-cheat-sheets">Dagger code generation cheat sheets</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/di-guidance-android">Dependency Injection guidance on Android — ADS 2019</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/dagger/">
+                                
+                                    See all 4 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/testing-two-livedata">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-10-15-testing-two-livedata.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/testing-two-livedata">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Testing two consecutive LiveData emissions in Coroutines</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/suspend-modifier">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-03-24-suspend-modifier.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/suspend-modifier">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">The suspend modifier — under the hood</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Dagger in Kotlin - Gotchas and Optimizations</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Dagger+in+Kotlin+-+Gotchas+and+Optimizations&amp;url=https://manuelvivo.dev/dagger-kotlin-optimizations"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/dagger-kotlin-optimizations"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

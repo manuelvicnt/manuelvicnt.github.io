@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Bridging the gap between coroutines, JVM threads, and concurrency problems</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/coroutines-and-threads" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bridging the gap between coroutines, JVM threads, and concurrency problems" />
+    <meta property="og:description" content="Learn more about how coroutines are executed in the JVM and concurrency problems. “Coroutines are light-weight threads”, how many times have you read that? Does that mean anything to you? Probably not. Keep reading to learn more about how coroutines are actually executed in the JVM, how they relate to" />
+    <meta property="og:url" content="https://manuelvivo.dev/coroutines-and-threads" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2021-02-03-coroutines-and-threads.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2021-02-03T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2021-02-03T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bridging the gap between coroutines, JVM threads, and concurrency problems" />
+    <meta name="twitter:description" content="Learn more about how coroutines are executed in the JVM and concurrency problems. “Coroutines are light-weight threads”, how many times have you read that? Does that mean anything to you? Probably not. Keep reading to learn more about how coroutines are actually executed in the JVM, how they relate to" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2021-02-03-coroutines-and-threads.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/coroutines-and-threads",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2021-02-03-coroutines-and-threads.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/coroutines-and-threads"
+    },
+    "description": "Learn more about how coroutines are executed in the JVM and concurrency problems. “Coroutines are light-weight threads”, how many times have you read that? Does that mean anything to you? Probably not. Keep reading to learn more about how coroutines are actually executed in the JVM, how they relate to"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Bridging the gap between coroutines, JVM threads, and concurrency problems" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Bridging the gap between coroutines, JVM threads, and concurrency problems | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Bridging the gap between coroutines, JVM threads, and concurrency problems" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn more about how coroutines are executed in the JVM and concurrency problems." />
+<meta property="og:description" content="Learn more about how coroutines are executed in the JVM and concurrency problems." />
+<link rel="canonical" href="https://manuelvivo.dev/coroutines-and-threads" />
+<meta property="og:url" content="https://manuelvivo.dev/coroutines-and-threads" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-03T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Bridging the gap between coroutines, JVM threads, and concurrency problems" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2021-02-03T00:00:00+00:00","datePublished":"2021-02-03T00:00:00+00:00","description":"Learn more about how coroutines are executed in the JVM and concurrency problems.","headline":"Bridging the gap between coroutines, JVM threads, and concurrency problems","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/coroutines-and-threads"},"url":"https://manuelvivo.dev/coroutines-and-threads"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime=" 3 February 2021"> 3 February 2021</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">Bridging the gap between coroutines, JVM threads, and concurrency problems</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2021-02-03-coroutines-and-threads.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Learn more about how coroutines are executed in the JVM and concurrency problems.</p>
+
+<p><em>“Coroutines are light-weight threads”</em>, how many times have you read that? Does that mean anything to you? Probably not. Keep reading to learn more about <strong>how coroutines are actually executed in the JVM</strong>, how they relate to threads, and the <strong>concurrency issues</strong> that are inevitable when using the JVM threading model.</p>
+
+<h2 id="coroutines-and-jvmthreads">Coroutines and JVM threads</h2>
+
+<p>Coroutines aim to simplify code that executes asynchronously. When talking about coroutines in the JVM, <strong>the block of code passed as a lambda to a coroutine builder ultimately gets executed on a specific JVM thread</strong>. For example, this simple <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci</a> calculation:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Coroutine that calculates the 10th Fibonacci number in a background thread</span>
+<span class="n">someScope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">fibonacci10</span> <span class="p">=</span> <span class="nf">synchronousFibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nf">saveFibonacciInMemory</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">fibonacci10</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">synchronousFibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nc">Long</span><span class="p">):</span> <span class="nc">Long</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The above <code class="language-plaintext highlighter-rouge">async</code> coroutine’s block of code, that performs a synchronous and blocking fibonacci calculation and saves it to memory, <strong>gets dispatched and scheduled for execution in a thread pool managed by the coroutines library</strong>, the one configured for <code class="language-plaintext highlighter-rouge">Dispatchers.Default</code>. The code will be executed in a thread of the thread pool at some time in the future depending on the thread pool’s policies.</p>
+
+<p>Note that the code above executes in one thread because it doesn’t suspend. It’s possible for one coroutine to be executed in different threads if the execution is moved to a different dispatcher, or if the block contains code that may yield/suspend in a dispatcher that uses a thread pool.</p>
+
+<p>Similarly, without coroutines, you could execute the logic above using threads manually as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a thread pool of 4 threads</span>
+<span class="kd">val</span> <span class="py">executorService</span> <span class="p">=</span> <span class="nc">Executors</span><span class="p">.</span><span class="nf">newFixedThreadPool</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1">// Schedule and execute this code in one of those threads</span>
+<span class="n">executorService</span><span class="p">.</span><span class="nf">execute</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">fibonacci10</span> <span class="p">=</span> <span class="nf">synchronousFibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nf">saveFibonacciInMemory</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">fibonacci10</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>While doing things on your own managing thread pools manually is possible, <strong>coroutines is the recommended solution for asynchronous programming on Android</strong> due to the built-in cancellation support, easier error handling, <em>structured concurrency</em> which reduces the likelihood of memory leaks, and its integration with Jetpack libraries.</p>
+
+<h3 id="under-thehood">Under the hood</h3>
+
+<p>What happens from the moment you create a coroutine until it gets executed on a thread? When you create a coroutine using the standard coroutine builders, you can specify on which <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/CoroutineDispatcher.kt"><code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code></a> to run it on; if not, <code class="language-plaintext highlighter-rouge">Dispatchers.Default</code> is used.</p>
+
+<p><strong>The CoroutineDispatcher is in charge of dispatching the execution of a coroutine to a JVM thread</strong>. Under the hood, when a <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> is used, it intercepts the coroutine using this <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/CoroutineDispatcher.kt#L99"><code class="language-plaintext highlighter-rouge">interceptContinuation</code></a> method that <strong>wraps the <code class="language-plaintext highlighter-rouge">Continuation</code> (i.e. the coroutine) in a <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/internal/DispatchedContinuation.kt"><code class="language-plaintext highlighter-rouge">DispatchedContinuation</code></a></strong>. This is possible because <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> implements the <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/stdlib-stubs/src/ContinuationInterceptor.kt"><code class="language-plaintext highlighter-rouge">ContinuationInterceptor</code></a> interface.</p>
+
+<blockquote>
+  <p>If you read my article about <a href="https://manuelvivo.dev/suspend-modifier">how coroutines work under the hood</a>, you already know that the compiler creates a state machine, and the information of the state machine (e.g. what needs to be executed next) is kept in a <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-continuation.html"><code class="language-plaintext highlighter-rouge">Continuation</code></a> object.</p>
+</blockquote>
+
+<p>In case a Continuation needs to be executed in a different Dispatcher, the <code class="language-plaintext highlighter-rouge">DispatchedContinuation</code>’s <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/internal/DispatchedContinuation.kt#L178"><code class="language-plaintext highlighter-rouge">resumeWith</code></a> method is in charge of dispatching the coroutine to the appropriate one!</p>
+
+<p>Furthermore, a <code class="language-plaintext highlighter-rouge">DispatchedContinuation</code> extends from the <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/internal/DispatchedTask.kt"><code class="language-plaintext highlighter-rouge">DispatchedTask</code></a> abstract class which, in the JVM implementation, is a type that implements the <code class="language-plaintext highlighter-rouge">Runnable</code> interface. Therefore, a <code class="language-plaintext highlighter-rouge">DispatchedContinuation</code> can run on a JVM thread! How cool is that? When a <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> is specified, the coroutine is transformed to a <code class="language-plaintext highlighter-rouge">DispatchedTask</code> that is dispatched to be executed on a JVM thread as a <code class="language-plaintext highlighter-rouge">Runnable</code>!</p>
+
+<p>And now… How does the <code class="language-plaintext highlighter-rouge">dispatch</code> method get called when you create a coroutine? When you create a coroutine using the standard coroutine builders, you can specify how the coroutine starts with the <code class="language-plaintext highlighter-rouge">start</code> parameter of type <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-start/index.html"><code class="language-plaintext highlighter-rouge">CoroutineStart</code></a>. For example, you can configure it to start only when it’s needed, with <code class="language-plaintext highlighter-rouge">CoroutineStart.LAZY</code>. By default, <code class="language-plaintext highlighter-rouge">CoroutineStart.DEFAULT</code> is used which schedules the coroutine for execution according to its <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code>. Bingo!</p>
+
+<p align="center">
+  <img width="1000" src="assets/images/2021-02-03-coroutines-and-threads_1.png" />
+  <small>Illustration of how the block of code in a coroutine ends up executing in a Thread</small>
+</p>
+
+<h3 id="dispatchers-and-threadpools">Dispatchers and thread pools</h3>
+
+<p>You can execute coroutines in any of your app thread pools by converting them to a <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> using the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/java.util.concurrent.-executor/as-coroutine-dispatcher.html"><code class="language-plaintext highlighter-rouge">Executor.asCoroutineDispatcher()</code></a> extension function. Alternatively, you can use the default <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/src/Dispatchers.kt"><code class="language-plaintext highlighter-rouge">Dispatchers</code></a> that come in the coroutines library.</p>
+
+<p>You can see how <code class="language-plaintext highlighter-rouge">Dispatchers.Default</code> is initialized in this <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/src/CoroutineContext.kt#L22"><code class="language-plaintext highlighter-rouge">createDefaultDispatcher</code></a> method. By default, the <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/src/scheduling/Dispatcher.kt"><code class="language-plaintext highlighter-rouge">DefaultScheduler</code></a> is used. If you check out the implementation of <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/src/Dispatchers.kt#L118"><code class="language-plaintext highlighter-rouge">Dispatchers.IO</code></a>, it also uses the <code class="language-plaintext highlighter-rouge">DefaultScheduler</code> and allows at least 64 threads to be created on demand. <code class="language-plaintext highlighter-rouge">Dispatchers.Default</code> and <code class="language-plaintext highlighter-rouge">Dispatchers.IO</code> are implicitly linked together as they use the same thread pool which brings me to the next topic. What’s the runtime overhead of calling <code class="language-plaintext highlighter-rouge">withContext</code> with different Dispatchers?</p>
+
+<h3 id="threads-and-withcontext-performance">Threads and withContext performance</h3>
+
+<p>In the JVM, if there are more threads created than CPU cores available, switching between threads carries some runtime overhead. <a href="https://en.wikipedia.org/wiki/Context_switch"><em>Context switches</em></a> aren’t cheap! The OS needs to save and restore the execution context, and the CPU needs to spend time scheduling threads instead of running actual app work. Apart from that, context switches may happen if a thread is running code that blocks. If that’s the case for threads, is there any performance penalty of using <code class="language-plaintext highlighter-rouge">withContext</code> with different Dispatchers?</p>
+
+<p>Fortunately, as you could imagine, thread pools manage all of this complexity for us, trying to optimize work to be executed as much as possible (that’s why executing work on a thread pool is better than doing so in threads manually). Coroutines also benefit from this as they’re scheduled in thread pools! On top of that, coroutines don’t block threads, they <em>suspend</em> their work instead! Even more efficient!</p>
+
+<p>The <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/src/scheduling/CoroutineScheduler.kt"><strong><code class="language-plaintext highlighter-rouge">CoroutineScheduler</code></strong></a>, which is the thread pool used in the JVM implementation by default, <strong>distributes dispatched coroutines to worker threads in the most efficient manner</strong>. As <code class="language-plaintext highlighter-rouge">Dispatchers.Default</code> and <code class="language-plaintext highlighter-rouge">Dispatchers.IO</code> use the same thread pool, switching between them is optimized to avoid thread switches whenever possible. The coroutines library can optimize those calls, stay on the same dispatcher and thread, and follow a fast-path.</p>
+
+<p>As <code class="language-plaintext highlighter-rouge">Dispatchers.Main</code> is usually a different thread in UI apps, switching between <code class="language-plaintext highlighter-rouge">Dispatchers.Default</code> and <code class="language-plaintext highlighter-rouge">Dispatchers.Main</code> in coroutines doesn’t come with huge performance costs as the coroutine just suspends (i.e. stops executing in one thread), and gets scheduled to be executed in a different thread.</p>
+
+<h2 id="concurrency-problems-in-coroutines">Concurrency problems in coroutines</h2>
+
+<p>Coroutines DO make asynchronous programming easier due to how simple scheduling work on different threads is. On the other hand, this simplicity can be a double-edged sword: <strong>as coroutines run on the JVM threading model, they cannot simply escape from the concurrency problems that the threading model entails</strong>. Thus, you have to pay attention to avoid this.</p>
+
+<p>Over the years, good practices like immutability have mitigated some of the thread-related issues that you can face. However, there are some cases that cannot be avoided with immutability. The mother of all concurrency problems is state management! In particular, accessing <strong><em>mutable state</em></strong> in a multi-threaded environment.</p>
+
+<p>The ordering of operations in a multi-threaded app is unpredictable. Apart from compiler optimizations that can reorder operations, threads are not guaranteed to be run in a particular order, and context switches can happen at any time. If the necessary precautions are not taken when accessing mutable state, threads could see stale data, lose updates, or suffer from <a href="https://en.wikipedia.org/wiki/Race_condition"><em>race conditions</em></a> among other things.</p>
+
+<blockquote>
+  <p>Note that the discussion of mutable state and access order isn’t specific to the JVM. They affect coroutines on other platforms, too.</p>
+</blockquote>
+
+<p>An app using coroutines is a multi-threaded app by nature. <strong>Classes that use coroutines and contain mutable state must take precautions to be predictable</strong>, i.e. ensure the code executed in coroutines see the most up-to-date version of the data. In this way, different threads won’t interfere with one another. Concurrency issues can lead to very subtle bugs very hard to debug in your apps, even <a href="https://en.wikipedia.org/wiki/Heisenbug"><em>heisenbugs</em></a>!</p>
+
+<p>These types of classes are not uncommon. Maybe the class needs to keep the information of the logged-in user in memory, or cache some values while the app is alive. Concurrency issues can still happen in coroutines if you’re not careful! A suspend function using <code class="language-plaintext highlighter-rouge">withContext(defaultDispatcher)</code> is not guaranteed to be executed always in the same thread!</p>
+
+<p>Let’s say we have a class that caches transactions made by users. If the cache is not accessed properly, like for example below, concurrency bugs can happen:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">TransactionsRepository</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">defaultDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span>
+<span class="p">)</span> <span class="p">{</span>
+
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">transactionsCache</span> <span class="p">=</span> <span class="n">mutableMapOf</span><span class="p">&lt;</span><span class="nc">User</span><span class="p">,</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Transaction</span><span class="p">&gt;()</span>
+
+  <span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">addTransaction</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="nc">User</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="nc">Transaction</span><span class="p">)</span> <span class="p">=</span>
+    <span class="c1">// CAREFUL! Access to the cache is not protected.</span>
+    <span class="c1">// Concurrency bugs can happen: threads can see stale data</span>
+    <span class="c1">// and race conditions may occur.</span>
+    <span class="nf">withContext</span><span class="p">(</span><span class="n">defaultDispatcher</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">transactionsCache</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">user</span><span class="p">))</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">oldList</span> <span class="p">=</span> <span class="n">transactionsCache</span><span class="p">[</span><span class="n">user</span><span class="p">]</span>
+        <span class="kd">val</span> <span class="py">newList</span> <span class="p">=</span> <span class="n">oldList</span><span class="o">!!</span><span class="p">.</span><span class="nf">toMutableList</span><span class="p">()</span>
+        <span class="n">newList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="n">transactionsCache</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">newList</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">transactionsCache</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="nf">listOf</span><span class="p">(</span><span class="n">transaction</span><span class="p">))</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Even if we’re talking about Kotlin, the book Java concurrency in practice by Brian Goetz is a great resource to learn more about this topic and the intricacies of concurrency in JVM systems. Alternatively, Jetbrains has documentation about <a href="https://kotlinlang.org/docs/reference/coroutines/shared-mutable-state-and-concurrency.html">shared mutable state and concurrency</a> too.</p>
+</blockquote>
+
+<h3 id="protecting-mutablestate">Protecting mutable state</h3>
+
+<p>How to protect mutable state, or find a good <a href="https://en.wikipedia.org/wiki/Synchronization_(computer_science)"><em>synchronization</em></a> policy, totally depends on the nature of the data and the operations involved. This section is about bringing awareness of the concurrency issues you can face instead of listing all the different ways and APIs to protect mutable state. Nonetheless, here’s some tips and APIs you can start with to make your mutable variables thread-safe.</p>
+
+<h4 id="encapsulation">Encapsulation</h4>
+
+<p>Mutable state should be encapsulated and <em>owned</em> by a class. This class centralizes access to the state, and will protect reads and writes with the synchronization policy that better fits the use case.</p>
+
+<h4 id="thread-confinement">Thread confinement</h4>
+
+<p>A solution can be to restrict read/write access to one thread. Access to the mutable state can be done in a producer/consumer way using a queue. JetBrains has <a href="https://kotlinlang.org/docs/reference/coroutines/shared-mutable-state-and-concurrency.html#thread-confinement-fine-grained">good documentation</a> about this.</p>
+
+<h4 id="dont-reinvent-thewheel">Don’t reinvent the wheel</h4>
+
+<p>In the JVM, there are thread-safe data structures you can use to protect your mutable variables. For example, for the case of a simple counter, you can use <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/AtomicInteger.html"><code class="language-plaintext highlighter-rouge">AtomicInteger</code></a>. Or, to protect the map of the code snippet above, you could use a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html"><code class="language-plaintext highlighter-rouge">ConcurrentHashMap</code></a>. <code class="language-plaintext highlighter-rouge">ConcurrentHashMap</code> is a thread-safe, synchronized collection that optimizes the throughput of reads and writes to the map.</p>
+
+<p>Note that thread-safe data structures don’t guard against caller ordering problems, they just make sure memory access is atomic. They help avoid using locks when the logic is not too complicated. For example, they can’t be used in the <code class="language-plaintext highlighter-rouge">transactionCache</code> example shown above because the order of operations and the logic between them need thread and access protection.</p>
+
+<p>Also, data in these thread-safe data structures needs to be immutable or protected to prevent race conditions when modifying objects already stored in them.</p>
+
+<h4 id="custom-solutions">Custom solutions</h4>
+
+<p>If you have compound actions that need to be synchronized, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-volatile/"><code class="language-plaintext highlighter-rouge">@Volatile</code></a> variables or thread-safe data structures won’t help! And it’s possible that the built-in <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-synchronized/"><code class="language-plaintext highlighter-rouge">@Synchronized</code></a> annotation is not granular enough to make your use case efficient.</p>
+
+<p>In those cases, you might need to create your own synchronization mechanism using concurrent utilities such as <a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html">latches</a>, <a href="https://en.wikipedia.org/wiki/Semaphore_(programming)">semaphores</a>, or <a href="https://en.wikipedia.org/wiki/Barrier_(computer_science)">barriers</a>. Other times, you can unconditionally protect multi-threaded access to code using <a href="https://en.wikipedia.org/wiki/Lock_(computer_science)">locks</a> or mutexes.</p>
+
+<p>A <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.sync/-mutex/index.html"><code class="language-plaintext highlighter-rouge">Mutex</code></a> in Kotlin has the suspend functions <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.sync/-mutex/lock.html"><code class="language-plaintext highlighter-rouge">lock</code></a> and <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.sync/-mutex/unlock.html"><code class="language-plaintext highlighter-rouge">unlock</code></a> to manually protect parts of your coroutines code. Conveniently, the extension function <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.sync/with-lock.html"><code class="language-plaintext highlighter-rouge">Mutex.withLock</code></a> makes it easier to use:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">TransactionsRepository</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">defaultDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span> <span class="p">=</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span>
+<span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// Mutex protecting the cache mutable state</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">cacheMutex</span> <span class="p">=</span> <span class="nc">Mutex</span><span class="p">()</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">transactionsCache</span> <span class="p">=</span> <span class="n">mutableMapOf</span><span class="p">&lt;</span><span class="nc">User</span><span class="p">,</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Transaction</span><span class="p">&gt;()</span>
+
+  <span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">addTransaction</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="nc">User</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="nc">Transaction</span><span class="p">)</span> <span class="p">=</span>
+    <span class="nf">withContext</span><span class="p">(</span><span class="n">defaultDispatcher</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Mutex makes the read&amp;write cache operation thread safe</span>
+      <span class="n">cacheMutex</span><span class="p">.</span><span class="nf">withLock</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">transactionsCache</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">user</span><span class="p">))</span> <span class="p">{</span>
+          <span class="kd">val</span> <span class="py">oldList</span> <span class="p">=</span> <span class="n">transactionsCache</span><span class="p">[</span><span class="n">user</span><span class="p">]</span>
+          <span class="kd">val</span> <span class="py">newList</span> <span class="p">=</span> <span class="n">oldList</span><span class="o">!!</span><span class="p">.</span><span class="nf">toMutableList</span><span class="p">()</span>
+          <span class="n">newList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+          <span class="n">transactionsCache</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">newList</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="n">transactionsCache</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="nf">listOf</span><span class="p">(</span><span class="n">transaction</span><span class="p">))</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As a coroutine using <code class="language-plaintext highlighter-rouge">Mutex</code> suspends execution until it can proceed, it’s much more efficient than a JVM lock that blocks the thread. Be careful about using JVM synchronization classes in coroutines as that can block the thread in which the coroutine is being executed and create <a href="https://en.wikipedia.org/wiki/Liveness">liveness</a> issues.</p>
+
+<hr />
+
+<p>The block of code passed to a coroutine builder ends up executing on one or multiple JVM threads. And as such, coroutines run on the JVM threading model with all its constraints. With coroutines, it’s still possible to write vulnerable wrong multi-threaded code. So, watch out for access to shared mutable state in your code!</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/coroutines-and-threads';
+                            this.page.identifier = '/coroutines-and-threads';
+                            this.page.title = 'Bridging the gap between coroutines, JVM threads, and concurrency problems';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/musas-interview">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-02-28-musas-interview.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/musas-interview">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Spanish</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Cómo la música ha influenciado mi carrera</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/viewmodelcomponent">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-01-21-viewmodelcomponent.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/viewmodelcomponent">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Hilt</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Using Hilt's ViewModelComponent</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Bridging the gap between coroutines, JVM threads, and concurrency problems</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Bridging+the+gap+between+coroutines%2C+JVM+threads%2C+and+concurrency+problems&amp;url=https://manuelvivo.dev/coroutines-and-threads"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/coroutines-and-threads"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

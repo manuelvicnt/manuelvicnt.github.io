@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/lessons-learnt-flow-ads-2019" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app" />
+    <meta property="og:description" content="Best practices we found when using Flow in the ADS 2019 app This article is about the best practices we found when using Flow in the Android Dev Summit (ADS) 2019 app; which has just been open sourced. Keep reading to find out how each layer of our app handles" />
+    <meta property="og:url" content="https://manuelvivo.dev/lessons-learnt-flow-ads-2019" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2019-11-26-lessons-learnt-flow-ads-2019.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2019-11-26T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2019-11-26T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app" />
+    <meta name="twitter:description" content="Best practices we found when using Flow in the ADS 2019 app This article is about the best practices we found when using Flow in the Android Dev Summit (ADS) 2019 app; which has just been open sourced. Keep reading to find out how each layer of our app handles" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2019-11-26-lessons-learnt-flow-ads-2019.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/lessons-learnt-flow-ads-2019",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2019-11-26-lessons-learnt-flow-ads-2019.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/lessons-learnt-flow-ads-2019"
+    },
+    "description": "Best practices we found when using Flow in the ADS 2019 app This article is about the best practices we found when using Flow in the Android Dev Summit (ADS) 2019 app; which has just been open sourced. Keep reading to find out how each layer of our app handles"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Best practices we found when using Flow in the ADS 2019 app" />
+<meta property="og:description" content="Best practices we found when using Flow in the ADS 2019 app" />
+<link rel="canonical" href="https://manuelvivo.dev/lessons-learnt-flow-ads-2019" />
+<meta property="og:url" content="https://manuelvivo.dev/lessons-learnt-flow-ads-2019" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-26T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2019-11-26T00:00:00+00:00","datePublished":"2019-11-26T00:00:00+00:00","description":"Best practices we found when using Flow in the ADS 2019 app","headline":"Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/lessons-learnt-flow-ads-2019"},"url":"https://manuelvivo.dev/lessons-learnt-flow-ads-2019"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="26 November 2019">26 November 2019</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2019-11-26-lessons-learnt-flow-ads-2019.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Best practices we found when using Flow in the ADS 2019 app</p>
+
+<p>This article is about the best practices we found when using <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/"><code class="language-plaintext highlighter-rouge">Flow</code></a> in the <a href="https://play.google.com/store/apps/details?id=com.google.samples.apps.adssched">Android Dev Summit (ADS) 2019 app</a>; which has just been <a href="https://github.com/google/iosched/tree/adssched">open sourced</a>. Keep reading to find out how each layer of our app handles data streams.</p>
+
+<p>The ADS app architecture follows the <a href="https://developer.android.com/jetpack/docs/guide#recommended-app-arch">recommended app architecture guide</a>, with the addition of a domain layer (of UseCases) which help separate concerns, keeping classes small, focused, reusable and testable:</p>
+
+<p><img src="assets/images/2019-11-26-lessons-learnt-flow-ads-2019_1.png" alt="img" />
+<small>Architecture of the ADS 2019 app</small></p>
+
+<p>Like many Android apps the ADS app lazily loads data from the network or a cache; we found this to be a perfect use case for <code class="language-plaintext highlighter-rouge">Flow</code>. For one shot operations, <a href="https://medium.com/androiddevelopers/coroutines-on-android-part-iii-real-work-2ba8a2ec2f45">suspend functions</a> were a better fit. There are two main commits that refactor the app to use Coroutines. The <a href="https://github.com/google/iosched/pull/333/commits/5f5115e21f1cb008b1a6c1d6130104a86f20904b">first commit</a> migrates one-shot operations, and the <a href="https://github.com/google/iosched/pull/333/commits/643e531d00884291d79c6742601e2bd53b9f2ee4">second one</a> migrates to data streams.</p>
+
+<h2 id="1-prefer-exposing-streams-as-flows-not-channels">1. Prefer exposing streams as Flows (not Channels)</h2>
+
+<p>There are two ways you can deal with streams of data in coroutines: the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/"><code class="language-plaintext highlighter-rouge">Flow</code> API</a> and the <a href="https://kotlinlang.org/docs/reference/coroutines/channels.html"><code class="language-plaintext highlighter-rouge">Channel</code> API</a>. Channels are a synchronisation primitive whereas Flow is built to model streams of data: it’s a factory for subscriptions to streams of data. Channels can however be used to back a Flow, as we’ll see later.</p>
+
+<blockquote>
+  <p>Prefer exposing Flow since it gives you more flexibility, more explicit contracts and operators than Channel</p>
+</blockquote>
+
+<p>Flows automatically close the stream of data due to the nature of the terminal operators which trigger the execution of the stream of data and complete successfully or exceptionally depending on all the flow operations in the producer side. Therefore, you can’t (nearly as easily) leak resources on the producer side. This is easier to do with Channels: the producer might not clean up heavy resources if the <code class="language-plaintext highlighter-rouge">Channel</code> is not closed properly.</p>
+
+<p>The data layer of an app is responsible for providing data usually by reading from a database or fetching from the Internet. For example <a href="https://github.com/google/iosched/blob/adssched/shared/src/main/java/com/google/samples/apps/iosched/shared/data/userevent/UserEventDataSource.kt">here’s a DataSource interface that exposes a stream of user event data</a>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">UserEventDataSource</span> <span class="p">{</span>
+  <span class="k">fun</span> <span class="nf">getObservableUserEvent</span><span class="p">(</span><span class="n">userId</span><span class="p">:</span> <span class="nc">String</span><span class="p">):</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">UserEventResult</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="2-how-to-use-flow-in-your-android-app-architecture">2. How to use Flow in your Android app architecture</h2>
+
+<h3 id="usecase-and-repository">UseCase and Repository</h3>
+
+<p>The layers in-between View/ViewModel and the DataSource (i.e. UseCase and Repository in our case) often need to combine data from multiple queries or transform the data before it can be used by the ViewModel layer. Just like <a href="https://kotlinlang.org/docs/reference/sequences.html">Kotlin sequences</a>, Flow supports a large set of operators to transform your data. There are a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/#extension-functions">wealth of operators already available</a>, or you can create your own transformation (e.g. using the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/transform.html">transform</a> operator). However, Flow exposes suspend lambdas on many of the operators, there’s often no need to make a custom transform to accomplish complex tasks, just call suspend functions from inside your Flow.</p>
+
+<p>In our ADS example, we want to combine the <code class="language-plaintext highlighter-rouge">UserEventResult</code> with session data in the <a href="https://github.com/google/iosched/blob/adssched/shared/src/main/java/com/google/samples/apps/iosched/shared/data/userevent/DefaultSessionAndUserEventRepository.kt">Repository layer</a>. We use the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/map.html"><code class="language-plaintext highlighter-rouge">map</code></a> operator to apply a suspend lambda to each value of the Flow retrieved from DataSource:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Copyright 2019 Google LLC.   
+   SPDX-License-Identifier: Apache-2.0 */</span>
+<span class="kd">class</span> <span class="nc">DefaultSessionAndUserEventRepository</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">userEventDataSource</span><span class="p">:</span> <span class="nc">UserEventDataSource</span><span class="p">,</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">sessionRepository</span><span class="p">:</span> <span class="nc">SessionRepository</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">SessionAndUserEventRepository</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getObservableUserEvent</span><span class="p">(</span>
+        <span class="n">userId</span><span class="p">:</span> <span class="nc">String</span><span class="p">?,</span>
+        <span class="n">eventId</span><span class="p">:</span> <span class="nc">SessionId</span>
+    <span class="p">):</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Result</span><span class="p">&lt;</span><span class="nc">LoadUserSessionUseCaseResult</span><span class="p">&gt;&gt;</span> <span class="p">{</span>
+        <span class="c1">// Handles null userId</span>
+
+        <span class="c1">// Observes the user events and merges them with session data</span>
+        <span class="k">return</span> <span class="n">userEventDataSource</span><span class="p">.</span><span class="nf">getObservableUserEvent</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span> <span class="n">eventId</span><span class="p">).</span><span class="nf">map</span> <span class="p">{</span> <span class="n">userEventResult</span> <span class="p">-&gt;</span>
+            <span class="c1">// lambda of the map operator that can call suspend functions</span>
+            <span class="kd">val</span> <span class="py">event</span> <span class="p">=</span> <span class="n">sessionRepository</span><span class="p">.</span><span class="nf">getSession</span><span class="p">(</span><span class="n">eventId</span><span class="p">)</span>
+
+            <span class="c1">// Merges session with user data and emits the result</span>
+            <span class="kd">val</span> <span class="py">userSession</span> <span class="p">=</span> <span class="nc">UserSession</span><span class="p">(</span>
+                <span class="n">event</span><span class="p">,</span>
+                <span class="n">userEventResult</span><span class="p">.</span><span class="n">userEvent</span> <span class="o">?:</span> <span class="nf">createDefaultUserEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="nc">Result</span><span class="p">.</span><span class="nc">Success</span><span class="p">(</span><span class="nc">LoadUserSessionUseCaseResult</span><span class="p">(</span><span class="n">userSession</span><span class="p">))</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="viewmodel">ViewModel</h3>
+
+<p>When performing UI ↔ ViewModel communication with LiveData, the ViewModel layer should consume the stream of data coming from the data layer using a terminal operator (e.g. <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/collect.html"><code class="language-plaintext highlighter-rouge">collect</code></a>, <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/first.html"><code class="language-plaintext highlighter-rouge">first</code></a> or <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/to-list.html"><code class="language-plaintext highlighter-rouge">toList</code></a>).</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Copyright 2019 Google LLC.   
+   SPDX-License-Identifier: Apache-2.0 */</span>
+<span class="c1">// Simplified version of the real code</span>
+<span class="kd">class</span> <span class="nc">SessionDetailViewModel</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">loadUserSessionUseCase</span><span class="p">:</span> <span class="nc">LoadUserSessionUseCase</span><span class="p">,</span>
+    <span class="cm">/* ... */</span>
+<span class="p">):</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">listenForUserSessionChanges</span><span class="p">(</span><span class="n">sessionId</span><span class="p">:</span> <span class="nc">SessionId</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="nf">loadUserSessionUseCase</span><span class="p">(</span><span class="n">sessionId</span><span class="p">).</span><span class="nf">collect</span> <span class="p">{</span> <span class="n">loadResult</span> <span class="p">-&gt;</span>
+                <span class="c1">// Update multiple LiveDatas to notify the View</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><em>See full code <a href="https://github.com/google/iosched/blob/adssched/mobile/src/main/java/com/google/samples/apps/iosched/ui/sessiondetail/SessionDetailViewModel.kt">here</a>.</em></p>
+
+<p>If you’re converting a Flow to a LiveData, you can use the <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#aslivedata"><code class="language-plaintext highlighter-rouge">Flow.asLiveData()</code></a> extension function from the <a href="https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-livedata-ktx?repo=google">androidX lifecycle LiveData ktx library</a>. This is very convenient since it will share a single underlying subscription to the Flow and will manage the subscription based on the observers’ lifecycles. Moreover, LiveData also keeps the most recent value for late-coming observers and the subscription active across configuration changes. Check this simpler code that showcases how you can use the extension function:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SimplifiedSessionDetailViewModel</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">loadUserSessionUseCase</span><span class="p">:</span> <span class="nc">LoadUserSessionUseCase</span><span class="p">,</span>
+  <span class="cm">/* ... */</span>
+<span class="p">):</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="kd">val</span> <span class="py">sessions</span> <span class="p">=</span> <span class="nf">loadUserSessionUseCase</span><span class="p">(</span><span class="n">sessionId</span><span class="p">).</span><span class="nf">asLiveData</span><span class="p">()</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><em>Disclaimer</em>: The code snippet above is not part of the app; it’s a simplified version of the code that showcases how you can use <code class="language-plaintext highlighter-rouge">Flow.asLiveData()</code>.</p>
+
+<h2 id="3-when-to-use-a-broadcastchannel-or-flow-as-an-implementation-detail">3. When to use a BroadcastChannel or Flow as an implementation detail</h2>
+
+<p>Back to the DataSource implementation, how can we implement the <code class="language-plaintext highlighter-rouge">getObservableUserEvent</code> function we exposed above? The team considered two alternatives implementations: the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/"><code class="language-plaintext highlighter-rouge">flow</code></a> builder or the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/-broadcast-channel/"><code class="language-plaintext highlighter-rouge">BroadcastChannel</code></a> API. Each serve different use cases.</p>
+
+<h3 id="when-to-use-flow">When to use Flow</h3>
+
+<p>Flow is a <em>cold stream</em>. A cold stream is a data source whose producer will execute for each listener that starts consuming events, resulting in a new stream of data being created on each subscription. Once the consumer stops listening or the producer block finishes, the stream of data will be closed automatically.</p>
+
+<blockquote>
+  <p>Flow is a great fit when the production of data needs to start/stop to match the observer</p>
+</blockquote>
+
+<p>You can emit a limited or unlimited number of elements using the flow builder.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">oneElementFlow</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">flow</span> <span class="p">{</span>
+  <span class="c1">// producer block starts here, stream starts</span>
+  <span class="nf">emit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="c1">// producer block finishes here, stream will be closed</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">unlimitedElementFlow</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">flow</span> <span class="p">{</span>
+  <span class="c1">// producer block starts here, stream starts</span>
+  <span class="k">while</span><span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Do calculations</span>
+    <span class="nf">emit</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="nf">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="c1">// producer block finishes here, stream will be closed</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Flow tends to be used for expensive tasks as it provides automatic cleanup via coroutine cancellation. Notice that this cancellation is cooperative, a flow that never suspends can never be cancelled: in our example, since <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/delay.html"><code class="language-plaintext highlighter-rouge">delay</code></a> is a suspend function that checks for cancellation, when the subscriber stops listening, the Flow will stop and cleanup resources.</p>
+
+<h3 id="when-to-use-broadcastchannel">When to use BroadcastChannel</h3>
+
+<p>A <code class="language-plaintext highlighter-rouge">Channel</code> is a <a href="https://kotlinlang.org/docs/reference/coroutines/channels.html">concurrency primitive</a> for communicating between coroutines. A <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/-broadcast-channel/"><code class="language-plaintext highlighter-rouge">BroadcastChannel</code></a> is an implementation of <code class="language-plaintext highlighter-rouge">Channel</code> with multicast capabilities.</p>
+
+<p>There are some cases where you might want to use an implementation of <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> in your data source layer:</p>
+
+<blockquote>
+  <p>Use <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> when the producer(s) and consumer(s) have different lifetimes or operate completely independently of each other</p>
+</blockquote>
+
+<p>The <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> API is the perfect fit when you want the producer to follow a different lifecycle and broadcast the current result to anyone who’s listening. In this way, the producer doesn’t need to start every time a new listener starts consuming events.</p>
+
+<p>You can still expose a Flow to the caller, they don’t need to know about how this is implemented. You can use the extension function <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/as-flow.html"><code class="language-plaintext highlighter-rouge">BroadcastChannel.asFlow()</code></a> to expose a <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> as a Flow.</p>
+
+<p>However, closing that Flow won’t cancel the subscription. When using <code class="language-plaintext highlighter-rouge">BroadcastChannel</code>, you have to take care of its lifecycle. They don’t know if there are listeners or not, and will keep resources alive until the <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> is cancelled or closed. Make sure to close the <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> when it’s no longer needed. Also, remember that a closed channel cannot be active again, you’d need to create a new instance.</p>
+
+<p>An example of how to use the <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> API can be found in the next section.</p>
+
+<h3 id="disclaimer">Disclaimer</h3>
+
+<p>Parts of the Flow and <code class="language-plaintext highlighter-rouge">Channel</code> APIs are still in experimental, they’re likely to change. There are some situations where you would currently use Channels but the recommendation in the future may change to use Flow. Specifically, the <code class="language-plaintext highlighter-rouge">StateFlow</code> and Flow’s share operator proposals may reduce the usage of Channel in the future.</p>
+
+<h2 id="4-convert-data-streams-callback-based-apis-to-coroutines">4. Convert data streams callback-based APIs to Coroutines</h2>
+
+<p>Multiple libraries already support coroutines for data streams operations, including <a href="https://developer.android.com/jetpack/androidx/releases/room">Room</a>. For those that don’t, you can convert <em>any</em> callback-based API to Coroutines.</p>
+
+<h3 id="flow-implementation">Flow implementation</h3>
+
+<p>If you want to convert a stream callback-based API to use Flow, you can use the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/channel-flow.html"><code class="language-plaintext highlighter-rouge">channelFlow</code></a> function (also <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/callback-flow.html"><code class="language-plaintext highlighter-rouge">callbackFlow</code></a>, which shares the same implementation). <code class="language-plaintext highlighter-rouge">channelFlow</code> creates an instance of a Flow whose elements are sent to a Channel. This allows us to provide elements running in a different context or concurrently.</p>
+
+<p>In the following sample, we want to emit the elements that we get from a callback into a Flow:</p>
+
+<ol>
+  <li>Create a flow with the <code class="language-plaintext highlighter-rouge">channelFlow</code> builder that registers a callback to a third party library.</li>
+  <li>Emit all items received from the callback to the Flow.</li>
+  <li>When the subscriber stops listening, we unregister the subscription to the API using the suspend fun <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/await-close.html"><code class="language-plaintext highlighter-rouge">awaitClose</code></a>.</li>
+</ol>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Copyright 2019 Google LLC.   
+   SPDX-License-Identifier: Apache-2.0 */</span>
+<span class="k">override</span> <span class="k">fun</span> <span class="nf">getObservableUserEvent</span><span class="p">(</span><span class="n">userId</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">eventId</span><span class="p">:</span> <span class="nc">SessionId</span><span class="p">):</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">UserEventResult</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// 1) Create Flow with channelFlow</span>
+    <span class="k">return</span> <span class="n">channelFlow</span><span class="p">&lt;</span><span class="nc">UserEventResult</span><span class="p">&gt;</span> <span class="p">{</span>
+
+        <span class="kd">val</span> <span class="py">eventDocument</span> <span class="p">=</span> <span class="n">firestore</span><span class="p">.</span><span class="nf">collection</span><span class="p">(</span><span class="nc">USERS_COLLECTION</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">document</span><span class="p">(</span><span class="n">userId</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">collection</span><span class="p">(</span><span class="nc">EVENTS_COLLECTION</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">document</span><span class="p">(</span><span class="n">eventId</span><span class="p">)</span>
+    
+        <span class="c1">// 1) Register callback to the API</span>
+        <span class="kd">val</span> <span class="py">subscription</span> <span class="p">=</span> <span class="n">eventDocument</span><span class="p">.</span><span class="nf">addSnapshotListener</span> <span class="p">{</span> <span class="n">snapshot</span><span class="p">,</span> <span class="n">_</span> <span class="p">-&gt;</span>
+            <span class="kd">val</span> <span class="py">userEvent</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">snapshot</span><span class="p">.</span><span class="nf">exists</span><span class="p">())</span> <span class="p">{</span>
+                <span class="nf">parseUserEvent</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="k">null</span> <span class="p">}</span>
+
+            <span class="c1">// 2) Send items to the Flow</span>
+            <span class="n">channel</span><span class="p">.</span><span class="nf">offer</span><span class="p">(</span><span class="nc">UserEventResult</span><span class="p">(</span><span class="n">userEvent</span><span class="p">))</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 3) Don't close the stream of data, keep it open until the consumer</span>
+        <span class="c1">// stops listening or the API calls onCompleted or onError. </span>
+        <span class="c1">// When that happens, cancel the subscription to the 3P library</span>
+        <span class="nf">awaitClose</span> <span class="p">{</span> <span class="n">subscription</span><span class="p">.</span><span class="nf">remove</span><span class="p">()</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><em>See full code <a href="https://github.com/google/iosched/blob/adssched/shared/src/main/java/com/google/samples/apps/iosched/shared/data/userevent/FirestoreUserEventDataSource.kt">here</a>.</em></p>
+
+<h3 id="broadcastchannel-implementation">BroadcastChannel implementation</h3>
+
+<p>For our stream of data that tracks user authentication with Firestore, we used the <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> API as we want to register one Authentication listener that follows a different lifecycle and broadcasts the current result to anyone who’s listening.</p>
+
+<p>To convert a callback API to <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> you need a bit more code than with Flow. You can create a class where the instance of the <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> can be kept in a variable. During initialisation, register the callback that sends elements to the <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> as before:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Copyright 2019 Google LLC.   
+   SPDX-License-Identifier: Apache-2.0 */</span>
+<span class="kd">class</span> <span class="nc">FirebaseAuthStateUserDataSource</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span> <span class="p">:</span> <span class="nc">AuthStateUserDataSource</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">channel</span> <span class="p">=</span> <span class="nc">ConflatedBroadcastChannel</span><span class="p">&lt;</span><span class="nc">Result</span><span class="p">&lt;</span><span class="nc">AuthenticatedUserInfo</span><span class="p">&gt;&gt;()</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">listener</span><span class="p">:</span> <span class="p">((</span><span class="nc">FirebaseAuth</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)</span> <span class="p">=</span> <span class="p">{</span> <span class="n">auth</span> <span class="p">-&gt;</span>
+        <span class="c1">// Data processing logic</span>
+
+        <span class="c1">// Send the current user for observers</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">channel</span><span class="p">.</span><span class="n">isClosedForSend</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">channel</span><span class="p">.</span><span class="nf">offer</span><span class="p">(</span><span class="nc">Success</span><span class="p">(</span><span class="nc">FirebaseUserInfo</span><span class="p">(</span><span class="n">auth</span><span class="p">.</span><span class="n">currentUser</span><span class="p">)))</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">unregisterListener</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="nd">@Synchronized</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getBasicUserInfo</span><span class="p">():</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Result</span><span class="p">&lt;</span><span class="nc">AuthenticatedUserInfo</span><span class="p">&gt;&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">isListening</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">firebase</span><span class="p">.</span><span class="nf">addAuthStateListener</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+            <span class="n">isListening</span> <span class="p">=</span> <span class="k">true</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">channel</span><span class="p">.</span><span class="nf">asFlow</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><em>See full code <a href="https://github.com/google/iosched/blob/adssched/mobile/src/main/java/com/google/samples/apps/iosched/shared/data/signin/datasources/FirebaseAuthStateUserDataSource.kt">here</a>.</em></p>
+
+<h2 id="5-testing-tips">5. Testing tips</h2>
+
+<p>To <strong>test Flow transformations</strong> (as we do in the UseCase and Repository layers), you can use the <code class="language-plaintext highlighter-rouge">flow</code> builder to return fake data. For example:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Copyright 2019 Google LLC.
+   SPDX-License-Identifier: Apache-2.0 */</span>
+<span class="kd">object</span> <span class="nc">FakeUserEventDataSource</span> <span class="p">:</span> <span class="nc">UserEventDataSource</span> <span class="p">{</span>
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">getObservableUserEvents</span><span class="p">(</span><span class="n">userId</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">=</span> <span class="nf">flow</span> <span class="p">{</span>
+    <span class="nf">emit</span><span class="p">(</span><span class="nc">UserEventsResult</span><span class="p">(</span><span class="n">userEvents</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">DefaultSessionAndUserEventRepositoryTest</span> <span class="p">{</span>
+  <span class="nd">@Test</span>
+  <span class="k">fun</span> <span class="nf">observableUserEvents_areMappedCorrectly</span><span class="p">()</span> <span class="p">=</span> <span class="nf">runBlockingTest</span> <span class="p">{</span>
+    <span class="c1">// Prepare repo</span>
+    <span class="kd">val</span> <span class="py">userEvents</span> <span class="p">=</span> <span class="n">repository</span>
+          <span class="p">.</span><span class="nf">getObservableUserEvents</span><span class="p">(</span><span class="s">"user"</span><span class="p">,</span> <span class="k">true</span><span class="p">).</span><span class="nf">first</span><span class="p">()</span>
+    <span class="c1">// Assert user events</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To <strong>test implementations of Flow</strong> successfully, a good idea is to use the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/take.html"><code class="language-plaintext highlighter-rouge">take</code></a> operator to get some items from the Flow and the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/to-list.html"><code class="language-plaintext highlighter-rouge">toList</code></a> operator as the terminal operator to get the results in a list. See an example of this in the following test:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AnotherStreamDataSourceImplTest</span> <span class="p">{</span>
+  <span class="nd">@Test</span>
+  <span class="k">fun</span> <span class="nf">`Test</span> <span class="n">happy</span> <span class="nf">path`</span><span class="p">()</span> <span class="p">=</span> <span class="nf">runBlockingTest</span> <span class="p">{</span>
+    <span class="c1">// Prepare subject</span>
+    <span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">flow</span><span class="p">.</span><span class="nf">take</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">toList</span><span class="p">()</span>
+    <span class="c1">// Assert expected result</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">take</code> operator is a great fit to close the Flow after you get the items. Not closing a started Flow (or <code class="language-plaintext highlighter-rouge">BroadcastChannel</code>) after each test will leak memory and creates a flaky and inconsistent test suite.</p>
+
+<p><strong>Note</strong>: If the implementation of the DataSource is done with a <code class="language-plaintext highlighter-rouge">BroadcastChannel</code>, the code above is not enough. You have to manage its lifecycle by making sure you start the <code class="language-plaintext highlighter-rouge">BroadcastChannel</code> before the test and close it after the test finishes. If not, you’ll leak memory. You can see a <a href="https://github.com/manuelvicnt/MathCoroutinesFlow/blob/master/app/src/test/java/com/manuelvicnt/coroutinesflow/fibonacci/impl/NeverEndingFibonacciProducerTest.kt#L38">test like this in this other Flow sample</a>.</p>
+
+<p>Testing Coroutines best practices also apply here. If you create a new coroutine in code under test, you might want to execute it in your test thread for a deterministic execution of your test. Check out more about this in the <a href="https://youtu.be/KMb0Fs8rCRs?t=416">Testing Coroutines ADS 2019 talk</a>.</p>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li>
+    <p>Prefer exposing Flow to consumers rather than <code class="language-plaintext highlighter-rouge">Channel</code> because of all the explicit contracts and operators Flow provides.</p>
+  </li>
+  <li>
+    <p>With Flow, the producer block will get executed every time there’s a new listener and the lifecycle of the stream of data will be handled automatically.</p>
+  </li>
+  <li>
+    <p>With <code class="language-plaintext highlighter-rouge">BroadcastChannel</code>, you can share the producer but you have to manage its lifecycle yourself.</p>
+  </li>
+  <li>
+    <p>Consider converting callback-based APIs to coroutines for a better and more idiomatic integration of the APIs within your app.</p>
+  </li>
+  <li>
+    <p>Easily test implementations of Flow by using the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/take.html"><code class="language-plaintext highlighter-rouge">take</code></a> and <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/to-list.html"><code class="language-plaintext highlighter-rouge">toList</code></a> operators.</p>
+  </li>
+</ul>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/lessons-learnt-flow-ads-2019';
+                            this.page.identifier = '/lessons-learnt-flow-ads-2019';
+                            this.page.title = 'Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/coroutines-gotta-catch-em-all">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-12-04-Coroutines-gotta-catch-em-all.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-gotta-catch-em-all">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines! Gotta catch 'em all! - KotlinConf 2019</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/di-guidance-android">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-03-30-dagger-cheat-sheets.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/di-guidance-android">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Dagger</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Dependency Injection guidance on Android — ADS 2019</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Lessons+learnt+using+Coroutines+Flow+in+the+Android+Dev+Summit+2019+app&amp;url=https://manuelvivo.dev/lessons-learnt-flow-ads-2019"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/lessons-learnt-flow-ads-2019"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Things to know about Flow’s shareIn and stateIn operators</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/sharein-statein" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Things to know about Flow’s shareIn and stateIn operators" />
+    <meta property="og:description" content="Become familiar with the shareIn and stateIn operators by example. The Flow.shareIn and Flow.stateIn operators convert cold flows into hot flows: they can multicast the information that comes from a cold upstream flow to multiple collectors. They’re often used to improve performance, add a buffer when collectors are not present," />
+    <meta property="og:url" content="https://manuelvivo.dev/sharein-statein" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2021-05-07-sharein-statein.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2021-05-07T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2021-05-07T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Things to know about Flow’s shareIn and stateIn operators" />
+    <meta name="twitter:description" content="Become familiar with the shareIn and stateIn operators by example. The Flow.shareIn and Flow.stateIn operators convert cold flows into hot flows: they can multicast the information that comes from a cold upstream flow to multiple collectors. They’re often used to improve performance, add a buffer when collectors are not present," />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2021-05-07-sharein-statein.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/sharein-statein",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2021-05-07-sharein-statein.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/sharein-statein"
+    },
+    "description": "Become familiar with the shareIn and stateIn operators by example. The Flow.shareIn and Flow.stateIn operators convert cold flows into hot flows: they can multicast the information that comes from a cold upstream flow to multiple collectors. They’re often used to improve performance, add a buffer when collectors are not present,"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Things to know about Flow’s shareIn and stateIn operators" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Things to know about Flow’s shareIn and stateIn operators | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Things to know about Flow’s shareIn and stateIn operators" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Become familiar with the shareIn and stateIn operators by example." />
+<meta property="og:description" content="Become familiar with the shareIn and stateIn operators by example." />
+<link rel="canonical" href="https://manuelvivo.dev/sharein-statein" />
+<meta property="og:url" content="https://manuelvivo.dev/sharein-statein" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-05-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Things to know about Flow’s shareIn and stateIn operators" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2021-05-07T00:00:00+00:00","datePublished":"2021-05-07T00:00:00+00:00","description":"Become familiar with the shareIn and stateIn operators by example.","headline":"Things to know about Flow’s shareIn and stateIn operators","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/sharein-statein"},"url":"https://manuelvivo.dev/sharein-statein"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime=" 7 May 2021"> 7 May 2021</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">Things to know about Flow’s shareIn and stateIn operators</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2021-05-07-sharein-statein.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Become familiar with the <code class="language-plaintext highlighter-rouge">shareIn</code> and <code class="language-plaintext highlighter-rouge">stateIn</code> operators by example.</p>
+
+<p>The <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/share-in.html"><code class="language-plaintext highlighter-rouge">Flow.shareIn</code></a> and <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/state-in.html"><code class="language-plaintext highlighter-rouge">Flow.stateIn</code></a> operators convert cold flows into hot flows: they can multicast the information that comes from a cold upstream flow to multiple collectors. They’re often used to improve performance, add a buffer when collectors are not present, or even as a caching mechanism.</p>
+
+<blockquote>
+  <p><strong>Cold flows</strong> are created on-demand and emit data when they’re being observed. <strong>Hot flows</strong> are always active and can emit data regardless of whether or not they’re being observed.</p>
+</blockquote>
+
+<p>In this blog post, you’ll become familiar with the <code class="language-plaintext highlighter-rouge">shareIn</code> and <code class="language-plaintext highlighter-rouge">stateIn</code> operators by example. You’ll learn how to configure them to perform certain use cases and avoid common pitfalls you might encounter.</p>
+
+<h2 id="the-underlying-flow-producer">The underlying flow producer</h2>
+
+<p>Continuing with the example from my <a href="https://manuelvivo.dev/coroutines-addrepeatingjob">previous blog post</a>, the underlying flow producer that we’re using emits location updates. It’s a <em>cold</em> flow, as it’s implemented using a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/callback-flow.html"><code class="language-plaintext highlighter-rouge">callbackFlow</code></a>. Every new collector will trigger the flow producer block, and a new callback will be added to the <code class="language-plaintext highlighter-rouge">FusedLocationProviderClient</code>.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationDataSource</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">locationClient</span><span class="p">:</span> <span class="nc">FusedLocationProviderClient</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">locationsSource</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Location</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">callbackFlow</span><span class="p">&lt;</span><span class="nc">Location</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="kd">object</span> <span class="err">: </span><span class="nc">LocationCallback</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">onLocationResult</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="nc">LocationResult</span><span class="p">?)</span> <span class="p">{</span>
+                <span class="n">result</span> <span class="o">?:</span> <span class="k">return</span>
+                <span class="k">try</span> <span class="p">{</span> <span class="nf">offer</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">lastLocation</span><span class="p">)</span> <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nf">requestLocationUpdates</span><span class="p">(</span><span class="nf">createLocationRequest</span><span class="p">(),</span> <span class="n">callback</span><span class="p">,</span> <span class="nc">Looper</span><span class="p">.</span><span class="nf">getMainLooper</span><span class="p">())</span>
+            <span class="p">.</span><span class="nf">addOnFailureListener</span> <span class="p">{</span> <span class="n">e</span> <span class="p">-&gt;</span>
+                <span class="nf">close</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="c1">// in case of exception, close the Flow</span>
+            <span class="p">}</span>
+        <span class="c1">// clean up when Flow collection ends</span>
+        <span class="nf">awaitClose</span> <span class="p">{</span>
+            <span class="nf">removeLocationUpdates</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Let’s see how we can use the <code class="language-plaintext highlighter-rouge">shareIn</code> and <code class="language-plaintext highlighter-rouge">stateIn</code> operators to optimize the <code class="language-plaintext highlighter-rouge">locationsSource</code> flow for different use cases.</p>
+
+<h2 id="sharein-or-statein">shareIn or stateIn?</h2>
+
+<p>The first topic we’ll cover is the difference between <code class="language-plaintext highlighter-rouge">shareIn</code> and <code class="language-plaintext highlighter-rouge">stateIn</code>. The <code class="language-plaintext highlighter-rouge">shareIn</code> operator returns a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-shared-flow/"><code class="language-plaintext highlighter-rouge">SharedFlow</code></a> instance whereas <code class="language-plaintext highlighter-rouge">stateIn</code> returns a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/index.html"><code class="language-plaintext highlighter-rouge">StateFlow</code></a>.</p>
+
+<blockquote>
+  <p>Note: To learn more about <code class="language-plaintext highlighter-rouge">StateFlow</code> and <code class="language-plaintext highlighter-rouge">SharedFlow</code>, check out <a href="https://developer.android.com/kotlin/flow/stateflow-and-sharedflow">our documentation</a>.</p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">StateFlow</code> is a specialized configuration of <code class="language-plaintext highlighter-rouge">SharedFlow</code> optimized for sharing state: the last emitted item is replayed to new collectors, and items are conflated using <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/equals.html"><code class="language-plaintext highlighter-rouge">Any.equals</code></a>. You can read more about this in the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/index.html"><code class="language-plaintext highlighter-rouge">StateFlow</code> documentation</a>.</p>
+
+<p>The main difference between these APIs is that the <code class="language-plaintext highlighter-rouge">StateFlow</code> interface allows you to access the last emitted value synchronously by reading its <code class="language-plaintext highlighter-rouge">value</code> property. That’s not the case with <code class="language-plaintext highlighter-rouge">SharedFlow</code>.</p>
+
+<h2 id="improving-performance">Improving performance</h2>
+
+<p>These APIs can improve performance by sharing the same instance of the flow to be observed by all collectors instead of creating new instances of the same flow on-demand.</p>
+
+<p>In the following example, <code class="language-plaintext highlighter-rouge">LocationRepository</code> consumes the <code class="language-plaintext highlighter-rouge">locationsSource</code> flow exposed by the <code class="language-plaintext highlighter-rouge">LocationDataSource</code> and applies the shareIn operator to make everyone interested in the user’s location collect from the same instance of the flow. Only one instance of the <code class="language-plaintext highlighter-rouge">locationsSource</code> flow is created and shared for all collectors:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationRepository</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">locationDataSource</span><span class="p">:</span> <span class="nc">LocationDataSource</span><span class="p">,</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">locations</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Location</span><span class="p">&gt;</span> <span class="p">=</span> 
+        <span class="n">locationDataSource</span><span class="p">.</span><span class="n">locationsSource</span><span class="p">.</span><span class="nf">shareIn</span><span class="p">(</span><span class="n">externalScope</span><span class="p">,</span> <span class="nc">WhileSubscribed</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-sharing-started/-while-subscribed.html"><code class="language-plaintext highlighter-rouge">WhileSubscribed</code></a> sharing policy is used to cancel the upstream flow when there are no collectors. In this way, we avoid wasting resources when no one is interested in location updates.</p>
+
+<blockquote>
+  <p><strong>Tip for Android apps!</strong> You can use <strong><code class="language-plaintext highlighter-rouge">WhileSubscribed(5000)</code></strong> most of the time to keep the upstream flow active for 5 seconds more after the disappearance of the last collector. That avoids restarting the upstream flow in certain situations such as configuration changes. This tip is especially helpful when upstream flows are expensive to create and when these operators are used in ViewModels.</p>
+</blockquote>
+
+<h2 id="buffering-events">Buffering events</h2>
+
+<p>For this example, our requirements have changed, and now we’re asked to always listen for location updates and display the last 10 locations on the screen when the app comes from the background:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationRepository</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">locationDataSource</span><span class="p">:</span> <span class="nc">LocationDataSource</span><span class="p">,</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">locations</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Location</span><span class="p">&gt;</span> <span class="p">=</span> 
+        <span class="n">locationDataSource</span><span class="p">.</span><span class="n">locationsSource</span>
+            <span class="p">.</span><span class="nf">shareIn</span><span class="p">(</span><span class="n">externalScope</span><span class="p">,</span> <span class="nc">SharingStarted</span><span class="p">.</span><span class="nc">Eagerly</span><span class="p">,</span> <span class="n">replay</span> <span class="p">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<p>We use a <code class="language-plaintext highlighter-rouge">replay</code> value of 10 to keep the last 10 emitted items in memory and re-emit those every time a collector observes the flow. To keep the underlying flow active all the time and emitting location updates, use the <code class="language-plaintext highlighter-rouge">SharingStarted.Eagerly</code> policy to listen for updates even if there are no collectors.</p>
+
+<h2 id="caching-data">Caching data</h2>
+
+<p>Our requirements have changed again, and in this case, we don’t need to be <em>always</em> listening for location updates if the app is in the background. However, we need to cache the last emitted item so that the user always sees some data on the screen, even if stale, while getting the current location. For this case, we can use the <code class="language-plaintext highlighter-rouge">stateIn</code> operator.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationRepository</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">locationDataSource</span><span class="p">:</span> <span class="nc">LocationDataSource</span><span class="p">,</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">locations</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Location</span><span class="p">&gt;</span> <span class="p">=</span> 
+        <span class="n">locationDataSource</span><span class="p">.</span><span class="n">locationsSource</span><span class="p">.</span><span class="nf">stateIn</span><span class="p">(</span><span class="n">externalScope</span><span class="p">,</span> <span class="nc">WhileSubscribed</span><span class="p">(),</span> <span class="nc">EmptyLocation</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Flow.stateIn</code> caches and replays the last emitted item to a new collector.</p>
+
+<h2 id="watch-out-do-not-create-new-instances-on-each-function-call">WATCH OUT! Do not create new instances on each function call</h2>
+
+<p><strong>NEVER</strong> use <code class="language-plaintext highlighter-rouge">shareIn</code> or <code class="language-plaintext highlighter-rouge">stateIn</code> to create a new flow that’s returned when calling a function. That’d create a new <code class="language-plaintext highlighter-rouge">SharedFlow</code> or <code class="language-plaintext highlighter-rouge">StateFlow</code> on each function invocation that will remain in memory until the scope is cancelled or is garbage collected when there are no references to it.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">UserRepository</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">userLocalDataSource</span><span class="p">:</span> <span class="nc">UserLocalDataSource</span><span class="p">,</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// DO NOT USE shareIn or stateIn in a function like this.</span>
+    <span class="c1">// It creates a new SharedFlow/StateFlow per invocation which is not reused!</span>
+    <span class="k">fun</span> <span class="nf">getUser</span><span class="p">():</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">User</span><span class="p">&gt;</span> <span class="p">=</span>
+        <span class="n">userLocalDataSource</span><span class="p">.</span><span class="nf">getUser</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">shareIn</span><span class="p">(</span><span class="n">externalScope</span><span class="p">,</span> <span class="nc">WhileSubscribed</span><span class="p">())</span>    
+
+    <span class="c1">// DO USE shareIn or stateIn in a property</span>
+    <span class="kd">val</span> <span class="py">user</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">User</span><span class="p">&gt;</span> <span class="p">=</span> 
+        <span class="n">userLocalDataSource</span><span class="p">.</span><span class="nf">getUser</span><span class="p">().</span><span class="nf">shareIn</span><span class="p">(</span><span class="n">externalScope</span><span class="p">,</span> <span class="nc">WhileSubscribed</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="flows-that-require-input">Flows that require input</h2>
+
+<p>Flows that require input, like a <code class="language-plaintext highlighter-rouge">userId</code>, cannot be shared easily using <code class="language-plaintext highlighter-rouge">shareIn</code> or <code class="language-plaintext highlighter-rouge">stateIn</code>. Taking as an example the <a href="https://github.com/google/iosched">iosched</a> open-source project — Google I/O’s Android app — the flow to get user events from <a href="https://firebase.google.com/docs/firestore/quickstart">Firestore</a> is implemented using a <code class="language-plaintext highlighter-rouge">callbackFlow</code>, as you can see <a href="https://github.com/google/iosched/blob/main/shared/src/main/java/com/google/samples/apps/iosched/shared/data/userevent/FirestoreUserEventDataSource.kt#L107">in the source code</a>. As it takes the <code class="language-plaintext highlighter-rouge">userId</code> as a parameter, this flow cannot be reused easily using the <code class="language-plaintext highlighter-rouge">shareIn</code> or <code class="language-plaintext highlighter-rouge">stateIn</code> operators.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">UserRepository</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">userEventsDataSource</span><span class="p">:</span> <span class="nc">FirestoreUserEventDataSource</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// New collectors will register as a new callback in Firestore.</span>
+    <span class="c1">// As this function depends on a `userId`, the flow cannot be</span>
+    <span class="c1">// reused by calling shareIn or stateIn in this function.</span>
+    <span class="c1">// That will cause a new Shared/StateFlow to be created</span>
+    <span class="c1">// every time the function is called.</span>
+    <span class="k">fun</span> <span class="nf">getUserEvents</span><span class="p">(</span><span class="n">userId</span><span class="p">:</span> <span class="nc">String</span><span class="p">):</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">UserEventsResult</span><span class="p">&gt;</span> <span class="p">=</span>
+        <span class="n">userLocalDataSource</span><span class="p">.</span><span class="nf">getObservableUserEvents</span><span class="p">(</span><span class="n">userId</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Optimizing this use case depends on the requirements of your app:</p>
+
+<ul>
+  <li>Do you allow receiving events from multiple users at the same time? You might need to create a map of <code class="language-plaintext highlighter-rouge">SharedFlow</code>/<code class="language-plaintext highlighter-rouge">StateFlow</code> instances, and remove the reference and cancel the upstream flow when the <code class="language-plaintext highlighter-rouge">subscriptionCount</code> reaches zero.</li>
+  <li>If you allow only one user, and all collectors need to update to the new user, you could emit event updates to a common <code class="language-plaintext highlighter-rouge">SharedFlow</code>/<code class="language-plaintext highlighter-rouge">StateFlow</code> for all collectors and use the common flow as a variable in the class.</li>
+</ul>
+
+<hr />
+
+<p>The <code class="language-plaintext highlighter-rouge">shareIn</code> and <code class="language-plaintext highlighter-rouge">stateIn</code> operators can be used with cold flows to improve performance, add a buffer when collectors are not present, or even as a caching mechanism! Use them wisely, and don’t create new instances on each function call — it won’t work as you’d expect!</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/sharein-statein';
+                            this.page.identifier = '/sharein-statein';
+                            this.page.title = 'Things to know about Flow’s shareIn and stateIn operators';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/libraries-in-compose-talk">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-05-18-libraries-in-compose-talk.jpeg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/libraries-in-compose-talk">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Compose</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Using Jetpack libraries in Compose talk</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/hilt-stable">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-05-04-hilt-stable.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/hilt-stable">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Hilt</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Hilt is stable! Easier dependency injection on Android</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Things to know about Flow’s shareIn and stateIn operators</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Things+to+know+about+Flow%E2%80%99s+shareIn+and+stateIn+operators&amp;url=https://manuelvivo.dev/sharein-statein"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/sharein-statein"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

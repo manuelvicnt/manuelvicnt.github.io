@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>repeatOnLifecycle API design story</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/repeatonlifecycle" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="repeatOnLifecycle API design story" />
+    <meta property="og:description" content="Learn the design decisions behind the Lifecycle.repeatOnLifecycle API. In this blog post, you’ll learn the design decisions behind the Lifecycle.repeatOnLifecycle API and why we removed some of the helper functions we added in the first alpha version of the 2.4.0 lifecycle-runtime-ktx library. Along the way, you’ll see how certain coroutines" />
+    <meta property="og:url" content="https://manuelvivo.dev/repeatonlifecycle" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2021-07-01-repeatonlifecycle.webp" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2021-07-01T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2021-07-01T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="repeatOnLifecycle API design story" />
+    <meta name="twitter:description" content="Learn the design decisions behind the Lifecycle.repeatOnLifecycle API. In this blog post, you’ll learn the design decisions behind the Lifecycle.repeatOnLifecycle API and why we removed some of the helper functions we added in the first alpha version of the 2.4.0 lifecycle-runtime-ktx library. Along the way, you’ll see how certain coroutines" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2021-07-01-repeatonlifecycle.webp" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/repeatonlifecycle",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2021-07-01-repeatonlifecycle.webp",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/repeatonlifecycle"
+    },
+    "description": "Learn the design decisions behind the Lifecycle.repeatOnLifecycle API. In this blog post, you’ll learn the design decisions behind the Lifecycle.repeatOnLifecycle API and why we removed some of the helper functions we added in the first alpha version of the 2.4.0 lifecycle-runtime-ktx library. Along the way, you’ll see how certain coroutines"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="repeatOnLifecycle API design story" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>repeatOnLifecycle API design story | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="repeatOnLifecycle API design story" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn the design decisions behind the Lifecycle.repeatOnLifecycle API." />
+<meta property="og:description" content="Learn the design decisions behind the Lifecycle.repeatOnLifecycle API." />
+<link rel="canonical" href="https://manuelvivo.dev/repeatonlifecycle" />
+<meta property="og:url" content="https://manuelvivo.dev/repeatonlifecycle" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-01T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="repeatOnLifecycle API design story" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2021-07-01T00:00:00+00:00","datePublished":"2021-07-01T00:00:00+00:00","description":"Learn the design decisions behind the Lifecycle.repeatOnLifecycle API.","headline":"repeatOnLifecycle API design story","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/repeatonlifecycle"},"url":"https://manuelvivo.dev/repeatonlifecycle"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime=" 1 July 2021"> 1 July 2021</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">repeatOnLifecycle API design story</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2021-07-01-repeatonlifecycle.webp)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Learn the design decisions behind the Lifecycle.repeatOnLifecycle API.</p>
+
+<p>In this blog post, you’ll learn the design decisions behind the <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code> API and why we removed some of the helper functions we added in the first alpha version of the 2.4.0 <a href="https://developer.android.com/jetpack/androidx/releases/lifecycle"><code class="language-plaintext highlighter-rouge">lifecycle-runtime-ktx</code></a> library.</p>
+
+<p>Along the way, you’ll see how certain coroutines APIs can be dangerous to use in some scenarios, how difficult naming is, and why we decided to keep only the low-level suspend APIs in the library.</p>
+
+<p>Also, you’ll realize all API decisions require some tradeoffs regarding complexity, readability, and how error prone the API is.</p>
+
+<p>Special shout-out to <a href="https://twitter.com/adamwp">Adam Powell</a>, <a href="https://twitter.com/wkalic">Wojtek Kaliciński</a>, <a href="https://twitter.com/ianhlake">Ian Lake</a>, and <a href="https://twitter.com/yigitboyar">Yigit Boyar</a> for giving feedback and discussing the shape of these APIs.</p>
+
+<blockquote>
+  <p>Note: If you’re looking for <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> guidance, check out the <a href="https://manuelvivo.dev/coroutines-addrepeatingjob">A safer way to collect flows from Android UIs blog post</a>.</p>
+</blockquote>
+
+<h2 id="repeatonlifecycle">repeatOnLifecycle</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code> API was primarily born to allow safer Flow collection from the UI layer in Android. Its restartable behavior, that takes into consideration the UI lifecycle, makes it the perfect default API to process items only when the UI is visible on the screen.</p>
+
+<blockquote>
+  <p>Note: <code class="language-plaintext highlighter-rouge">LifecycleOwner.repeatOnLifecycle</code> is also available. It delegates the functionality to its Lifecycle. With this, any code that’s already part of a <code class="language-plaintext highlighter-rouge">LifecycleOwner</code> scope can omit the explicit receiver.</p>
+</blockquote>
+
+<p><strong><code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> is a suspend function</strong>. As such, it needs to be executed within a coroutine. <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> suspends the calling coroutine, and then runs a given suspend <code class="language-plaintext highlighter-rouge">block</code> that you pass as a parameter in a new coroutine each time the given lifecycle reaches a target state or higher. If the lifecycle state falls below the target, the coroutine launched for the <code class="language-plaintext highlighter-rouge">block</code> is cancelled. Lastly, the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> function itself won’t resume the calling coroutine until the lifecycle is <code class="language-plaintext highlighter-rouge">DESTROYED</code>.</p>
+
+<p>Let’s see this API in action. If you read my previous <a href="https://manuelvivo.dev/coroutines-addrepeatingjob">A safer way to collect flows from Android UIs blog post</a>, none of this should come as a surprise to you.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="c1">// Create a new coroutine from the lifecycleScope</span>
+        <span class="c1">// since repeatOnLifecycle is a suspend function</span>
+        <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="c1">// Suspend the coroutine until the lifecycle is DESTROYED.</span>
+            <span class="c1">// repeatOnLifecycle launches the block in a new coroutine every time the </span>
+            <span class="c1">// lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.</span>
+            <span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Safely collect from locations when the lifecycle is STARTED</span>
+                <span class="c1">// and stop collecting when the lifecycle is STOPPED</span>
+                <span class="n">someLocationProvider</span><span class="p">.</span><span class="n">locations</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span>
+                    <span class="c1">// New location! Update the map</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="c1">// Note: at this point, the lifecycle is DESTROYED!</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note: if you’re interested in how <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> is implemented, here’s a <a href="https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:lifecycle/lifecycle-runtime-ktx/src/main/java/androidx/lifecycle/RepeatOnLifecycle.kt;l=63">link to its source code</a>.</p>
+</blockquote>
+
+<h2 id="why-its-a-suspend-function">Why it’s a suspend function</h2>
+
+<p><strong>A suspend function is the best choice</strong> for this restarting behavior as it preserves the calling context. It <em>respects</em> the <code class="language-plaintext highlighter-rouge">Job</code> tree of the calling coroutine. As <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code>’s implementation uses <code class="language-plaintext highlighter-rouge">suspendCancellableCoroutine</code> under the hood, it cooperates with cancellation: cancelling the calling coroutine also cancels <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> and its restarting <code class="language-plaintext highlighter-rouge">block</code>.</p>
+
+<p>Also, we can add more APIs on top of <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> such as the <a href="https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:lifecycle/lifecycle-runtime-ktx/src/main/java/androidx/lifecycle/FlowExt.kt;l=87"><code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code></a> flow operator. More importantly, it also allows you to create helper functions on top of this API if that’s what your project needs. That’s what we tried to do with the <code class="language-plaintext highlighter-rouge">LifecycleOwner.addRepeatingJob</code> API that we added in <code class="language-plaintext highlighter-rouge">lifecycle-runtime-ktx:2.4.0-alpha01</code> and, in fact, removed in <code class="language-plaintext highlighter-rouge">alpha02</code>.</p>
+
+<h2 id="removing-the-addrepeatingjob-api">Removing the addRepeatingJob API</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">LifecycleOwner.addRepeatingJob</code> API added in the first alpha version of the library with this functionality, and now removed from the library, was implemented like this:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">fun</span> <span class="nc">LifecycleOwner</span><span class="p">.</span><span class="nf">addRepeatingJob</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">,</span>
+    <span class="n">coroutineContext</span><span class="p">:</span> <span class="nc">CoroutineContext</span> <span class="p">=</span> <span class="nc">EmptyCoroutineContext</span><span class="p">,</span>
+    <span class="n">block</span><span class="p">:</span> <span class="k">suspend</span> <span class="nc">CoroutineScope</span><span class="p">.()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span>
+<span class="p">):</span> <span class="nc">Job</span> <span class="p">=</span> <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="n">coroutineContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Given a <code class="language-plaintext highlighter-rouge">LifecycleOwner</code>, you could run a suspend block that restarts whenever its lifecycle moves in and out of the target state. This API uses the <code class="language-plaintext highlighter-rouge">LifecycleOwner</code>’s <code class="language-plaintext highlighter-rouge">lifecycleScope</code> to trigger a new coroutine and call <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> inside it.</p>
+
+<p>The code above would look like this using the <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> API:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="n">lifecycleOwner</span><span class="p">.</span><span class="nf">addRepeatingJob</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">someLocationProvider</span><span class="p">.</span><span class="n">locations</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span>
+                <span class="c1">// New location! Update the map</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>At first glance, you might think that this code is cleaner and requires less code. However, there are hidden gotchas that can make you shoot yourself in the foot if you don’t pay close attention:</p>
+
+<ul>
+  <li>
+    <p>Even though <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> takes a suspend block, <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> is <strong>NOT</strong> a suspend function. Thus, you shouldn’t call it inside a coroutine!!!</p>
+  </li>
+  <li>
+    <p>Less code? You only save one line of code with the cost of having a more error-prone API.</p>
+  </li>
+</ul>
+
+<p>The first point might seem obvious but it always bites developers. And ironically, it’s actually based on one of the most conceptually core concepts of coroutines: <a href="https://elizarov.medium.com/structured-concurrency-722d765aa952"><strong>Structured Concurrency</strong></a>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">addRepeatingJob</code> is not a suspend function, and therefore, doesn’t support structured concurrency by default (note that you could manually make it support it by using the <code class="language-plaintext highlighter-rouge">coroutineContext</code> that it takes as a parameter). Since the <code class="language-plaintext highlighter-rouge">block</code> parameter is a suspend lambda, you relate this API to coroutines and you could easily write dangerous code like this:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="kd">val</span> <span class="py">job</span> <span class="p">=</span> <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+
+            <span class="nf">doSomeSuspendInitWork</span><span class="p">()</span>
+
+            <span class="c1">// DANGEROUS! This API doesn't preserve the calling Context!</span>
+            <span class="c1">// It won't get cancelled when the parent coroutine is cancelled!</span>
+            <span class="nf">addRepeatingJob</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">someLocationProvider</span><span class="p">.</span><span class="n">locations</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span>
+                    <span class="c1">// New location! Update the map</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// If something goes wrong, cancel the coroutine launched above</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="cm">/* ... */</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nc">Throwable</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">job</span><span class="p">.</span><span class="nf">cancel</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What’s wrong with this code? <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> does coroutines stuff, nothing prevents me from calling it inside a coroutine, right?</p>
+
+<p>As <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> creates new coroutines to run the repeating block using <code class="language-plaintext highlighter-rouge">lifecycleScope</code> which is implicit in the implementation details, the new coroutines don’t respect structured concurrency nor preserve the calling coroutine context. Therefore, will NOT get canceled when you call <code class="language-plaintext highlighter-rouge">job.cancel()</code>. <strong>This can lead to very subtle bugs in your app which are really difficult to debug</strong>.</p>
+
+<h2 id="repeatonlifecycle-ftw">repeatOnLifecycle FTW</h2>
+
+<p>The implicit <code class="language-plaintext highlighter-rouge">CoroutineScope</code> used inside <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> is what makes the API unsafe to use in certain situations. It’s the hidden gotcha that requires extra attention to write correct code. This point is the recurring argument to avoid additional wrapper APIs on top of <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> in the library.</p>
+
+<p>The main benefit of the suspend <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> API is that it cooperates with structured concurrency by default, whereas <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> did not. It also helps you think in which scope you want the repeating job to happen. The API is self-explanatory and meets developer expectations:</p>
+
+<ul>
+  <li>
+    <p>As any other suspend function, it will suspend the execution of the coroutine until something happens. In this case, until the lifecycle is destroyed.</p>
+  </li>
+  <li>
+    <p>No surprises! It can be used in conjunction with other coroutines code and it’ll behave as you expect.</p>
+  </li>
+  <li>
+    <p>The code surrounding <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> is readable and makes sense for newcomers: <em>“First, I launch a new coroutine that follows the UI lifecycle. Then, I call repeatOnLifecycle that launches this block every time the UI reaches this lifecycle state”</em>.</p>
+  </li>
+</ul>
+
+<h2 id="flowflowwithlifecycle">Flow.flowWithLifecycle</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> operator (<a href="https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:lifecycle/lifecycle-runtime-ktx/src/main/java/androidx/lifecycle/FlowExt.kt;l=87">implementation here</a>) is built on top of <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> and only emits items sent by the upstream flow whenever the lifecycle is at least at <code class="language-plaintext highlighter-rouge">minActiveState</code>.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="n">someLocationProvider</span><span class="p">.</span><span class="n">locations</span>
+                <span class="p">.</span><span class="nf">flowWithLifecycle</span><span class="p">(</span><span class="n">lifecycle</span><span class="p">,</span> <span class="nc">STARTED</span><span class="p">)</span>
+                <span class="p">.</span><span class="nf">collect</span> <span class="p">{</span>
+                    <span class="c1">// New location! Update the map</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Even though this API also comes with some gotchas to be aware of, we decided to keep it in as it’s useful as a Flow operator. For example, it can be <a href="https://manuelvivo.dev/coroutines-addrepeatingjob#safe-flow-collection-in-jetpack-compose">easily used in Jetpack Compose</a>. Even though you could achieve the same functionality in Compose by using the <a href="https://developer.android.com/jetpack/compose/side-effects#producestate"><code class="language-plaintext highlighter-rouge">produceState</code></a> and the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> API, we left this API in the library as an alternative to a more reactive approach.</p>
+
+<p>The gotcha, as it’s documented in the KDoc, is that the order in which you add the <code class="language-plaintext highlighter-rouge">flowWithLifecycle</code> operator matters. Operators applied before the <code class="language-plaintext highlighter-rouge">flowWithLifecycle</code> operator will be cancelled when the <code class="language-plaintext highlighter-rouge">lifecycle</code> is below <code class="language-plaintext highlighter-rouge">minActiveState</code>. However, operators applied <em>after</em> won’t be cancelled even though no items are sent.</p>
+
+<p>For the most curious ones, this API name takes the <code class="language-plaintext highlighter-rouge">Flow.flowOn(CoroutineContext)</code> operator as a precedent since <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> changes the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> used to collect the upstream flow while leaving the downstream unaffected.</p>
+
+<h2 id="should-we-add-an-additional-api">Should we add an additional API?</h2>
+
+<p>Given that we already have the <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code>, <code class="language-plaintext highlighter-rouge">LifecycleOwner.repeatOnLifecycle</code>, and <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> APIs. Should we add any other API?</p>
+
+<p>New APIs can introduce as much confusion as problems they’d solve. There are multiple ways to support different use cases, and the shortest path depends greatly on the surrounding code. What might work for your project, might not work for others.</p>
+
+<p>This is why we don’t want to provide APIs for all the possible cases, the more APIs available, the more confusing it will be for developers to know <em>what</em> to use <em>when</em>. Therefore, we made the decision of just keeping the most low-level APIs. Sometimes, less is more.</p>
+
+<h2 id="naming-is-important-and-difficult">Naming is important (and difficult)</h2>
+
+<p>It’s not only about which use cases we support, but also, how to name them! Names should comply with developers’ expectations and follow the Kotlin coroutines conventions. For example:</p>
+
+<ul>
+  <li>
+    <p>If the API starts a new coroutine using an implicit <code class="language-plaintext highlighter-rouge">CoroutineScope</code> (for example the <code class="language-plaintext highlighter-rouge">lifecycleScope</code> used implicitly in <code class="language-plaintext highlighter-rouge">addRepeatingJob</code>), this must be reflected in the name to avoid false expectations! In this case, <code class="language-plaintext highlighter-rouge">launch</code> should be somehow included in the name.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">collect</code> is a suspend function. Don’t prefix an API name with <code class="language-plaintext highlighter-rouge">collect</code> if it’s not a suspend function.</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Note: Compose’s <code class="language-plaintext highlighter-rouge">collectAsState</code> API is a special case whose name we’re ok with. It cannot be confused for a suspend function since there’s no such thing as a <code class="language-plaintext highlighter-rouge">@Composable suspend fun</code> in Compose.</p>
+</blockquote>
+
+<p>Even the <code class="language-plaintext highlighter-rouge">LifecycleOwner.addRepeatingJob</code> API was a tough one to name. As it creates new coroutines with <code class="language-plaintext highlighter-rouge">lifecycleScope</code>, it should’ve been prefixed with <code class="language-plaintext highlighter-rouge">launch</code>. However, we wanted to disassociate the fact that coroutines were used under the hood, and since it adds a new lifecycle observer, the name was more consistent with the rest of other LifecycleOwner APIs.</p>
+
+<p>The name was also somewhat influenced by the existing <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleCoroutineScope"><code class="language-plaintext highlighter-rouge">LifecycleCoroutineScope.launchWhenX</code></a> suspending APIs. As <code class="language-plaintext highlighter-rouge">launchWhenStarted</code> and <code class="language-plaintext highlighter-rouge">repeatOnLifecycle(STARTED)</code> provide completely different functionality (<code class="language-plaintext highlighter-rouge">launchWhenStarted</code> suspends the execution of the coroutine, and <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> cancels and restarts a new coroutine), if the names of the new APIs were similar (for example, using <code class="language-plaintext highlighter-rouge">launchWhenever</code> for the restarting APIs), developers could’ve got confused and even use them interchangeably without noticing.</p>
+
+<h2 id="one-liner-flow-collection">One-liner flow collection</h2>
+
+<p><code class="language-plaintext highlighter-rouge">LiveData</code>’s <code class="language-plaintext highlighter-rouge">observe</code> function is lifecycle aware and only processes emissions when the lifecycle is at least started. If you’re migrating from LiveData to Kotlin flows, you might think that having a one-line replacement is a good idea! You could remove boilerplate code and the migration is straightforward.</p>
+
+<p>As such, you can do as <a href="https://twitter.com/ianhlake">Ian Lake</a> did when he first started playing around with the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> APIs. He created a convenience wrapper called <code class="language-plaintext highlighter-rouge">collectIn</code> like the following (to follow the naming conventions discussed above, I’m renaming it to be <code class="language-plaintext highlighter-rouge">launchAndCollectIn</code>):</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Flow</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;.</span><span class="nf">launchAndCollectIn</span><span class="p">(</span>
+    <span class="n">owner</span><span class="p">:</span> <span class="nc">LifecycleOwner</span><span class="p">,</span>
+    <span class="n">minActiveState</span><span class="p">:</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span> <span class="p">=</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">,</span>
+    <span class="k">crossinline</span> <span class="n">action</span><span class="p">:</span> <span class="k">suspend</span> <span class="nc">CoroutineScope</span><span class="p">.(</span><span class="nc">T</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span>
+<span class="p">)</span> <span class="p">=</span> <span class="n">owner</span><span class="p">.</span><span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+        <span class="n">owner</span><span class="p">.</span><span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="n">minActiveState</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">collect</span> <span class="p">{</span>
+                <span class="nf">action</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>So that you could call it from the UI like this:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="n">someLocationProvider</span><span class="p">.</span><span class="n">locations</span><span class="p">.</span><span class="nf">launchAndCollectIn</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// New location! Update the map</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This wrapper, as nice and straightforward it might look in this example, suffers from the same problems we mentioned earlier regarding <code class="language-plaintext highlighter-rouge">LifecycleOwner.addRepeatingJob</code>. It doesn’t respect the calling context and can be dangerous to use inside other coroutines. Furthermore, the original name is really misleading: <code class="language-plaintext highlighter-rouge">collectIn</code> is not a suspend function! As mentioned before, developers expect <code class="language-plaintext highlighter-rouge">collect</code> functions to suspend. Maybe, a better name for this wrapper could be <code class="language-plaintext highlighter-rouge">Flow.launchAndCollectIn</code> to prevent bad usages.</p>
+
+<h2 id="wrapper-in-iosched">Wrapper in iosched</h2>
+
+<p><code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> must be used with the <code class="language-plaintext highlighter-rouge">viewLifecycleOwner</code> in Fragments. In the open source Google I/O app, the <a href="https://github.com/google/iosched">iosched</a> project, the team decided to create a wrapper to avoid misusages of the API in Fragments with a very explicit API name: <a href="https://github.com/google/iosched/blob/main/mobile/src/main/java/com/google/samples/apps/iosched/util/UiUtils.kt#L60"><code class="language-plaintext highlighter-rouge">Fragment.launchAndRepeatWithViewLifecycle</code></a>.</p>
+
+<blockquote>
+  <p>Note: The implementation is very similar to the <code class="language-plaintext highlighter-rouge">addRepeatingJob</code> API. And when this was written using the <code class="language-plaintext highlighter-rouge">alpha01</code> version of the library, the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> API lint checks that were added in <code class="language-plaintext highlighter-rouge">alpha02</code> were not in place.</p>
+</blockquote>
+
+<h2 id="do-you-need-a-wrapper">Do you need a wrapper?</h2>
+
+<p>If you need to create wrappers on top of the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> API to accommodate the most common use cases you might have in your app, ask yourself if you really need it, and why you need it. If you’re convinced and want to go forward, I’d suggest you choose a very explicit API name to clearly define what’s the wrapper’s behavior to avoid misusages. Also, document it very clearly so that newcomers can fully understand the implications of using it.</p>
+
+<hr />
+
+<p>I hope this blog post gave you an idea of what considerations the team had when deciding what to do with the <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> APIs and the potential helper methods we could add on top of it.</p>
+
+<p>Again, thanks to <a href="https://twitter.com/adamwp">Adam Powell</a>, <a href="https://twitter.com/wkalic">Wojtek Kaliciński</a>, <a href="https://twitter.com/ianhlake">Ian Lake</a>, and <a href="https://twitter.com/yigitboyar">Yigit Boyar</a> for giving feedback and discussing the shape of these APIs.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/repeatonlifecycle';
+                            this.page.identifier = '/repeatonlifecycle';
+                            this.page.title = 'repeatOnLifecycle API design story';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/sharein-statein">Things to know about Flow’s shareIn and stateIn operators</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/kotlin-flows-in-practice">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-10-27-kotlin-flows-in-practice.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/kotlin-flows-in-practice">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Kotlin Flows in practice</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/coroutinescope-hilt">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-06-10-coroutinescope-hilt.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutinescope-hilt">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Hilt</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Create an application CoroutineScope using Hilt</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">repeatOnLifecycle API design story</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=repeatOnLifecycle+API+design+story&amp;url=https://manuelvivo.dev/repeatonlifecycle"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/repeatonlifecycle"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

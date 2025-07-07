@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator>
+  <link href="https://manuelvivo.dev/tag/mentoring/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://manuelvivo.dev/" rel="alternate" type="text/html" />
+  <updated>2025-07-07T10:14:22+00:00</updated>
+  <id>https://manuelvivo.dev/tag/mentoring/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Manuel Vivo .dev | </title>
+  
+
+  
+    <subtitle>A place where you can learn about Android development</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">Interviewing at Staff+ level</title>
+      <link href="https://manuelvivo.dev/interviewing-at-staff-level" rel="alternate" type="text/html" title="Interviewing at Staff+ level" />
+      <published>2024-03-12T00:00:00+00:00</published>
+      <updated>2024-03-12T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/interviewing-at-staff-level</id>
+      <content type="html" xml:base="https://manuelvivo.dev/interviewing-at-staff-level">&lt;p&gt;In this blog post, I’m covering how I prepared for various Staff level interviews at different companies&lt;/p&gt;
+
+&lt;p&gt;Interviewing for Staff+ Individual Contributor (IC) level positions can be both challenging and exhilarating. As you aspire to get hired in these positions, you may find yourself grappling with uncertainties about your adaptability to new company cultures, tech stacks, and business domains. So… how should you prepare to excel at these interviews?&lt;/p&gt;
+
+&lt;p&gt;In this blog post, I’m covering how I prepared for various Staff level interviews at different companies. Given the versatile skill set a Staff+ position requires, each company might have their unique interview processes. You need to be flexible and ready for any type of interview. Staff+ positions are scarce, and there’s a fair bit of competition. Making the company wait in order to prepare for their different interviews might mean losing out to someone who was ready to impress from day one.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: It’s perfectly okay if you’re unfamiliar with Staff+ positions if you’ve recently begun your career as an IC, or if you’re simply curious about what it takes to get there. This blog post is relevant for you too 😊 Keep reading! Companies may also conduct these types of interviews at other levels.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I have experience interviewing at FAANG, as well as large and medium-sized tech companies, but I won’t divulge specifics about the companies I interviewed with or the intricacies of their processes, as these can evolve rapidly. Interviewers will tell you everything you need to know at the right time. Instead, I’ll give you insights into the most common interview types: &lt;strong&gt;1) Data Structures and Algorithms (DS/A), 2) area of expertise&lt;/strong&gt; (Android in my case), &lt;strong&gt;3) system design, and 4) behavioural interviews&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;But in case you’re wondering… Yes, I did! I passed multiple interview processes and joined Bumble Inc. 🐝 as a Staff Android Engineer. In the upcoming sections, I’m explaining how to prepare for those 4 types of interviews, and some tips to help you nail them.&lt;/p&gt;
+
+&lt;h2 id=&quot;are-you-ready-to-be-a-staff-engineer&quot;&gt;Are you ready to be a Staff+ engineer?&lt;/h2&gt;
+
+&lt;p&gt;You, better than anyone, know if you’re ready to be a Staff+ engineer or if it’s a goal you’re aspiring towards. This journey to this level involves not just technical skills but also a keen understanding of leadership and impact. I wouldn’t be giving justice to the topic if I tried to give you advice in a couple of paragraphs. For that, I’m relying on amazing authors who wrote entire books about the topic.&lt;/p&gt;
+
+&lt;p&gt;My favourite book to understand what the role is about is &lt;a href=&quot;https://www.goodreads.com/book/show/61058107-the-staff-engineer-s-path&quot;&gt;&lt;em&gt;The Staff’s Engineer’s Path&lt;/em&gt; by Tanya Reilly&lt;/a&gt;. This is an authentic masterpiece. Another book you might find interesting is &lt;a href=&quot;https://www.goodreads.com/book/show/56481725-staff-engineer&quot;&gt;&lt;em&gt;Staff Engineer&lt;/em&gt; by Will Larson&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2024-03-12-interviewing-at-staff-level-1.webp&quot; /&gt;
+  &lt;small&gt;Picture of the Staff Engineer books&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;In a nutshell, a Staff+ IC engineer typically operates at a senior level within a company. They may have extensive technical knowledge on a particular area and often take leadership roles. They’re responsible for driving technical excellence, providing mentorship, and contributing to high-level decision-making.&lt;/p&gt;
+
+&lt;h2 id=&quot;preparing-the-dsa-interview&quot;&gt;Preparing the DS/A interview&lt;/h2&gt;
+
+&lt;p&gt;The Data Structures and Algorithms interview is probably the most controversial one — some love it, while others hate it! I can understand why some companies choose to conduct this kind of interviews:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;They help refine your coding skills. You are able to translate thoughts into functional code.&lt;/li&gt;
+  &lt;li&gt;A simple question can be built upon to see how the candidate reasons about, collaborates, and incorporates feedback from the interviewer.&lt;/li&gt;
+  &lt;li&gt;They force you to think about a problem in a structural way.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Those 3 points are crucial to succeed in a DS/A interview. Let’s go one by one.&lt;/p&gt;
+
+&lt;h3 id=&quot;improving-your-coding-skills&quot;&gt;Improving your coding skills&lt;/h3&gt;
+
+&lt;p&gt;Apart from learning the different types of exercises you can face, you need to solve the problem presented to you. Getting to a working solution is indispensable. The efficiency with which you arrive at a solution and make improvements can significantly impact the depth of discussions with your interviewer, which often translates into a successful interview.&lt;/p&gt;
+
+&lt;p&gt;To get that efficiency, I recommend learning the most common utilities in your programming language of choice. In Kotlin, I got familiar with uncommon Collections APIs that could come in handy in some exercises. There are helpful Kotlin Collections cheat sheets you can use; for example, I used &lt;a href=&quot;https://jussi.hallila.com/Kollections/&quot;&gt;this one&lt;/a&gt; by Jussi Hallila. I also refreshed my knowledge on some useful APIs like the Random API, the Mutex API, and thread-safe collections to name a few. This knowledge not only streamlines your coding but also opens avenues for more insightful discussions during the interview.&lt;/p&gt;
+
+&lt;h3 id=&quot;practising&quot;&gt;Practising&lt;/h3&gt;
+
+&lt;p&gt;The best way to get better at this type of interview is by practising, practising, and more practising. Dust off that familiar green cover of &lt;a href=&quot;https://www.goodreads.com/book/show/12544648-cracking-the-coding-interview&quot;&gt;&lt;em&gt;Cracking the Coding Interview&lt;/em&gt; by Gayle L. McDowell&lt;/a&gt; and diligently work through the different chapters. Additionally, prove your DS/A skills on other platforms! I used &lt;a href=&quot;https://leetcode.com/&quot;&gt;LeetCode&lt;/a&gt; and was quite happy with it. Go through as many exercises as possible from the &lt;a href=&quot;https://www.techinterviewhandbook.org/grind75&quot;&gt;Grind 75 questions&lt;/a&gt; to gain a thorough understanding of all the possible DS/A questions. Also, do mock interviews to try those skills out in front of another human being. For this, I used &lt;a href=&quot;https://www.pramp.com&quot;&gt;Pramp&lt;/a&gt;: I missed some variety, but overall, it offered what I needed.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2024-03-12-interviewing-at-staff-level-2.webp&quot; /&gt;
+  &lt;small&gt;Picture of the Cracking the Coding Interview book and some hand-written notes in preparation for the DS/A interview&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&quot;you-and-the-interviewer&quot;&gt;You and the interviewer&lt;/h3&gt;
+
+&lt;p&gt;Different interviewers have different interview styles but the most common type I’ve seen is that interviewer who aims to understand your limits while ensuring a positive experience. In your interview, you’ll probably start with a question that has a somewhat straightforward solution using brute force.&lt;/p&gt;
+
+&lt;p&gt;How you get to the solution is as important as &lt;em&gt;what&lt;/em&gt; you type. Think out loud and discuss different alternatives with your interviewer: their trade-offs, their time and space complexities, possible improvements, etc. The best advice I can give you is to actively listen to your interviewer’s feedback and apply it to your approach. Unless you find yourself in an unusual circumstance, most interviewers genuinely want to see you succeed! They are likely to offer hints or guidance to help you navigate the problem.&lt;/p&gt;
+
+&lt;h3 id=&quot;structure-your-way-to-solve-the-problem&quot;&gt;Structure your way to solve the problem&lt;/h3&gt;
+
+&lt;p&gt;To tackle a specific problem, I follow the problem-solving structure outlined in &lt;em&gt;Cracking the coding interview&lt;/em&gt; book: &lt;strong&gt;Listen, think of edge cases, brute force, optimise, walk through your approach, implement, and test&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;In my preparation for Staff positions, I found &lt;a href=&quot;https://adambennett.dev/2021/11/on-interviewing/&quot;&gt;Adam Bennet’s &lt;em&gt;On interviewing&lt;/em&gt; blog post&lt;/a&gt; a valuable resource. In particular, I enjoyed his Github project, containing gems like the &lt;a href=&quot;https://github.com/ditn/interviewprep/blob/main/Common%20Strategies.md&quot;&gt;common strategies for DS/A interview problems&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;preparing-the-android-or-your-area-of-expertise-interview&quot;&gt;Preparing the Android (or your area of expertise) interview&lt;/h2&gt;
+
+&lt;p&gt;Android interviews can take diverse formats. You may be tasked with building an app on the spot, improving an existing app, identifying and fixing intentional bugs in the codebase, or completing a home assessment that you subsequently discuss during the interview.&lt;/p&gt;
+
+&lt;p&gt;If you need to complete a home assessment, I highly recommend reading &lt;a href=&quot;https://blog.blundellapps.co.uk/android-job-interview-take-home-test-cheat-sheet/&quot;&gt;Paul Blundell’s Android interviews blog post&lt;/a&gt;. Also, look at his &lt;a href=&quot;https://github.com/blundell/polkiemon&quot;&gt;implementation of one of those home assessment apps&lt;/a&gt; and learn how to implement pagination on your own.&lt;/p&gt;
+
+&lt;p&gt;If you’re tasked with building an app from scratch during the interview, practice creating a simple app with two screens — a list and a detail screen — using an MVx architecture. If you need to improve an existing application, I relied on the above mostly. The rest of my preparation came with my experience as an Android developer.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2024-03-12-interviewing-at-staff-level-3.webp&quot; /&gt;
+  &lt;small&gt;Picture of the Head First Design Patterns book and some hand-written notes in preparation for the Android interview&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Given my confidence in topics like Architecture, Dependency Injection, Jetpack Compose, or threading, I didn’t prepare much about them. However, it’s advisable to find out about the company’s Android tech stack and get to know those tools and how they align with your existing knowledge.&lt;/p&gt;
+
+&lt;h2 id=&quot;preparing-the-system-design-interview&quot;&gt;Preparing the System design interview&lt;/h2&gt;
+
+&lt;p&gt;The system design interview is my favourite one by far. You might think they don’t require that much preparation, but they do if you want to nail them. Call me systematic, but I believe these interviews also benefit from a methodical strategy.&lt;/p&gt;
+
+&lt;p&gt;When facing a system design problem, it’s crucial to know which questions to ask upfront. The key is to ask questions in a logical sequence, adjusting your choices based on the information gathered. I usually start gathering requirements from the interviewer to understand what we’re building and for whom. Ask for both functional and non-functional requirements such as Daily Active Users (DAU), authentication, offline mode, pagination, etc.&lt;/p&gt;
+
+&lt;p&gt;Then, you can make informed decisions and dive into the details of choosing the right network protocol (e.g. REST, gRPC, GraphQL, etc.) and defining the data models based on the business requirements and the end points to communicate with the backend.&lt;/p&gt;
+
+&lt;p&gt;I had &lt;a href=&quot;https://topmate.io/manuelvivo/799730&quot;&gt;cheat sheets&lt;/a&gt; with questions based on priority (i.e. what to ask first), and other cheat sheets based on topics such as performance, networking, data management, etc. Remember that system design problems might not always have a single right answer. Engage in dialogue, discuss trade-offs, and work towards a shared understanding with your interviewer.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2024-03-12-interviewing-at-staff-level-4.webp&quot; /&gt;
+  &lt;small&gt;Picture of the System Design Interview and Designing Data-Intensive Applications books and some hand-written notes in preparation for the System design interview&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&quot;mobile-system-design-interview&quot;&gt;Mobile system design interview&lt;/h3&gt;
+
+&lt;p&gt;If you’re in mobile app development, the go-to resource for acing the system design interview is &lt;a href=&quot;https://github.com/weeeBox/mobile-system-design&quot;&gt;Alex Lementuev’s &lt;em&gt;Mobile system design&lt;/em&gt; Github project&lt;/a&gt;. This comprehensive repository contains everything you need to succeed in this type of interview. Pay particular attention to the pros and cons outlined for the different topics, as that’s indispensable to justify your decision-making. Apart from learning the different choices you can make, this resource also helps you structure the way you approach the interview. To see how to apply that knowledge in an actual interview, check out the &lt;a href=&quot;https://www.youtube.com/watch?v=PYsXmMt5Kdw&amp;amp;list=PLaMN-JyH50OYAfxJEpiQTYTD-gxTf7x9d&quot;&gt;mock interviews in his Youtube channel&lt;/a&gt;. I highly recommend observing how people approach the problems.&lt;/p&gt;
+
+&lt;p&gt;When covering the Architecture of the mobile app, think about the &lt;a href=&quot;https://developer.android.com/topic/architecture&quot;&gt;recommended layered Android architecture&lt;/a&gt; and &lt;a href=&quot;https://developer.android.com/topic/architecture#unidirectional-data-flow&quot;&gt;Unidirectional Data Flow (UDF)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Apart from this, I read content from the &lt;a href=&quot;https://blog.bytebytego.com/archive&quot;&gt;ByteByteGo newsletter&lt;/a&gt; and the System design interview books (&lt;a href=&quot;https://www.goodreads.com/book/show/54109255-system-design-interview-an-insider-s-guide&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;https://www.goodreads.com/book/show/60631342-system-design-interview-an-insider-s-guide&quot;&gt;2&lt;/a&gt;) by &lt;a href=&quot;https://twitter.com/alexxubyte&quot;&gt;Alex Xu&lt;/a&gt;, refresh the different design patterns, and read the &lt;a href=&quot;https://www.goodreads.com/book/show/23463279-designing-data-intensive-applications&quot;&gt;&lt;em&gt;Designing Data-Intensive Applications&lt;/em&gt; book by Martin Kleppmann&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As with any other interview type, you need to practice, practice, and more practice. Find a feature of your favourite app and think about how you would design it. For more inspiration, you can see the exercises listed in the &lt;a href=&quot;https://github.com/weeeBox/mobile-system-design/tree/master/exercises&quot;&gt;Mobile system design project&lt;/a&gt; mentioned above.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2024-03-12-interviewing-at-staff-level.webp&quot; /&gt;
+  &lt;small&gt;Hand-written completed exercises in preparation for the Mobile system design interview&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;preparing-the-behavioural-interview&quot;&gt;Preparing the behavioural interview&lt;/h2&gt;
+
+&lt;p&gt;To prepare for the behavioural interview, you can follow the approach outlined in &lt;em&gt;Cracking the Coding Interview&lt;/em&gt; book. Prepare a table with your most important projects and systematically reflect on key aspects. For example: what was most challenging, what you learned, what was most interesting, the hardest bug, what you enjoyed the most, conflicts, what you’d do differently, leadership, and failures.&lt;/p&gt;
+
+&lt;p&gt;Other questions can be: a time when you learned a valuable lesson, your ability to move the team forward, to have an influence outside of your team, passion for wanting to make things happen, a time when your performance exceeded expectations, a time when you received a performance review that you felt was unjustified, etc.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2024-03-12-interviewing-at-staff-level-5.webp&quot; /&gt;
+  &lt;small&gt;Table with a TL;DR; of my involvement in different professional projects&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Remember that the interview is a Staff+ role. Focus on expertise, leadership, and impact. You should be able to give examples of how the work you did linked to business impact, how you acted like a multiplier for other developers, and demonstrate that you’re thinking about business outcomes alongside technical expertise. This structured approach ensures that you’re well-prepared to articulate your experiences, achievements, and challenges during the behavioral interview.&lt;/p&gt;
+
+&lt;p&gt;Here’s the best tip ever: &lt;strong&gt;DO NOT LIE!&lt;/strong&gt; Honesty is key throughout the interview process. Even if you manage to succeed by providing inaccurate information, it can lead to misunderstandings when you join the team. But don’t be shy either! It’s your interview and your moment to shine ⭐. You need to sell yourself. Focus on your personal achievements and what you contributed to the projects.&lt;/p&gt;
+
+&lt;h3 id=&quot;refining-your-leadership-style&quot;&gt;Refining your leadership style&lt;/h3&gt;
+
+&lt;p&gt;Leadership comes with experience, but refining your leadership style can be accelerated by applying insights from relevant books. In addition to the Staff engineer books I mentioned in the introduction, consider exploring the following books that I enjoyed a lot:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/33517721-the-culture-code&quot;&gt;&lt;em&gt;The Culture Code&lt;/em&gt;) by Daniel Coyle&lt;/a&gt;: learn different skills to build an exceptional team. Focus on creating a culture of safety, sharing vulnerability, and establishing a clear sense of purpose.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/15014.Crucial_Conversations&quot;&gt;&lt;em&gt;Crucial Conversations&lt;/em&gt; by Kerry Patterson&lt;/a&gt;: learn essential techniques for what to do before opening your mouth, how to open your mouth, and how to bring the conversation to a constructive conclusion.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/22085568-the-culture-map&quot;&gt;&lt;em&gt;The Culture Map&lt;/em&gt; by Erin Meyer&lt;/a&gt;: understand and navigate cultural differences in this insightful and practical guide, perfect for both your work and personal life.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/123857637-never-split-the-difference&quot;&gt;&lt;em&gt;Never Split the Difference&lt;/em&gt; by Chris Voss&lt;/a&gt;: discover negotiation skills to listen, empathise, and get the most out of your conversations with people.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/29939161-radical-candor&quot;&gt;&lt;em&gt;Radical Candor&lt;/em&gt; by Kim Scott&lt;/a&gt;: learn how to care personally while challenging your team directly to get optimal performance.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As you read these books, use your own judgement to select and implement the ideas that resonate with you. &lt;strong&gt;Authenticity is key&lt;/strong&gt;. Adapt and apply the lessons in a way that aligns with your unique leadership style.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2024-03-12-interviewing-at-staff-level-6.webp&quot; /&gt;
+  &lt;small&gt;Image with books to refine your leadership style&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Preparing for Staff+ IC level interviews requires a multifaceted approach that includes technical, behavioural, and leadership aspects. The journey involves navigating through various interview formats, from DS/A to system design and behavioural assessments.&lt;/p&gt;
+
+&lt;p&gt;Embracing a structured preparation strategy is essential: learn about the different topics, choose your own strategy, practice with mock interviews, listen actively, and work with your interviewer toward the best possible solution.&lt;/p&gt;
+
+&lt;p&gt;Take the time to prepare for the 4 different interviews properly. Plan your time as it works for you. You can spend a couple of weeks on each interview to deep dive into the different aspects of it. And when the interviews are getting closer, maybe you can keep studying one type a day.&lt;/p&gt;
+
+&lt;p&gt;What makes you unique is your own strengths and experiences. Even if you learn a lot from external resources, tint your interviews with personal anecdotes and learnings. That will make those special, and you’ll be able to stand out from the crowd.&lt;/p&gt;
+
+&lt;p&gt;Lastly, when facing interviews… Have fun! Look at those problems as opportunities that you’re genuinely willing to overcome. You’re a capable and confident professional with a wealth of knowledge and skills. You got this! Best of luck on your interview journey!&lt;/p&gt;
+
+&lt;h2 id=&quot;bonus-you-got-the-job&quot;&gt;[Bonus] You got the job!&lt;/h2&gt;
+
+&lt;p&gt;Congratulations on landing the job! Before starting your new position, I’d recommend reading &lt;a href=&quot;https://www.goodreads.com/book/show/15824358-the-first-90-days&quot;&gt;&lt;em&gt;The First 90 days&lt;/em&gt; book by Michael Watkins&lt;/a&gt;. This book can help you onboard into your new position. Even if the company has its own onboarding plan, prepare your personal journey and run both in tandem.&lt;/p&gt;
+
+&lt;p&gt;Oh, and here’s a friendly reminder: show some love to your new colleagues and their code. No judgments! Everything they’ve done has a story. You’re there to level up the game, not to rain on anyone’s parade. Cheers to your new adventure! 🚀&lt;/p&gt;
+
+&lt;p&gt;Good luck! 🍀&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mentoring" />
+      
+
+      
+        <summary type="html">In this blog post, I’m covering how I prepared for various Staff level interviews at different companies</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Prepare your interviews with me</title>
+      <link href="https://manuelvivo.dev/prepare-interviews-with-me" rel="alternate" type="text/html" title="Prepare your interviews with me" />
+      <published>2024-01-29T00:00:00+00:00</published>
+      <updated>2024-01-29T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/prepare-interviews-with-me</id>
+      <content type="html" xml:base="https://manuelvivo.dev/prepare-interviews-with-me">&lt;p&gt;Mock interviews, cheat sheets, 1:1 sessions, tips, and more!&lt;/p&gt;
+
+&lt;h2 id=&quot;let-me-help-you&quot;&gt;Let me help you!&lt;/h2&gt;
+
+&lt;p&gt;Got an interview coming up and feeling a bit shaky? Don’t worry—I’ve got your back!&lt;/p&gt;
+
+&lt;p&gt;On &lt;a href=&quot;https://topmate.io/manuelvivo&quot;&gt;my services website&lt;/a&gt;, I offer personalized sessions that can help you nail your next interview.&lt;/p&gt;
+
+&lt;p&gt;I can help you with:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://topmate.io/manuelvivo/799730&quot;&gt;Mobile System Design cheat sheets&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://topmate.io/manuelvivo/772854&quot;&gt;Interview preparation and tips&lt;/a&gt; sessions.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://topmate.io/manuelvivo/772893&quot;&gt;Data Structures and Algorithms mock interview&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://topmate.io/manuelvivo/772858&quot;&gt;Android mock interview&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://topmate.io/manuelvivo/772890&quot;&gt;System Design mock interview&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://topmate.io/manuelvivo/774964&quot;&gt;Other 1:1 sessions&lt;/a&gt; to help you with anything you need.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I also offer career mentorship and other Android-related sessions. For more information, check all the possibilities in &lt;a href=&quot;https://topmate.io/manuelvivo&quot;&gt;my services account&lt;/a&gt;.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mentoring" />
+      
+
+      
+        <summary type="html">Mock interviews, cheat sheets, 1:1 sessions, tips, and more!</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator>
+  <link href="https://manuelvivo.dev/tag/talks/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://manuelvivo.dev/" rel="alternate" type="text/html" />
+  <updated>2025-07-07T10:14:22+00:00</updated>
+  <id>https://manuelvivo.dev/tag/talks/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Manuel Vivo .dev | </title>
+  
+
+  
+    <subtitle>A place where you can learn about Android development</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">Saving UI state on Android</title>
+      <link href="https://manuelvivo.dev/saving-ui-state" rel="alternate" type="text/html" title="Saving UI state on Android" />
+      <published>2023-05-10T00:00:00+00:00</published>
+      <updated>2023-05-10T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/saving-ui-state</id>
+      <content type="html" xml:base="https://manuelvivo.dev/saving-ui-state">&lt;p&gt;Google I/O 2023 talk&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Saving a UI state properly is essential for providing a great UX experience. Your users might be disappointed if your screen doesn’t preserve its state during a configuration change, activity recreation, or system-initiated process death. Learn best practices to save UI state properly in both the View system and Jetpack Compose by comparing APIs such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;remember&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rememberSaveable&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;onSaveInstanceState&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModel&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SavedStateHandle&lt;/code&gt;.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/V-s4z7B_Gnc&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/topic/libraries/architecture/saving-states&quot;&gt;Save UI states&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/jetpack/compose/state-saving&quot;&gt;Save UI state in Compose&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/mad-architecture-guide&quot;&gt;Guide to app architecture&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/architecture-ui-layer&quot;&gt;UI layer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/topic/architecture/ui-layer/stateholders&quot;&gt;State holders and UI State&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/topic/architecture/ui-layer/state-production&quot;&gt;UI State production&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/architecture-viewmodel&quot;&gt;ViewModel overview&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/architecture-recommendations&quot;&gt;Architecture recommendations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="architecture" />
+      
+
+      
+        <summary type="html">Google I/O 2023 talk</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">State holders and state production in the UI Layer</title>
+      <link href="https://manuelvivo.dev/state-holders-ui-layer" rel="alternate" type="text/html" title="State holders and state production in the UI Layer" />
+      <published>2022-10-25T00:00:01+00:00</published>
+      <updated>2022-10-25T00:00:01+00:00</updated>
+      <id>https://manuelvivo.dev/state-holders-ui-layer</id>
+      <content type="html" xml:base="https://manuelvivo.dev/state-holders-ui-layer">&lt;p&gt;Android Dev Summit 2022 talk&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;The UI layer displays application data on the screen. But how is it done exactly? We dive deep into the UI state production pipeline and state holders that manage UI complexity. Get to know the differences between UI and business logic, a ViewModel and a plain state holder class, state and events, and more! What is all that, when to use which, and how to do it.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/pCX9wvu-Bq0&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/mad-architecture-guide&quot;&gt;Guide to app architecture&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/architecture-ui-layer&quot;&gt;UI layer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/topic/architecture/ui-layer/stateholders&quot;&gt;State holders and UI State&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/topic/architecture/ui-layer/state-production&quot;&gt;UI State production&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/topic/architecture/ui-layer/events&quot;&gt;UI events&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/architecture-viewmodel&quot;&gt;ViewModel overview&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/architecture-recommendations&quot;&gt;Architecture recommendations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="architecture" />
+      
+
+      
+        <summary type="html">Android Dev Summit 2022 talk</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Collecting flows in a lifecycle-aware manner</title>
+      <link href="https://manuelvivo.dev/collecting-flows-video" rel="alternate" type="text/html" title="Collecting flows in a lifecycle-aware manner" />
+      <published>2022-10-25T00:00:00+00:00</published>
+      <updated>2022-10-25T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/collecting-flows-video</id>
+      <content type="html" xml:base="https://manuelvivo.dev/collecting-flows-video">&lt;p&gt;Android Dev Summit 2022 talk&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Collecting flows in a lifecycle-aware manner is the recommended way to collect flows on Android. In this talk, we explore the different APIs you have to do so, such as the repeatOnLifecycle API or collectAsStateWithLifecycle API in Jetpack Compose, and see how they work under the hood.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/6hNXFs1fYaY&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="architecture" />
+      
+
+      
+        <summary type="html">Android Dev Summit 2022 talk</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">A Compose State of Mind</title>
+      <link href="https://manuelvivo.dev/a-compose-state-of-mind" rel="alternate" type="text/html" title="A Compose State of Mind" />
+      <published>2021-10-27T00:00:01+00:00</published>
+      <updated>2021-10-27T00:00:01+00:00</updated>
+      <id>https://manuelvivo.dev/a-compose-state-of-mind</id>
+      <content type="html" xml:base="https://manuelvivo.dev/a-compose-state-of-mind">&lt;p&gt;A Compose State of Mind — Android Dev Summit 2021 talk&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Jetpack Compose offers automatic state observation that recomposes or recreates your UI whenever state changes. Learn about Compose’s state model and the Composition, when to hoist state and create state holders or use AAC ViewModels, and how to mutate state when you’re outside the Composition safely so that these changes are tracked by Compose.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/rmv2ug-wW4U&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/compose-docs&quot;&gt;Jetpack Compose documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/compose-pathway&quot;&gt;Jetpack Compose pathway&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/compose-samples&quot;&gt;Jetpack Compose samples&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/jetpack/compose/state&quot;&gt;State in Compose documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/codelabs/jetpack-compose-state&quot;&gt;State in Compose codelab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="compose" />
+      
+
+      
+        <summary type="html">A Compose State of Mind — Android Dev Summit 2021 talk</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Kotlin Flows in practice</title>
+      <link href="https://manuelvivo.dev/kotlin-flows-in-practice" rel="alternate" type="text/html" title="Kotlin Flows in practice" />
+      <published>2021-10-27T00:00:00+00:00</published>
+      <updated>2021-10-27T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/kotlin-flows-in-practice</id>
+      <content type="html" xml:base="https://manuelvivo.dev/kotlin-flows-in-practice">&lt;p&gt;Kotlin Flows in practice — Android Dev Summit 2021 talk&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;With coroutines as the recommended solution for asynchronous operations, Kotlin Flow is the obvious choice for managing streams of data in Android apps. However, there are some lifecycle perils to consider and new lifecycle-aware APIs to understand in order to get the most out of Flows in Android. Learn about the powerful and expressive Flow APIs and how to use them across all layers of your app in a practical way—solving common use cases every developer can face.&lt;/p&gt;
+
+&lt;p&gt;Speakers: Manuel Vicente Vivo, Jose Alcérreca&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/fSB6_KE95bU&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/kotlin/flow&quot;&gt;Kotlin Flows documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="coroutines" />
+      
+
+      
+        <summary type="html">Kotlin Flows in practice — Android Dev Summit 2021 talk</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Using Jetpack libraries in Compose talk</title>
+      <link href="https://manuelvivo.dev/libraries-in-compose-talk" rel="alternate" type="text/html" title="Using Jetpack libraries in Compose talk" />
+      <published>2021-05-18T00:00:00+00:00</published>
+      <updated>2021-05-18T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/libraries-in-compose-talk</id>
+      <content type="html" xml:base="https://manuelvivo.dev/libraries-in-compose-talk">&lt;p&gt;Using Jetpack libraries in Compose - Google I/O 2021 talk.&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Jetpack Compose integrates seamlessly with other Jetpack libraries. There’s no need to rewrite everything from scratch to start using Compose in your app. The UI code might change, but the rest of your app architecture remains intact. In this Session, we add Compose to an existing app that already uses ViewModel, LiveData/Flow, Paging, Room, Hilt, and Navigation! Learn how the libraries work with Compose, when to use ViewModels, and how to get the most out of Navigation Compose.&lt;/p&gt;
+
+&lt;p&gt;Speakers: Ian Lake, Manuel Vicente Vivo&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/0z_dwBGQQWQ&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/compose-pathway&quot;&gt;Compose Pathway&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/compose-docs&quot;&gt;Compose documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/compose-samples&quot;&gt;Compose Samples&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="compose" />
+      
+
+      
+        <summary type="html">Using Jetpack libraries in Compose - Google I/O 2021 talk.</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Going with the Flow</title>
+      <link href="https://manuelvivo.dev/going-with-the-flow" rel="alternate" type="text/html" title="Going with the Flow" />
+      <published>2020-11-24T00:00:00+00:00</published>
+      <updated>2020-11-24T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/going-with-the-flow</id>
+      <content type="html" xml:base="https://manuelvivo.dev/going-with-the-flow">&lt;p&gt;Introduction to coroutines Flow&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Suspend functions in Coroutines are meant for one-shot calls that could return a result. But, how can you create a stream of data to return multiple results over time? In this video of Kotlin Vocabulary, Manuel will give us the benefits of Kotlin Flow, and much more!&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/emk9_tVVLcc&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/35PMGrh&quot;&gt;The ABC of Coroutines episode&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://d.android.com/kotlin/flow&quot;&gt;Flow documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/2wHr94N&quot;&gt;Watch more Kotlin Vocabulary&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/AndroidDevs&quot;&gt;Subscribe to Android Developers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="coroutines" />
+      
+
+      
+        <summary type="html">Introduction to coroutines Flow</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Android Coroutines - How to manage async tasks in Kotlin</title>
+      <link href="https://manuelvivo.dev/coroutines-in-2020" rel="alternate" type="text/html" title="Android Coroutines - How to manage async tasks in Kotlin" />
+      <published>2020-07-13T00:00:00+00:00</published>
+      <updated>2020-07-13T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/coroutines-in-2020</id>
+      <content type="html" xml:base="https://manuelvivo.dev/coroutines-in-2020">&lt;p&gt;State of coroutines on Android in 2020&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Take a good look at the current state of coroutines support in Android libraries and tools, explore some interesting and not-so-obvious edge cases when dealing with Kotlin code that includes coroutines and interop with Java, and briefly look at some new developments in Kotlin coroutines, namely StateFlow and its comparison with LiveData, and SharedFlow.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/6manrgTPzyA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/coroutines-posts&quot;&gt;Coroutines blog posts&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/2R3DS9k&quot;&gt;Coroutines codelab&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/2R1ojz6&quot;&gt;Advanced coroutines codelab&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/3bMiUn8&quot;&gt;Testing coroutines talk&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/39wgxU8&quot;&gt;Cancellation and exceptions in coroutines&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/30FDT8S&quot;&gt;Check out the 11 Weeks of Android website&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/AndroidDevs&quot;&gt;Subscribe to Android Developers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="coroutines" />
+      
+
+      
+        <summary type="html">State of coroutines on Android in 2020</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Coroutines 101</title>
+      <link href="https://manuelvivo.dev/coroutines-101-talk" rel="alternate" type="text/html" title="Coroutines 101" />
+      <published>2020-04-02T00:00:00+00:00</published>
+      <updated>2020-04-02T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/coroutines-101-talk</id>
+      <content type="html" xml:base="https://manuelvivo.dev/coroutines-101-talk">&lt;p&gt;Introduction to the basics of coroutines&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Manuel Vivo, Android Engineer from the Developer Relations team at Google, gives an introduction to Kotlin Coroutines. Stay tuned to find out about the problems coroutines are trying to solve, how to use coroutines in Android, how to test them, and much more!&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/ZTDXo0-SKuU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/2R3DS9k&quot;&gt;Coroutines codelab&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/2R1ojz6&quot;&gt;Advanced coroutines codelab&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/3bMiUn8&quot;&gt;Testing coroutines talk&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/39wgxU8&quot;&gt;Cancellation and exceptions in coroutines&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/2WmhoEb&quot;&gt;Android Conference Talks playlist&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://goo.gle/AndroidDevs&quot;&gt;Subscribe to Android Developers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="coroutines" />
+      
+
+      
+        <summary type="html">Introduction to the basics of coroutines</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Coroutines! Gotta catch ‘em all! - KotlinConf 2019</title>
+      <link href="https://manuelvivo.dev/coroutines-gotta-catch-em-all" rel="alternate" type="text/html" title="Coroutines! Gotta catch 'em all! - KotlinConf 2019" />
+      <published>2019-12-04T00:00:00+00:00</published>
+      <updated>2019-12-04T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/coroutines-gotta-catch-em-all</id>
+      <content type="html" xml:base="https://manuelvivo.dev/coroutines-gotta-catch-em-all">&lt;p&gt;All about cancellation and exceptions in coroutines&lt;/p&gt;
+
+&lt;h3 id=&quot;abstract&quot;&gt;Abstract&lt;/h3&gt;
+
+&lt;p&gt;You’ve added coroutines to your app and everything is fine while your users are on the happy path. But what happens if you cancel a coroutine, you get a timeout or other type of error? Where do you handle it?&lt;/p&gt;
+
+&lt;p&gt;Kotlin added structured concurrency to scope the lifetime of a coroutine. But what kind of scopes should you use? How do scopes affect error handling? Does the way you start a coroutine, using launch or async have any effect on the type of errors or the way you handle them?&lt;/p&gt;
+
+&lt;p&gt;In this talk we’ll go over all of these use cases and show how they can be implemented to ensure robust error handling and a good user experience, even when you’re thrown off the happy path.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/w0kfnydnFWI&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;presenters&quot;&gt;Presenters&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/FMuntenescu&quot;&gt;Florina&lt;/a&gt; is working as an Android Developer Advocate at Google, helping developers architect clean, testable apps using the Architecture Components libraries. She has been working with Android for 8 years, previous work covering news at upday, payment solutions at payleven and navigation services at Garmin.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/manuelvicnt&quot;&gt;Manuel&lt;/a&gt; is an Android Developer Relations Engineer at Google. With previous experience at Capital One, he currently focuses on App Architecture, Kotlin &amp;amp; Coroutines, Dependency Injection and Jetpack Compose.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="coroutines" />
+      
+
+      
+        <summary type="html">All about cancellation and exceptions in coroutines</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

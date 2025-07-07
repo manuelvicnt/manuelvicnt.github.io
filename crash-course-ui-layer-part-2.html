@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Crash Course on the Android UI Layer | Part 2</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/crash-course-ui-layer-part-2" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Crash Course on the Android UI Layer | Part 2" />
+    <meta property="og:description" content="Part 2 - State Holders and Saving State Description This blog post series aims to summarise the Android Developer guidance on the UI layer. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices. By the end of this series, you will" />
+    <meta property="og:url" content="https://manuelvivo.dev/crash-course-ui-layer-part-2" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2023-12-19-crash-course-ui-layer-part-2.webp" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2023-12-19T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2023-12-19T00:00:00+00:00" />
+    <meta property="article:tag" content="Architecture" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Crash Course on the Android UI Layer | Part 2" />
+    <meta name="twitter:description" content="Part 2 - State Holders and Saving State Description This blog post series aims to summarise the Android Developer guidance on the UI layer. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices. By the end of this series, you will" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2023-12-19-crash-course-ui-layer-part-2.webp" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Architecture" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/crash-course-ui-layer-part-2",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2023-12-19-crash-course-ui-layer-part-2.webp",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/crash-course-ui-layer-part-2"
+    },
+    "description": "Part 2 - State Holders and Saving State Description This blog post series aims to summarise the Android Developer guidance on the UI layer. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices. By the end of this series, you will"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Crash Course on the Android UI Layer | Part 2" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Crash Course on the Android UI Layer Part 2 | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Crash Course on the Android UI Layer Part 2" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Part 2 - State Holders and Saving State" />
+<meta property="og:description" content="Part 2 - State Holders and Saving State" />
+<link rel="canonical" href="https://manuelvivo.dev/crash-course-ui-layer-part-2" />
+<meta property="og:url" content="https://manuelvivo.dev/crash-course-ui-layer-part-2" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-12-19T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Crash Course on the Android UI Layer Part 2" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2023-12-19T00:00:00+00:00","datePublished":"2023-12-19T00:00:00+00:00","description":"Part 2 - State Holders and Saving State","headline":"Crash Course on the Android UI Layer Part 2","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/crash-course-ui-layer-part-2"},"url":"https://manuelvivo.dev/crash-course-ui-layer-part-2"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-architecture post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="19 December 2023">19 December 2023</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/architecture/'>Architecture</a></span>
+                  
+              
+                <h1 class="post-full-title">Crash Course on the Android UI Layer | Part 2</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2023-12-19-crash-course-ui-layer-part-2.webp)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Part 2 - State Holders and Saving State</p>
+
+<h2 id="description">Description</h2>
+
+<p>This blog post series aims to summarise the <a href="https://developer.android.com/topic/architecture/ui-layer">Android Developer guidance on the UI layer</a>. We’ll explore all the entities involved in it, understand the role each part plays, and discuss best practices.</p>
+
+<blockquote>
+  <p>By the end of this series, you will have a general understanding of what happens on the UI layer and how to best handle state and logic within it, the various APIs involved, and how to use them. Additionally, we’ll provide decision trees to assist you when you’re in doubt.</p>
+</blockquote>
+
+<p><a href="https://manuelvivo.dev/crash-course-ui-layer-part-1"><strong>In part 1</strong></a>, we covered the UI and the UI state. You should already know the different entities present on the UI layer, and how to think about the UI and UI state effectively.</p>
+
+<p>Now it’s <strong>time for Part 2</strong>! We’ll cover state holders and other UI layer-related topics such as where to hoist state and save UI state on Android.</p>
+
+<blockquote>
+  <p>If you prefer to consume this content in video format, check out <a href="https://www.droidcon.com/2023/11/15/peeling-back-the-layers-unmasking-the-ui-nknown">the talk I delivered at Droidcon London 2023</a>.</p>
+</blockquote>
+
+<h2 id="state-holders">State holders</h2>
+
+<p>State holders simplify the UI by handling logic and/or exposing UI state. In this section, we’ll see how to implement state holders and the implementation details to consider.</p>
+
+<p>To determine the implementation details, we first need to identify the types of logic commonly found in an Android app.</p>
+
+<h3 id="types-of-logic">Types of logic</h3>
+
+<p>We have already discussed that <strong>business logic</strong> involves implementing the product requirements that specify how application data is created, stored, and modified. When business logic is present in the UI layer, it’s recommended to manage this logic at the screen level. We’ll see more of this later.</p>
+
+<p>Another type of logic is the <strong>UI logic</strong>. UI logic determines how to display state changes on the screen. While business logic dictates <em>what</em> to do with data, UI logic determines <em>how</em> to visually display it. The UI logic is dependent on the UI configuration.</p>
+
+<p>For instance, in a typical app, displaying a details screen may involve navigation when the app is running on a phone. However, it could entail showing an element next to another when running on a tablet.</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-19-crash-course-ui-layer-part-2_1.webp" />
+  <small>UI logic depends on the UI configuration. Displaying a details screen may involve navigation when the app runs on a phone or showing an element next to another when running on a tablet. You can see that in the <a href="https://github.com/android/nowinandroid">Now in Android</a> interests screen.</small>
+</p>
+
+<p>The different types of logic respond differently to configuration changes:</p>
+
+<ul>
+  <li>
+    <p><strong>UI logic should re-execute</strong> if it’s affected by a configuration change.</p>
+  </li>
+  <li>
+    <p><strong>Business logic should generally continue</strong> after a configuration change.</p>
+  </li>
+</ul>
+
+<p>For instance, the UI logic that determines whether to display the bottom bar or the navigation rail should be re-executed or re-evaluated after a screen size configuration change. On the other hand, the business logic for following a particular interest or refreshing them shouldn’t be cancelled or restarted simply because the user rotated or unfolded the device. Such interruption wouldn’t provide a good user experience.</p>
+
+<h3 id="where-to-handle-that-logic">Where to handle that logic</h3>
+
+<p>Business logic on the UI layer should be handled as close as possible to the screen level. Most of the business logic is handled by the data layer. Thus, keeping it close to the screen makes it easier to scope the logic correctly and prevents low-level UI components from becoming tightly coupled to the business logic.</p>
+
+<p><strong>Business logic should be handled by the screen level state holder</strong>, which would normally extend from <a href="https://developer.android.com/topic/libraries/architecture/viewmodel"><code class="language-plaintext highlighter-rouge">androidX.ViewModel</code></a>.</p>
+
+<p>When it comes to UI logic, it’s acceptable to manage it within the UI itself if the logic and state involved are relatively straightforward. However, when the UI becomes more complicated, it’s a good idea to <strong>delegate that UI logic complexity to a plain class state holder</strong>. In this case, the state holder wouldn’t extend from <code class="language-plaintext highlighter-rouge">androidX.ViewModel</code>.</p>
+
+<p>We’ll see more of this in the upcoming sections! Now, let’s see how the different types of state and logic related to each other:</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-19-crash-course-ui-layer-part-2_2.webp" />
+  <small>Diagram of how data flows in the app and the type of logic applied</small>
+</p>
+
+<p>As a summary of what happens on a typical screen, the data layer exposes application data to the rest of the hierarchy. The ViewModel then applies business logic to that data to produce the screen UI state. The UI itself or a plain state holder class observes the screen UI state to modify UI elements or its state.</p>
+
+<h2 id="handling-business-logic--androidxviewmodel">Handling business logic — <code class="language-plaintext highlighter-rouge">androidX.ViewModel</code></h2>
+
+<p>We’ve discussed the <code class="language-plaintext highlighter-rouge">androidX.ViewModel</code> or <a href="https://developer.android.com/topic/libraries/architecture/viewmodel">Architecture Components <code class="language-plaintext highlighter-rouge">ViewModel</code></a> class quite extensively as the implementation detail of a screen-level state holder.</p>
+
+<p>In the code snippet below, we can observe its main functionalities: 1) exposing the screen UI state and 2) handling business logic.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@HiltViewModel</span>
+<span class="kd">class</span> <span class="nc">InterestsViewModel</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">userDataRepository</span><span class="p">:</span> <span class="nc">UserDataRepository</span><span class="p">,</span>
+  <span class="n">authorsRepository</span><span class="p">:</span> <span class="nc">AuthorsRepository</span><span class="p">,</span>
+  <span class="n">topicsRepository</span><span class="p">:</span> <span class="nc">TopicsRepository</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="kd">val</span> <span class="py">uiState</span><span class="p">:</span> <span class="nc">StateFlow</span><span class="p">&lt;</span><span class="nc">InterestsUiState</span><span class="p">&gt;</span> <span class="p">=</span> <span class="o">..</span><span class="p">.</span>
+
+  <span class="k">fun</span> <span class="nf">followTopic</span><span class="p">(</span><span class="n">followedTopicId</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">followed</span><span class="p">:</span> <span class="nc">Boolean</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+      <span class="n">userDataRepository</span><span class="p">.</span><span class="nf">toggleFollowedTopicId</span><span class="p">(</span><span class="n">followedTopicId</span><span class="p">,</span> <span class="n">followed</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="o">..</span><span class="p">.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>But why is the ViewModel the right place for this?</p>
+
+<h3 id="androidxviewmodel-benefits">androidX.ViewModel benefits</h3>
+
+<p>The main benefit is that <strong>ViewModel survives configuration changes</strong>, offering a longer lifetime than the screen itself. You can scope a ViewModel to an Activity, Fragment, Navigation graph or the destination of a Navigation graph. When a configuration change happens, the system provides the same instance of the ViewModel.</p>
+
+<p>Surviving configuration changes makes <code class="language-plaintext highlighter-rouge">androidX.ViewModel</code> the perfect place to expose the screen UI state and handle business logic. The screen UI state is also cached and instantly available before and after a configuration change. And business logic will continue executing if it was initiated with a ViewModel-scoped <code class="language-plaintext highlighter-rouge">CoroutineScope</code> (e.g. <a href="https://manuelvivo.dev/viewmodelscope"><code class="language-plaintext highlighter-rouge">viewModelScope</code></a>).</p>
+
+<p>Another advantage lies in its <strong>seamless integration with other Jetpack libraries</strong>, particularly with <a href="https://developer.android.com/guide/navigation">Jetpack Navigation</a>. Navigation retains the same instance of a ViewModel in memory when the destination is part of the back stack. This enables you to navigate back and forth between destinations in the back stack, with the data instantly available on the screen, without the need to reload the data every time you navigate back to that destination.</p>
+
+<p>Jetpack Navigation also automatically destroys the instance of a ViewModel when the destination is no longer part of the back stack. Making it safe to go to a previous destination without seeing the previous user data on the screen.</p>
+
+<p>Other Jetpack integrations include <a href="https://developer.android.com/training/dependency-injection/hilt-android">Hilt</a>. By using the <code class="language-plaintext highlighter-rouge">@HiltViewModel</code> annotation, you can effortlessly obtain ViewModels with dependencies from the domain or data layers.</p>
+
+<h3 id="androidxviewmodel-best-practices">androidX.ViewModel best practices</h3>
+
+<p>ViewModel’s scoping is what makes this type suitable as an implementation detail of a screen-level state holder. However, this power shouldn’t be abused. Here are some best practices to keep in mind when using this class:</p>
+
+<ul>
+  <li>
+    <p><strong>Use it at the screen level</strong>. Avoid using a ViewModel to handle the complexity of <em>reusable</em> UI elements. Due to its scoping, the same UI elements under the same ViewModel scope would get the <em>same</em> instance of a ViewModel. In most cases, this is undesirable.</p>
+  </li>
+  <li>
+    <p><strong>Make the ViewModel generic enough to accommodate any UI form factor</strong>. The ViewModel should not be aware of which UI is using it. Keep the ViewModel’s API surface (exposed Screen UI state and functions exposed) representative of the application data it handles, rather than including UI-specific details. For example, when indicating that data is loading, the screen UI state might contain a field called <code class="language-plaintext highlighter-rouge">isLoading</code> rather than <code class="language-plaintext highlighter-rouge">showLoadingSpinner</code>. How the UI communicates data loading to the user is only relevant to the UI.</p>
+  </li>
+  <li>
+    <p><strong>Don’t hold references to lifecycle-related APIs</strong>. The ViewModel has a longer lifetime than the UI, and retaining references to <code class="language-plaintext highlighter-rouge">Context</code> or <code class="language-plaintext highlighter-rouge">Resources</code> objects can lead to memory leaks.</p>
+  </li>
+  <li>
+    <p><strong>Don’t pass ViewModels around</strong>. Considering all the points mentioned, keep the ViewModel class as close as possible to the screen level. Otherwise, you might inadvertently provide low-level components with access to more state and logic than they actually need.</p>
+  </li>
+</ul>
+
+<h3 id="androidxviewmodel-gotchas">androidX.ViewModel gotchas</h3>
+
+<p>Not everything is perfect in the ViewModel realm. There are certain considerations to keep in mind when using this API, especially in regard to ViewModel’s <code class="language-plaintext highlighter-rouge">viewModelScope</code>:</p>
+
+<ul>
+  <li>
+    <p>Work initiated using <strong><code class="language-plaintext highlighter-rouge">viewModelScope</code> continues to execute while the ViewModel is in memory</strong>. That’s good but can also lead to issues if the work runs for an extended period. For long-running work that might take more than 10 seconds to complete, consider other alternatives such as <a href="https://developer.android.com/guide/background/persistent/getting-started">WorkManager</a>. More about <a href="https://developer.android.com/guide/background">background work in the docs</a>.</p>
+  </li>
+  <li>
+    <p>Unit testing work triggered by <code class="language-plaintext highlighter-rouge">viewModelScope</code> requires some additional setup in the testing environment. The <code class="language-plaintext highlighter-rouge">MainDispatcher</code> must be <a href="https://developer.android.com/kotlin/coroutines/test#setting-main-dispatcher">replaced</a> in tests.</p>
+  </li>
+</ul>
+
+<h3 id="using-androidxviewmodel">Using androidX.ViewModel</h3>
+
+<p>Does this section mean you always need to use ViewModel? Well, as the implementation of a screen-level state holder, yes, but only if the benefits apply to your app.</p>
+
+<p>If you care about configuration changes (which, you should!) and/or you’re using other Jetpack libraries, it might make sense to use it. However, even if you decide not to, consider introducing a plain screen-level state holder class to handle the business logic complexity at the screen level.</p>
+
+<h2 id="handling-ui-logic--plain-state-holder-class">Handling UI logic — Plain state holder class</h2>
+
+<p>You should <strong>introduce a state holder class when your UI starts growing in complexity</strong>. The threshold depends on you and your team. It’s a matter of when you feel the need to simplify the UI.</p>
+
+<p>In the upcoming code snippet, there’s no immediate need to create a state holder for the UI. It merely contains an <code class="language-plaintext highlighter-rouge">expanded</code> boolean that is modified when the user interacts with the UI.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">NiaDropdownMenuButton</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;,</span> <span class="o">..</span><span class="p">.)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="py">expanded</span> <span class="k">by</span> <span class="nf">remember</span> <span class="p">{</span> <span class="nf">mutableStateOf</span><span class="p">(</span><span class="k">false</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="nc">Box</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="n">modifier</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nc">NiaOutlinedButton</span><span class="p">(</span>
+      <span class="n">onClick</span> <span class="p">=</span> <span class="p">{</span> <span class="n">expanded</span> <span class="p">=</span> <span class="k">true</span> <span class="p">},</span>
+      <span class="o">..</span><span class="p">.</span>
+    <span class="p">)</span>
+    <span class="nc">NiaDropdownMenu</span><span class="p">(</span>
+      <span class="n">expanded</span> <span class="p">=</span> <span class="n">expanded</span><span class="p">,</span>
+      <span class="n">onDismissRequest</span> <span class="p">=</span> <span class="p">{</span> <span class="n">expanded</span> <span class="p">=</span> <span class="k">false</span> <span class="p">},</span>
+      <span class="o">..</span><span class="p">.</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>When the UI requires more state and the associated logic becomes more complex, introduce a state holder. This is precisely what the Compose library does for some of its components. The following code snippet belongs to the <a href="https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/material/material/src/commonMain/kotlin/androidx/compose/material/Drawer.kt;l=118">state holder of the various Drawer composables</a>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Stable</span>
+<span class="kd">class</span> <span class="nc">DrawerState</span><span class="p">(</span>
+  <span class="n">initialValue</span><span class="p">:</span> <span class="nc">DrawerValue</span><span class="p">,</span>
+  <span class="n">confirmStateChange</span><span class="p">:</span> <span class="p">(</span><span class="nc">DrawerValue</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="p">{</span> <span class="k">true</span> <span class="p">}</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="k">internal</span> <span class="kd">val</span> <span class="py">swipeableState</span> <span class="p">=</span>  <span class="nc">SwipeableState</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span>
+
+  <span class="kd">val</span> <span class="py">currentValue</span><span class="p">:</span> <span class="nc">DrawerValue</span>
+    <span class="k">get</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">swipeableState</span><span class="p">.</span><span class="n">currentValue</span> <span class="p">}</span>
+
+  <span class="kd">val</span> <span class="py">isOpen</span><span class="p">:</span> <span class="nc">Boolean</span>
+    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">currentValue</span> <span class="p">==</span> <span class="nc">DrawerValue</span><span class="p">.</span><span class="nc">Open</span>
+
+  <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">open</span><span class="p">()</span> <span class="p">=</span> <span class="nf">animateTo</span><span class="p">(</span><span class="nc">DrawerValue</span><span class="p">.</span><span class="nc">Open</span><span class="p">,</span> <span class="nc">AnimationSpec</span><span class="p">)</span>
+
+  <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">animateTo</span><span class="p">(</span><span class="n">targetValue</span><span class="p">:</span> <span class="nc">DrawerValue</span><span class="p">,</span> <span class="n">anim</span><span class="p">:</span> <span class="nc">AnimationSpec</span><span class="p">&lt;</span><span class="nc">Float</span><span class="p">&gt;)</span> <span class="p">{</span>
+    <span class="n">swipeableState</span><span class="p">.</span><span class="nf">animateTo</span><span class="p">(</span><span class="n">targetValue</span><span class="p">,</span> <span class="n">anim</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>A few points to observe there:</p>
+
+<ul>
+  <li>
+    <p>It holds state such as the <code class="language-plaintext highlighter-rouge">currentValue</code> of the Drawer.</p>
+  </li>
+  <li>
+    <p>State holders are composable. <code class="language-plaintext highlighter-rouge">DrawerState</code> internally depends on another state holder: <code class="language-plaintext highlighter-rouge">SwipeableState</code>.</p>
+  </li>
+  <li>
+    <p>It manages UI logic, including actions like opening the drawer and animating to a specific value.</p>
+  </li>
+</ul>
+
+<p>Just as Compose offers these state holders, you can implement similar patterns in your project to simplify the UI. The following code snippet belongs to <a href="https://github.com/android/nowinandroid/blob/main/app/src/main/kotlin/com/google/samples/apps/nowinandroid/ui/NiaAppState.kt"><code class="language-plaintext highlighter-rouge">NiaAppState</code></a>, the state holder of the <a href="https://github.com/android/nowinandroid/blob/main/app/src/main/kotlin/com/google/samples/apps/nowinandroid/ui/NiaApp.kt"><code class="language-plaintext highlighter-rouge">NiaApp</code></a> composable function.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Stable</span>
+<span class="kd">class</span> <span class="nc">NiaAppState</span><span class="p">(</span>
+  <span class="kd">val</span> <span class="py">navController</span><span class="p">:</span> <span class="nc">NavHostController</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">windowSizeClass</span><span class="p">:</span> <span class="nc">WindowSizeClass</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="kd">val</span> <span class="py">currentDestination</span><span class="p">:</span> <span class="nc">NavDestination</span><span class="p">?</span>
+    <span class="nd">@Composable</span> <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">navController</span>
+      <span class="p">.</span><span class="nf">currentBackStackEntryAsState</span><span class="p">().</span><span class="n">value</span><span class="o">?.</span><span class="n">destination</span>
+
+  <span class="kd">val</span> <span class="py">shouldShowBottomBar</span><span class="p">:</span> <span class="nc">Boolean</span>
+    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">windowSizeClass</span><span class="p">.</span><span class="n">widthSizeClass</span> <span class="p">==</span> <span class="nc">WindowWidthSizeClass</span><span class="p">.</span><span class="nc">Compact</span> <span class="p">||</span>
+      <span class="n">windowSizeClass</span><span class="p">.</span><span class="n">heightSizeClass</span> <span class="p">==</span> <span class="nc">WindowHeightSizeClass</span><span class="p">.</span><span class="nc">Compact</span>
+
+  <span class="k">fun</span> <span class="nf">navigate</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+
+  <span class="k">fun</span> <span class="nf">onBackClick</span><span class="p">()</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In a similar fashion, it exposes UI state such as the <code class="language-plaintext highlighter-rouge">currentDestination</code> and whether or not to show the bottom bar, while also managing UI logic like navigating and handling back-click events.</p>
+
+<blockquote>
+  <p>Note: In Compose, the naming convention for state holders is to end with <code class="language-plaintext highlighter-rouge">State</code>. That’s why we’re naming the classes <code class="language-plaintext highlighter-rouge">NiaAppState</code> and <code class="language-plaintext highlighter-rouge">DrawerState</code>.</p>
+</blockquote>
+
+<h3 id="plain-state-holder-classes-best-practices">Plain state holder classes best practices</h3>
+
+<p>It’s actually recommended to create a state holder for <em>reusable</em> UI components. This enhances the reusability of the UI and provides external control.</p>
+
+<p><strong>Plain state holder classes can hold references of lifecycle-related APIs</strong>. These instances follow the UI lifecycle. When the UI goes through a configuration change, a new instance of the state holder is created. Thus, it’s acceptable to hold references to <code class="language-plaintext highlighter-rouge">Context</code> or <code class="language-plaintext highlighter-rouge">Resources</code> because there won’t be any memory leaks. In Jetpack Compose, these state holders are also scoped to the Composition.</p>
+
+<p>If your plain class requires business logic, it’s a good practice to inject that functionality into the class. Whoever injects this functionality can ensure it outlives the UI scope.</p>
+
+<h3 id="handling-large-viewmodels">Handling large ViewModels</h3>
+
+<p>If a ViewModel is handling the business logic complexity of several sizeable UI elements, it could potentially become large and challenging to manage and reason about. How could we simplify the ViewModel?</p>
+
+<ol>
+  <li>
+    <p><strong>Introduce the domain layer</strong>. Delegate the business logic complexity of the ViewModel to <em>use cases</em> that handle interactions with different repositories. However, this approach may still result in a ViewModel with a substantial list of use cases to depend on.</p>
+  </li>
+  <li>
+    <p><strong>Create multiple state holders</strong> for the various elements of the UI and hoist them in the ViewModel so that they can get all its benefits. The ViewModel essentially becomes a state hoisting mechanism that survives configuration changes.</p>
+  </li>
+  <li>
+    <p>Instead of #2, you might consider creating <strong>multiple ViewModels</strong> to manage the complexity of those non-reusable UI elements. While this approach is acceptable, bear in mind that ViewModels operate with unbounded memory, and when you have multiple ViewModels, it can become challenging to monitor their size and memory footprint.</p>
+  </li>
+</ol>
+
+<h2 id="where-to-hoist-state">Where to hoist state</h2>
+
+<p>You should <strong>place state in the lowest common ancestor</strong> that reads or writes the state.</p>
+
+<p>As a recap: In the UI, you might 1) not have state at all, 2) have state in the UI itself, 3) have state in a state holder in order to simplify the UI, 4) hoist the state higher up in the UI tree so that other composable callers or ancestors can control the state, 5) hoist the state in a ViewModel if it’s needed by business logic.</p>
+
+<p><strong>If the state is required by business logic, whether for reading or writing, it should be hoisted in the screen-level state holder. If not, it should be placed in the appropriate node of the UI tree.</strong></p>
+
+<p>Let’s take a look at the UI hierarchy of a typical Chat app and discuss why certain state is placed where it is:</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-19-crash-course-ui-layer-part-2_3.webp" />
+  <small>UI tree of a typical Chat app</small>
+</p>
+
+<ul>
+  <li>
+    <p>The screen UI state should be placed in the ViewModel (#5) because the ViewModel applies business logic to create it.</p>
+  </li>
+  <li>
+    <p>The LazyList is part of the <code class="language-plaintext highlighter-rouge">ConversationScreen</code> and not the <code class="language-plaintext highlighter-rouge">MessagesList</code> because the screen has additional functionality that require that state, such as scrolling to the most recent messages when the user sends a new message in <code class="language-plaintext highlighter-rouge">UserInput</code>.</p>
+  </li>
+</ul>
+
+<p>To learn more about this topic, check out the <a href="http://goo.gle/android-arch-hoist-state">State hoisting in Compose talk</a> by <a href="https://twitter.com/astamatok">Alejandra Stamato</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hWwZ_AuSGfo?si=KLW-2SnL8aiEWQYp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<h2 id="saving-ui-state">Saving UI state</h2>
+
+<p>In this blog post, we’ve explored the <code class="language-plaintext highlighter-rouge">androidx.ViewModel</code> API as a means to preserve state across configuration changes. However, Android provides additional alternatives to safeguard your state even more effectively.</p>
+
+<p>The <strong>SavedState APIs enable your state to persist through configuration changes <em>and</em> <a href="https://developer.android.com/topic/libraries/architecture/saving-states">system-initiated process death</a></strong>. The system stores this data in a Bundle, requiring the data to be parcelized for storage. Typically, you’d store transient UI state that depends on user input or navigation.</p>
+
+<p>Ultimately, to survive not only the above but also unexpected app dismissals (e.g. the user killing your app), you can use <strong>persistent storage</strong>. This is subject to disk space limitations and is typically used for storing application data.</p>
+
+<p align="center">
+  <img src="assets/images/2023-12-19-crash-course-ui-layer-part-2_4.webp" />
+  <small>Summary of the different APIs to save UI state on Android</small>
+</p>
+
+<p>For more information about this topic, check out the <a href="http://goo.gle/android-arch-saving-state">Saving UI state on Android talk</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/V-s4z7B_Gnc?si=YqEQEvcGnvSzmKuL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<hr />
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>After reading this crash course on the UI layer, you should have a general understanding of the processes occurring within this layer and the tools required to manage state and logic effectively.</p>
+
+<p>How Android is designed to make your app reactive to different UI Configurations and devices makes some API decision trees more complex than some Developers might like. But at the same time, it also gives you the tools to make your app behave as expected, delivering a great user experience.</p>
+
+<p>Hope you enjoyed this read! Feel free to share your thoughts or ask questions in the comments section! Thank you 😊</p>
+
+<blockquote>
+  <p>Remember that if you prefer to consume this content in video format, check out <a href="https://www.droidcon.com/2023/11/15/peeling-back-the-layers-unmasking-the-ui-nknown">the talk I delivered at Droidcon London 2023</a>.</p>
+</blockquote>
+
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/crash-course-ui-layer-part-2';
+                            this.page.identifier = '/crash-course-ui-layer-part-2';
+                            this.page.title = 'Crash Course on the Android UI Layer | Part 2';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/architecture/">Architecture</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/mobile-system-design-interview">Mobile System Design Interview book</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/crash-course-ui-layer-part-1">Crash Course on the Android UI Layer | Part 1</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/saving-ui-state">Saving UI state on Android</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/architecture/">
+                                
+                                    See all 9 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/prepare-interviews-with-me">
+                <div class="post-card-image" style="background-image: url(/assets/images/2024-01-29-prepare-interviews-with-me.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/prepare-interviews-with-me">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Mentoring</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Prepare your interviews with me</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/crash-course-ui-layer-part-1">
+                <div class="post-card-image" style="background-image: url(/assets/images/2023-12-13-crash-course-ui-layer-part-1.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/crash-course-ui-layer-part-1">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Architecture</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Crash Course on the Android UI Layer | Part 1</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Crash Course on the Android UI Layer | Part 2</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Crash+Course+on+the+Android+UI+Layer+%7C+Part+2&amp;url=https://manuelvivo.dev/crash-course-ui-layer-part-2"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/crash-course-ui-layer-part-2"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

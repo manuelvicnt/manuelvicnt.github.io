@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator>
+  <link href="https://manuelvivo.dev/tag/dagger/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://manuelvivo.dev/" rel="alternate" type="text/html" />
+  <updated>2025-07-07T10:14:22+00:00</updated>
+  <id>https://manuelvivo.dev/tag/dagger/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Manuel Vivo .dev | </title>
+  
+
+  
+    <subtitle>A place where you can learn about Android development</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">Dagger and Hilt navigation support in Android Studio</title>
+      <link href="https://manuelvivo.dev/dagger-hilt-navigation-android-studio" rel="alternate" type="text/html" title="Dagger and Hilt navigation support in Android Studio" />
+      <published>2020-07-01T00:00:00+00:00</published>
+      <updated>2020-07-01T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/dagger-hilt-navigation-android-studio</id>
+      <content type="html" xml:base="https://manuelvivo.dev/dagger-hilt-navigation-android-studio">&lt;p&gt;Easily navigate between Dagger and Hilt related code in Android Studio&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Last update: July 23rd, 2020&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Have you ever got lost in a project trying to figure out from where a Dagger or Hilt dependency is being provided? Does it come from an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Inject&lt;/code&gt; constructor? Or maybe from an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Binds&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; method? Does it have a qualifier? It’s not an easy task…&lt;/p&gt;
+
+&lt;p&gt;🤔 What if you could know that and more with just one click? 🎯 Ask no more!&lt;/p&gt;
+
+&lt;p&gt;Android Studio 4.1 comes with &lt;strong&gt;new gutter icons that allows you to easily navigate between Dagger-related code&lt;/strong&gt;: dependency producers and consumers, components, subcomponents, and modules! Also, you can find the same information in &lt;strong&gt;&lt;em&gt;Find usages&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hilt support&lt;/strong&gt; was added to Android Studio 4.2. Apart from the Dagger features listed above, you can also benefit from easy navigation for &lt;strong&gt;entry points&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_1.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Easy Dagger and Hilt dependency graph navigation in Android Studio&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see, navigating the Dagger graph of your Android app has never been easier! Knowing from &lt;em&gt;exactly&lt;/em&gt; which provider method a dependency is coming is just &lt;strong&gt;one click away&lt;/strong&gt; with the new support in Android Studio.&lt;/p&gt;
+
+&lt;h2 id=&quot;in-action&quot;&gt;In action&lt;/h2&gt;
+
+&lt;p&gt;Starting with Android Studio 4.1 Canary 7, you can see a new gutter icon in projects that use Dagger or Hilt:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+	&lt;img height=&quot;75&quot; src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_2.png&quot; /&gt;
+	&lt;small&gt;New Dagger and Hilt gutter icons in Android Studio&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The behavior of these actions are as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Icon with arrow up -&amp;gt; where the type is provided (i.e. where dependencies come from).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Tree-shaped icon -&amp;gt; where the type is used as a dependency.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s see some examples of the new functionality using the Dagger branch (&lt;a href=&quot;https://github.com/android/architecture-samples/tree/dev-dagger&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dev-dagger&lt;/code&gt;&lt;/a&gt;) of the &lt;a href=&quot;https://github.com/android/architecture-samples/tree/dev-dagger&quot;&gt;architecture-samples GitHub&lt;/a&gt; sample.&lt;/p&gt;
+
+&lt;h3 id=&quot;knowing-where-dependencies-are-coming-from&quot;&gt;Knowing where dependencies are coming from&lt;/h3&gt;
+
+&lt;p&gt;Given a class that can be injected by Dagger, if you tap in the gutter icon with the arrow up of a dependency, you’ll navigate to the method that tells Dagger how to provide that type.&lt;/p&gt;
+
+&lt;p&gt;In the following example, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksViewModel&lt;/code&gt; has a dependency on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksRepository&lt;/code&gt;. Tapping on the gutter icon takes you to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Binds&lt;/code&gt; methods in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AppModuleBinds&lt;/code&gt; that provides &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksRepository&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_3.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Know where a dependency is coming from&lt;/small&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;also-works-with-qualifiers&quot;&gt;Also works with qualifiers!&lt;/h3&gt;
+
+&lt;p&gt;Given the above, if the dependency is provided using a qualifier, it will take you to exactly that provider method!&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DefaultTasksRepository&lt;/code&gt; depends on a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksDataSource&lt;/code&gt; provided with a qualifier. Tapping on the gutter icon takes you to the method in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AppModule&lt;/code&gt; that provides that type with that qualifier:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_4.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;It also works with qualifiers!&lt;/small&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;where-is-this-type-being-used-as-a-dependency&quot;&gt;Where is this type being used as a dependency?&lt;/h3&gt;
+
+&lt;p&gt;When you have a method that tells Dagger how to provide a dependency, you can click the gutter icon with the arrow down to navigate to where that dependency is used. If that dependency is used by more than one consumer, you can select the consumer you want to navigate to from a list.&lt;/p&gt;
+
+&lt;p&gt;In our project, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DefaultTasksRepository&lt;/code&gt; is used by different ViewModels. Which ones? You can know it by tapping on the gutter icon of the provider method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Binds&lt;/code&gt; in this case):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_5.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Know where a type is used as a dependency&lt;/small&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;hilt-entry-points&quot;&gt;Hilt entry points&lt;/h3&gt;
+
+&lt;p&gt;When you’re at a &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#not-supported&quot;&gt;Hilt entry point&lt;/a&gt;, the gutter action helps you navigate to where a dependency is coming from. To showcase this feature, we’ll use the &lt;a href=&quot;https://github.com/googlecodelabs/android-dagger-to-hilt/tree/interop&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;interop&lt;/code&gt;&lt;/a&gt; branch of the &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt/&quot;&gt;migrating Dagger to Hilt codelab&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_6.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Navigate where a type comes from at an entry point&lt;/small&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;find-usages&quot;&gt;Find usages&lt;/h2&gt;
+
+&lt;p&gt;You can find the same relationships between your Dagger/Hilt code with the &lt;em&gt;Find usages&lt;/em&gt; feature in Android Studio.&lt;/p&gt;
+
+&lt;p&gt;If you right-click on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bindRepository&lt;/code&gt; of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AppModuleBinds&lt;/code&gt; class and select &lt;strong&gt;&lt;em&gt;Find usages&lt;/em&gt;&lt;/strong&gt;, for example, you’ll see something similar to this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_7.png&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Find usages about bindRepository&lt;/small&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;What are you waiting for to give it a try? Please, use it in your projects and give us feedback in this &lt;a href=&quot;https://issuetracker.google.com/issues/new?component=192708&amp;amp;template=840533&amp;amp;title=%5BPlease+title+your+report%5D+%23dagger-support&quot;&gt;link&lt;/a&gt;. Hope you enjoy it!&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+        <category term="dagger" />
+      
+
+      
+        <summary type="html">Easily navigate between Dagger and Hilt related code in Android Studio</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Dagger code generation cheat sheets</title>
+      <link href="https://manuelvivo.dev/dagger-cheat-sheets" rel="alternate" type="text/html" title="Dagger code generation cheat sheets" />
+      <published>2020-03-03T00:00:00+00:00</published>
+      <updated>2020-03-03T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/dagger-cheat-sheets</id>
+      <content type="html" xml:base="https://manuelvivo.dev/dagger-cheat-sheets">&lt;p&gt;Have you ever wondered what Dagger does under the hood 🤔?&lt;/p&gt;
+
+&lt;p&gt;Every annotation has a &lt;em&gt;point&lt;/em&gt; 🔍! Check out these cheat sheets to understand how Dagger interprets them and the code it generates for you. Explanations about the generated code and Dagger annotations can be found in the cheat sheets as comments.&lt;/p&gt;
+
+&lt;p&gt;For more information about dependency injection, why you might use Dagger in your Android app, and how to use it, check out the official Android documentation: &lt;a href=&quot;https://d.android.com/dependency-injection&quot;&gt;https://d.android.com/dependency-injection&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you prefer a step-by-step learning process, check out the &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger/&quot;&gt;Using Dagger in your Android app codelab&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Also, if you’re interested in the future of Dagger in Android, watch this Android Developer Summit ’19 video:&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/o-ins1nvbDg&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h2 id=&quot;dagger-basics&quot;&gt;Dagger basics&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.android.com/images/training/dependency-injection/dagger-codegen-basics.png&quot;&gt;Download file&lt;/a&gt;&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  	&lt;img src=&quot;assets/images/2020-03-30-dagger-cheat-sheets_1.webp&quot; /&gt;
+	&lt;small&gt;Dagger basic annotations cheat sheet&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;dagger-subcomponents&quot;&gt;Dagger Subcomponents&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.android.com/images/training/dependency-injection/dagger-codegen-subcomponents.png&quot;&gt;Download file&lt;/a&gt;&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  	&lt;img src=&quot;assets/images/2020-03-30-dagger-cheat-sheets_2.webp&quot; /&gt;
+	&lt;small&gt;Dagger subcomponents cheat sheet&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;component-dependencies&quot;&gt;Component dependencies&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.android.com/images/training/dependency-injection/dagger-codegen-component-dependencies.png&quot;&gt;Download file&lt;/a&gt;&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  	&lt;img src=&quot;assets/images/2020-03-30-dagger-cheat-sheets_3.webp&quot; /&gt;
+	&lt;small&gt;Dagger component dependencies cheat sheet&lt;/small&gt;
+&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="dagger" />
+      
+
+      
+        <summary type="html">Have you ever wondered what Dagger does under the hood 🤔?</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Dependency Injection guidance on Android — ADS 2019</title>
+      <link href="https://manuelvivo.dev/di-guidance-android" rel="alternate" type="text/html" title="Dependency Injection guidance on Android — ADS 2019" />
+      <published>2019-11-06T00:00:00+00:00</published>
+      <updated>2019-11-06T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/di-guidance-android</id>
+      <content type="html" xml:base="https://manuelvivo.dev/di-guidance-android">&lt;p&gt;Why dependency injection is important on Android and a new guide about it!&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: &lt;a href=&quot;https://manuelvivo.dev/di-with-hilt&quot;&gt;Hilt&lt;/a&gt; is the Jetpack’s recommended way for dependency injection on Android.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;According to our &lt;a href=&quot;https://developer.android.com/training/dependency-injection&quot;&gt;introduction to Dependency Injection&lt;/a&gt; (DI), we believe you should always use DI principles in your applications. If you’re developing a professional Android app, use &lt;a href=&quot;https://dagger.dev/&quot;&gt;Dagger&lt;/a&gt; to better manage your dependencies.&lt;/p&gt;
+
+&lt;p&gt;We recommended using Dagger for medium and large apps; for small apps or pet projects, it doesn’t matter the tool you use, but the sooner you add Dagger to your project, the better it will be and the less you will have to refactor in the future.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2019-11-06-di-guidance-android_1.png&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;DI tool to use depending on the size of your project. This is relative, use your own judgement since every app is different.&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;If you compare the cost of managing your dependencies when using Dagger vs any other tool visually, Dagger starts with a relatively high cost but plateaus as the app gets bigger.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2019-11-06-di-guidance-android_2.png&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Made up graph showing the scalability of different DI techniques&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;Dagger really shines with:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Performance&lt;/strong&gt;. Without reflection and the code being generated at build time, Dagger can provide the best in class performance.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Correctness&lt;/strong&gt;. Dagger gives you security at build time. If a type is not available in the DI application graph, you won’t be able to build the project instead of getting those crashes at runtime.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Scalability&lt;/strong&gt;. Dagger is built to scale and be suitable for large applications such as Gmail, Google Photos or YouTube.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;DI and Dagger are complex topics, for this reason we’re providing documentation and samples to learn these professional tools.&lt;/p&gt;
+
+&lt;h2 id=&quot;new-documentation&quot;&gt;New Documentation&lt;/h2&gt;
+
+&lt;p&gt;We just released a set of documentation to help you with this. We’d like to help both beginners and more experienced users by giving good practices.&lt;/p&gt;
+
+&lt;p&gt;New documentation available:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection&quot;&gt;DI Overview&lt;/a&gt;: What’s DI and the benefits of using it in your project.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection/manual&quot;&gt;Manual DI&lt;/a&gt;: To better understand the benefits of DI and what Dagger can do for you, you should try DI yourself. In this page, we show how you can do DI manually in your app.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection/dagger-basics&quot;&gt;Dagger basics&lt;/a&gt;: Benefits of adding Dagger to your project and what it does under the hood.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection/dagger-android&quot;&gt;Using Dagger in an Android app&lt;/a&gt;: Learn all the concepts of Dagger from scratch by adding Dagger to a typical Android app.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection/dagger-multi-module&quot;&gt;Dagger in a multi-module application&lt;/a&gt;: How to use Dagger in a modularised app with both regular Gradle modules and dynamic feature modules.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;new-codelab&quot;&gt;New Codelab&lt;/h2&gt;
+
+&lt;p&gt;Apart from the documentation, the best way you can learn a topic is with hands on code. We released a new codelab called: &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger&quot;&gt;Using Dagger in an Android app&lt;/a&gt;. It starts with a manual DI implementation that you’ll be migrating to Dagger flow by flow of the app.
+By the end of it, you’ll build an application graph like this!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2019-11-06-di-guidance-android_3.png&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Final Dagger graph built throughout the codelab&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;Complete the codelab to understand the main concepts of Dagger so you can apply them to your project accordingly.&lt;/p&gt;
+
+&lt;h2 id=&quot;easier-dagger-in-android&quot;&gt;Easier Dagger in Android&lt;/h2&gt;
+
+&lt;p&gt;We want to make Dagger more accessible to small applications by reducing the amount of code you have to write. We’re working on a new initiative that will make Dagger simpler in Android. What will be changing?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The work you do for Dagger Components can be automated! We’ll have some predefined Components that can simplify the work for you.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It will be integrated with the rest of Jetpack and will provide an easy integration with ViewModels, WorkManager and Navigation.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kotlin-friendly. We want Dagger to work seamlessly when written in Kotlin and expand its capabilities to make it work with delegates and other Kotlin powerful features.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Dagger Modules are the way to provide information to the Dagger graph. It’s important they stay and serve the same functionality in the new initiative.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Stay tuned, we’re working on that.&lt;/p&gt;
+
+&lt;h2 id=&quot;daggerandroid&quot;&gt;dagger.android&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dagger.dev/android&quot;&gt;dagger.android&lt;/a&gt; is a library on top of Dagger that reduces boilerplate code when using Dagger in Android framework classes (e.g. Activities or Fragments).&lt;/p&gt;
+
+&lt;p&gt;Even though it helped with boilerplate, we think we can do better. Since the new Android approach is radically different, no major improvements are planned for this library but we’re committed to maintaining it until a suitable stable replacement is available.&lt;/p&gt;
+
+&lt;p&gt;If you’re using dagger.android, keep using it. If you’re starting a new project, consider dagger.android as an alternative and use if it fits your use case. We’ll provide migration guides from both Dagger and dagger.android code to the new initiative.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Use Dependency Injection and use Dagger! We’re already working on making it better. For more information, check the Android Dev Summit 2019 recording about this topic:&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/o-ins1nvbDg&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="dagger" />
+      
+
+      
+        <summary type="html">Why dependency injection is important on Android and a new guide about it!</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">An opinionated guide to Dependency Injection on Android - Android Developer Summit 2019</title>
+      <link href="https://manuelvivo.dev/di-guidance-android-talk" rel="alternate" type="text/html" title="An opinionated guide to Dependency Injection on Android - Android Developer Summit 2019" />
+      <published>2019-10-24T00:00:00+00:00</published>
+      <updated>2019-10-24T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/di-guidance-android-talk</id>
+      <content type="html" xml:base="https://manuelvivo.dev/di-guidance-android-talk">&lt;p&gt;Why dependency injection is important on Android and a new guide about it!&lt;/p&gt;
+
+&lt;h3 id=&quot;abstract&quot;&gt;Abstract&lt;/h3&gt;
+
+&lt;p&gt;Dagger has become the recommended way to do Dependency Injection on Android. However, there are many ways to use Dagger! Come hear why we recommend Dagger, the best practices including recommended setup in multi-module projects, and what plans we have to improve Dagger in Android so that you can create a solid, extensible solution for managing dependencies in your app that scales to large projects.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/o-ins1nvbDg&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;presenters&quot;&gt;Presenters&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/danyaguacate&quot;&gt;Daniel&lt;/a&gt; is a Puerto Rican native currently working on the Android Toolkit team at Google. He is passionate about developing open source libraries that increase developer happiness and productivity. Daniel is a software engineer graduate from the University of Puerto Rico. He also likes video games, like a lot.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/manuelvicnt&quot;&gt;Manuel&lt;/a&gt; is an Android Developer Relations Engineer at Google. With previous experience at Capital One, he currently focuses on App Architecture, Kotlin &amp;amp; Coroutines, Dependency Injection and Jetpack Compose.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="talks" />
+      
+        <category term="dagger" />
+      
+
+      
+        <summary type="html">Why dependency injection is important on Android and a new guide about it!</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Dagger in Kotlin - Gotchas and Optimizations</title>
+      <link href="https://manuelvivo.dev/dagger-kotlin-optimizations" rel="alternate" type="text/html" title="Dagger in Kotlin - Gotchas and Optimizations" />
+      <published>2019-07-30T00:00:00+00:00</published>
+      <updated>2019-07-30T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/dagger-kotlin-optimizations</id>
+      <content type="html" xml:base="https://manuelvivo.dev/dagger-kotlin-optimizations">&lt;p&gt;Dagger optimizations come with no cost! Add them and follow best practices&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dagger.dev/&quot;&gt;Dagger&lt;/a&gt; is a popular Dependency Injection framework commonly used in Android. It provides fully static and compile-time dependencies addressing many of the development and performance issues that have reflection-based solutions.&lt;/p&gt;
+
+&lt;p&gt;This month, a &lt;a href=&quot;https://dagger.dev/tutorial/&quot;&gt;new tutorial&lt;/a&gt; was released to help you better understand how it works. This article focuses on using &lt;strong&gt;Dagger with Kotlin&lt;/strong&gt;, including &lt;strong&gt;best practices&lt;/strong&gt; to optimize your build time and &lt;strong&gt;gotchas&lt;/strong&gt; you might encounter.&lt;/p&gt;
+
+&lt;p&gt;Dagger is implemented using Java’s annotations model and annotations in Kotlin are not always directly parallel with how equivalent Java code would be written. This post will highlight areas where they differ and how you can use Dagger with Kotlin without having a headache.&lt;/p&gt;
+
+&lt;p&gt;This post was inspired by some of the suggestions in this &lt;a href=&quot;https://github.com/google/dagger/issues/900&quot;&gt;Dagger issue&lt;/a&gt; that goes through best practices and pain points of Dagger in Kotlin. Thanks to all of the contributors that commented there!&lt;/p&gt;
+
+&lt;h2 id=&quot;kapt-build-improvements&quot;&gt;kapt build improvements&lt;/h2&gt;
+
+&lt;p&gt;To improve your build time, Dagger added support for &lt;strong&gt;gradle’s incremental annotation processing&lt;/strong&gt; in &lt;a href=&quot;https://github.com/google/dagger/releases/tag/dagger-2.18&quot;&gt;v2.18&lt;/a&gt;! This is enabled by default in Dagger &lt;a href=&quot;https://github.com/google/dagger/releases/tag/dagger-2.24&quot;&gt;v2.24&lt;/a&gt;. In case you’re using a lower version, you need to add a few lines of code (as shown below) if you want to benefit from it.&lt;/p&gt;
+
+&lt;p&gt;Also, you can tell Dagger not to format the generated code. This option was added in Dagger &lt;a href=&quot;https://github.com/google/dagger/releases/tag/dagger-2.18&quot;&gt;v2.18&lt;/a&gt; and it’s the default behavior (doesn’t generate formatted code) in &lt;a href=&quot;https://github.com/google/dagger/releases/tag/dagger-2.23&quot;&gt;v2.23&lt;/a&gt;. If you’re using a lower version, disable code formatting to improve your build time (see code below).&lt;/p&gt;
+
+&lt;p&gt;Include these compiler arguments in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle&lt;/code&gt; file to make Dagger more performant at build time:&lt;/p&gt;
+
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;allprojects&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;afterEvaluate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;extensions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findByName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'kapt'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)?.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;arguments&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dagger.formatGeneratedSource&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;disabled&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dagger.gradle.incremental&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;enabled&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Alternatively, if you use Kotlin DSL script files, include them like this in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle.kts&lt;/code&gt; file of the modules that use Dagger:&lt;/p&gt;
+
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;kapt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;arguments&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dagger.formatGeneratedSource&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;disabled&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dagger.gradle.incremental&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;enabled&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;qualifiers-for-field-attributes&quot;&gt;Qualifiers for field attributes&lt;/h2&gt;
+
+&lt;p&gt;When an annotation is placed on a property in Kotlin, it’s not clear whether Java will see that annotation on the &lt;em&gt;field&lt;/em&gt; of the property or the method for that property. Setting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;field:&lt;/code&gt; prefix on the annotation ensures that the qualifier ends up in the right place (&lt;a href=&quot;https://kotlinlang.org/docs/reference/annotations.html#annotation-use-site-targets&quot;&gt;see documentation&lt;/a&gt; for more details).&lt;/p&gt;
+
+&lt;p&gt;✅ The way to apply qualifiers on an injected field is:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;field&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MinimumBalance&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;minimumBalance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BigDecimal&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;❌ As opposed to:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@MinimumBalance&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;minimumBalance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BigDecimal&lt;/span&gt; 
+&lt;span class=&quot;c1&quot;&gt;// @MinimumBalance is ignored!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Forgetting to add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;field:&lt;/code&gt; could lead to injecting the wrong object if there’s an unqualified instance of that type available in the Dagger graph.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Update 10/28/19&lt;/strong&gt;: This was fixed in Dagger v2.25. If you use this version, you can just type what wasn’t working before:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@MinimumBalance&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;minimumBalance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BigDecimal&lt;/span&gt; 
+&lt;span class=&quot;c1&quot;&gt;// FIXED: @MinimumBalance is NOT ignored!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;static-provides-functions-optimization&quot;&gt;Static @Provides functions optimization&lt;/h2&gt;
+
+&lt;p&gt;Dagger’s generated code will be more performant if &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; methods are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt;. To achieve this in Kotlin, use a Kotlin &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;object&lt;/code&gt; instead of a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;class&lt;/code&gt; and annotate your methods with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@JvmStatic&lt;/code&gt;. This is a &lt;strong&gt;&lt;em&gt;best practice&lt;/em&gt;&lt;/strong&gt; that you should follow as much as possible.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@JvmStatic&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideOkHttpClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In case you need an abstract method, you’ll need to add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@JvmStatic&lt;/code&gt; method to a companion object and annotate it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Module&lt;/code&gt; too.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Binds&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;retrofitService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RetrofitService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Service&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;companion&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;nd&quot;&gt;@JvmStatic&lt;/span&gt;
+        &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideOkHttpClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Alternatively, you can extract the object module out and include it in the abstract one:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;OkHttpClientModule&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    
+    &lt;span class=&quot;nd&quot;&gt;@Binds&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;retrofitService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RetrofitService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Service&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClientModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@JvmStatic&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideOkHttpClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Update 10/28/19&lt;/strong&gt;: With Dagger v2.25.2, you don’t need to tag the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; function with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@JvmStatic&lt;/code&gt;. Dagger will understand it properly.&lt;/p&gt;
+
+&lt;h2 id=&quot;injecting-generics&quot;&gt;Injecting Generics&lt;/h2&gt;
+
+&lt;p&gt;Kotlin compiles generics with wildcards to make Kotlin APIs work with Java. These are generated when a type appears as a parameter (&lt;a href=&quot;https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#variant-generics&quot;&gt;more info here&lt;/a&gt;) or as fields. For example, a Kotlin &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&amp;lt;Foo&amp;gt;&lt;/code&gt; parameter shows up as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&amp;lt;? super Foo&amp;gt;&lt;/code&gt; in Java.&lt;/p&gt;
+
+&lt;p&gt;This causes problems with Dagger because it expects an exact (aka &lt;a href=&quot;https://en.wikipedia.org/wiki/Class_invariant&quot;&gt;invariant&lt;/a&gt;) type match. Using &lt;a href=&quot;https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-suppress-wildcards/index.html&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@JvmSuppressWildcards&lt;/code&gt;&lt;/a&gt; will ensure that Dagger sees the type without wildcards.&lt;/p&gt;
+
+&lt;p&gt;This is a common issue when you inject collections using &lt;a href=&quot;https://dagger.dev/multibindings.html&quot;&gt;Dagger’s multibinding feature&lt;/a&gt;, for example:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyVMFactory&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;vmMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JvmSuppressWildcards&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Provider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+    &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;inline-method-bodies&quot;&gt;Inline method bodies&lt;/h2&gt;
+
+&lt;p&gt;Dagger determines the types that are configured by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; methods by inspecting the return type. Specifying the return type in Kotlin functions is optional and even the IDE sometimes encourages you to refactor your code to have inline method bodies that hide the return type declaration.&lt;/p&gt;
+
+&lt;p&gt;This can lead to bugs if the inferred type is different from the one you meant. Let’s see some examples:&lt;/p&gt;
+
+&lt;p&gt;If you want to add a specific type to the graph, inlining works as expected. See the different ways to do the same in Kotlin:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideNetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideNetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkPrinter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideNetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkPrinter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you want to provide an implementation of an interface, then you must explicitly specify the return type. Not doing it can lead to problems and bugs:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// configures a `Printer`&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providePrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Printer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; 
+
+&lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// configures a `NetworkPrinter`, not a plain `Printer`!&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providePrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NetworkPrinter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Dagger mostly works with Kotlin out of the box. However, you have to watch out for a few things just to make sure you’re doing what you really mean to do: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@field:&lt;/code&gt; for qualifiers on field attributes, inline method bodies, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@JvmSuppressWildcards&lt;/code&gt; when injecting collections.&lt;/p&gt;
+
+&lt;p&gt;Dagger optimizations come with no cost, add them and follow best practices to improve your build time: enabling incremental annotation processing, disabling formatting and using static &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; methods in your Dagger modules.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="dagger" />
+      
+
+      
+        <summary type="html">Dagger optimizations come with no cost! Add them and follow best practices</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

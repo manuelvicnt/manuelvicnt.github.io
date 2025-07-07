@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Coroutines - Manuel Vivo .dev</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/tag/coroutines/" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Coroutines - Manuel Vivo .dev" />
+    <meta property="og:description" content="A place where you can learn about Android development" />
+    <meta property="og:url" content="https://manuelvivo.dev/tag/coroutines/" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/blog-cover.jpg" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Coroutines - Manuel Vivo .dev" />
+    <meta name="twitter:description" content="A place where you can learn about Android development" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/blog-cover.jpg" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="666" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/tag/coroutines/",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/blog-cover.jpg",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/tag/coroutines/"
+    },
+    "description": "A place where you can learn about Android development"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Tag Page" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Tag Page | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Tag Page" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A place where you can learn about Android development" />
+<meta property="og:description" content="A place where you can learn about Android development" />
+<link rel="canonical" href="https://manuelvivo.dev/tag/coroutines/" />
+<meta property="og:url" content="https://manuelvivo.dev/tag/coroutines/" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Tag Page" />
+<meta name="twitter:site" content="@" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A place where you can learn about Android development","headline":"Tag Page","url":"https://manuelvivo.dev/tag/coroutines/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="tag-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+<!-- The tag above means - insert everything in this file into the {body} of the default.hbs template -->
+
+<!-- The big featured header, it uses blog cover image as a BG if available -->
+<!-- #tag -->
+<!-- dynamically loading backgrounds for tags,  descriptions and page titles -->
+
+
+
+<header class="site-header outer " style="background-image: url(/assets/images/blog-cover.jpg) ">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+        <div class="site-header-content">
+            <h1 class="site-title">Coroutines</h1>
+            <h2 class="site-description">
+                
+                    Android's recommended solution for async programming
+                
+            </h2>
+        </div>
+    </div>
+</header>
+<!-- tag -->
+
+<!-- The main content area -->
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <div class="post-feed">
+            <!-- The tag below includes the markup for each post - partials/post-card.hbs -->
+            
+
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/kotlin-flows-in-practice">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-10-27-kotlin-flows-in-practice.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/kotlin-flows-in-practice">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="27 Oct 2021">27 Oct 2021</time>
+                    </span>
+
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Kotlin Flows in practice</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Kotlin Flows in practice — Android Dev Summit 2021 talk
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/repeatonlifecycle">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-07-01-repeatonlifecycle.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/repeatonlifecycle">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime=" 1 Jul 2021"> 1 Jul 2021</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">repeatOnLifecycle API design story</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Learn the design decisions behind the Lifecycle.repeatOnLifecycle API.
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      10 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutinescope-hilt">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-06-10-coroutinescope-hilt.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutinescope-hilt">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="10 Jun 2021">10 Jun 2021</time>
+                    </span>
+
+                    
+                        
+                            
+                               <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Hilt</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Create an application CoroutineScope using Hilt</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Inject an application-scoped CoroutineScope using Hilt.
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      9 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/sharein-statein">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-05-07-sharein-statein.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/sharein-statein">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime=" 7 May 2021"> 7 May 2021</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Things to know about Flow’s shareIn and stateIn operators</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Become familiar with the shareIn and stateIn operators by example.
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      5 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-addrepeatingjob">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-03-26-coroutines-addrepeatingjob.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-addrepeatingjob">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="26 Mar 2021">26 Mar 2021</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">A safer way to collect flows from Android UIs</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Learn how to use the Lifecycle.repeatOnLifecycle API to safely collect flows from the UI layer in Android.
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      9 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-and-threads">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-02-03-coroutines-and-threads.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-and-threads">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime=" 3 Feb 2021"> 3 Feb 2021</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Bridging the gap between coroutines, JVM threads, and concurrency problems</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Learn more about how coroutines are executed in the JVM and concurrency problems.
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      10 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/simplifying-apis-coroutines">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-03-24-suspend-modifier.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/simplifying-apis-coroutines">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="16 Dec 2020">16 Dec 2020</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Simplifying APIs with coroutines and Flow</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Learn how to create your own coroutine adapters and see how they work under the hood
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      8 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/going-with-the-flow">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-11-24-going-with-the-flow.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/going-with-the-flow">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="24 Nov 2020">24 Nov 2020</time>
+                    </span>
+
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Going with the Flow</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Introduction to coroutines Flow
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-in-2020">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-07-13-coroutines-in-2020.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-in-2020">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="13 Jul 2020">13 Jul 2020</time>
+                    </span>
+
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Android Coroutines - How to manage async tasks in Kotlin</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>State of coroutines on Android in 2020
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-cancellation-exceptions-4">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-coroutines.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-cancellation-exceptions-4">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime=" 7 Apr 2020"> 7 Apr 2020</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines & Patterns for work that shouldn’t be cancelled</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Best practices for work that needs to run beyond its current scope with an applicationScope!
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      8 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-101-talk">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-04-02-coroutines-101-talk.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-101-talk">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime=" 2 Apr 2020"> 2 Apr 2020</time>
+                    </span>
+
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines 101</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Introduction to the basics of coroutines
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-cancellation-exceptions-3">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-coroutines.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-cancellation-exceptions-3">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="11 Mar 2020">11 Mar 2020</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Exceptions in coroutines</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>All you need to know about exceptions in coroutines
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      8 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-cancellation-exceptions-1">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-coroutines.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-cancellation-exceptions-1">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="11 Mar 2020">11 Mar 2020</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines - First things first</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Learn about the most basics coroutines concepts
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      5 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/coroutines-gotta-catch-em-all">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-12-04-Coroutines-gotta-catch-em-all.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-gotta-catch-em-all">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime=" 4 Dec 2019"> 4 Dec 2019</time>
+                    </span>
+
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines! Gotta catch 'em all! - KotlinConf 2019</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>All about cancellation and exceptions in coroutines
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/lessons-learnt-flow-ads-2019">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-11-26-lessons-learnt-flow-ads-2019.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/lessons-learnt-flow-ads-2019">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="26 Nov 2019">26 Nov 2019</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Best practices we found when using Flow in the ADS 2019 app
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      10 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/testing-coroutines-talk">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-10-24-testing-coroutines-talk.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/testing-coroutines-talk">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="24 Oct 2019">24 Oct 2019</time>
+                    </span>
+
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Testing coroutines - Android Developer Summit 2019</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>How to test coroutines in 2019!
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/testing-two-livedata">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-10-15-testing-two-livedata.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/testing-two-livedata">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="15 Oct 2019">15 Oct 2019</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Testing two consecutive LiveData emissions in Coroutines</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Learn how to pause and resume a TestCoroutineDispatcher
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      6 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/suspend-modifier">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-03-24-suspend-modifier.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/suspend-modifier">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="24 Mar 2019">24 Mar 2019</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">The suspend modifier — under the hood</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>How is the compiler transforming the code to be able to suspend and resume the execution of coroutines?
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      11 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+    <article class="post-card tag-template">
+        
+            <a class="post-card-image-link" href="/viewmodelscope">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-03-19-viewmodelscope.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/viewmodelscope">
+                <header class="post-card-header">
+                    <span class="reading-date">
+                        <time datetime="19 Mar 2019">19 Mar 2019</time>
+                    </span>
+
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Easy Coroutines in Android - viewModelScope</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Learn everything you should know about viewModelScope
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      7 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+
+        </div>
+    </div>
+</main>
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('1');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

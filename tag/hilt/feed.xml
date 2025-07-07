@@ -1,0 +1,1391 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator>
+  <link href="https://manuelvivo.dev/tag/hilt/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://manuelvivo.dev/" rel="alternate" type="text/html" />
+  <updated>2025-07-07T10:14:22+00:00</updated>
+  <id>https://manuelvivo.dev/tag/hilt/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Manuel Vivo .dev | </title>
+  
+
+  
+    <subtitle>A place where you can learn about Android development</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">Create an application CoroutineScope using Hilt</title>
+      <link href="https://manuelvivo.dev/coroutinescope-hilt" rel="alternate" type="text/html" title="Create an application CoroutineScope using Hilt" />
+      <published>2021-06-10T00:00:00+00:00</published>
+      <updated>2021-06-10T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/coroutinescope-hilt</id>
+      <content type="html" xml:base="https://manuelvivo.dev/coroutinescope-hilt">&lt;p&gt;Inject an application-scoped &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; using Hilt.&lt;/p&gt;
+
+&lt;p&gt;Following &lt;a href=&quot;https://developer.android.com/kotlin/coroutines/coroutines-best-practices&quot;&gt;coroutine’s best practices&lt;/a&gt;, you might need to inject an application-scoped &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; in some classes to &lt;a href=&quot;https://developer.android.com/kotlin/coroutines/coroutines-best-practices#create-coroutines-data-layer&quot;&gt;launch new coroutines that follow the app lifecycle or to make certain work outlive the caller’s scope&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this article, you’ll learn how to create an application-scoped &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; using Hilt, and how to inject it as a dependency. To further improve the way we work with Coroutines, we’ll see how to inject the different &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt;s and replace their implementations in tests.&lt;/p&gt;
+
+&lt;h2 id=&quot;manual-dependency-injection&quot;&gt;Manual dependency injection&lt;/h2&gt;
+
+&lt;p&gt;To create an &lt;a href=&quot;https://medium.com/androiddevelopers/scoping-in-android-and-hilt-c2e5222317c0&quot;&gt;application-scoped&lt;/a&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; following dependency injection (DI) best practices &lt;a href=&quot;https://developer.android.com/training/dependency-injection/manual&quot;&gt;manually&lt;/a&gt; without any library, you’d typically add a new variable to your application class with an instance of a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt;. The same instance would be manually passed around when creating other objects.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;externalScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Application-scoped types that any class in the app could access&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// using the applicationContext.&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;applicationScope&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SupervisorJob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;myRepository&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;applicationScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Since there isn’t a reliable way to know when the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Application&lt;/code&gt; is destroyed in Android, you don’t need to call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;applicationScope.cancel()&lt;/code&gt; manually as the scope and all ongoing work will be destroyed when the application process finishes.&lt;/p&gt;
+
+&lt;p&gt;A better option for doing this manually is to create an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationContainer&lt;/code&gt; class that holds the application-scoped types. This helps with separation of concerns since these &lt;em&gt;Container&lt;/em&gt; classes are responsible for:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;handling the logic of &lt;em&gt;how&lt;/em&gt; to build certain types,&lt;/li&gt;
+  &lt;li&gt;holding container-scoped types instances, and&lt;/li&gt;
+  &lt;li&gt;returning instances of scoped and unscoped types.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationDiContainer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;applicationScope&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SupervisorJob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;myRepository&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;applicationScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;applicationDiContainer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationDiContainer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: A container always returns the same instance of a scoped type, and always returns a different instance for unscoped types. Scoping types to containers is &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-scopes&quot;&gt;costly&lt;/a&gt; since the scoped object stays in memory until the component is destroyed, so only scope what’s really needed.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationDiContainer&lt;/code&gt; example above, all types were scoped. If &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MyRepository&lt;/code&gt; didn’t need to be scoped to the application, we’d have:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationDiContainer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Scoped type. Same instance is always returned&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;applicationScope&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SupervisorJob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Unscoped type. Always returns a different instance&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getMyRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyRepository&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;applicationScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;using-hilt-in-your-app&quot;&gt;Using Hilt in your app&lt;/h2&gt;
+
+&lt;p&gt;Hilt generates what you can see in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationDiContainer&lt;/code&gt; (and more!) at compile time using annotations. Moreover, Hilt provides containers for &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#generated-components&quot;&gt;most Android framework classes&lt;/a&gt; not only for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Application&lt;/code&gt; class.&lt;/p&gt;
+
+&lt;p&gt;To set up Hilt in your app and create the container for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Application&lt;/code&gt; class, annotate your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Application&lt;/code&gt; class with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@HiltAndroidApp&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@HiltAndroidApp&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With this, the application DI container is ready to be used. We just need to let Hilt know how to provide instances of different types.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: In Hilt, Container classes are referenced as Components. The container associated with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Application&lt;/code&gt; class is called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt;. Check out the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#generated-components&quot;&gt;list of all available Hilt components&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;construction-injection&quot;&gt;Construction injection&lt;/h2&gt;
+
+&lt;p&gt;Construction injection is the easiest way to let Hilt know how to provide instances of a type if we have access to the constructor of a class as we only need to annotate the constructor with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Inject&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Singleton&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Scopes this type to the SingletonComponent&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyRepository&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;externalScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+    &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This lets Hilt know that in order to provide an instance of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MyRepository&lt;/code&gt; class, an instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; needs to be passed as a dependency. Hilt generates code at compile time to make sure dependencies are satisfied and passed in when creating an instance of a type or give errors in case it doesn’t have enough information. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Singleton&lt;/code&gt; is used to scope this class to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonContainer&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;At this point, Hilt doesn’t know how to satisfy the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; dependency because we haven’t told Hilt how to do that. The following sections will explain how we can let Hilt know what to pass as a dependency.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: Hilt provides a different annotation to scope types to the different Hilt available components. Check out the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-scopes&quot;&gt;list of all available component scopes&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;bindings&quot;&gt;Bindings&lt;/h2&gt;
+
+&lt;p&gt;A &lt;em&gt;binding&lt;/em&gt; is a commonly-used term in Hilt that denotes the &lt;strong&gt;information&lt;/strong&gt; Hilt knows about how to provide instances of a type as a dependency. We could say that we added a binding to Hilt with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Inject&lt;/code&gt; annotation of the code snippet above.&lt;/p&gt;
+
+&lt;p&gt;Bindings flow through &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy&quot;&gt;Hilt’s components hierarchy&lt;/a&gt;. Bindings that are available in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt; are also available in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityComponent&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Bindings for unscoped types (an example of this could’ve been the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MyRepository&lt;/code&gt; code above if it wasn’t annotated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Singleton&lt;/code&gt;), are available in all Hilt components. Bindings that are scoped to a component, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MyRepository&lt;/code&gt; that is annotated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Singleton&lt;/code&gt;, are available to the scoped component and the components below it in the hierarchy.&lt;/p&gt;
+
+&lt;h2 id=&quot;providing-types-with-modules&quot;&gt;Providing types with modules&lt;/h2&gt;
+
+&lt;p&gt;As mentioned above, we need to let Hilt know how to satisfy the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; dependency. However, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; is an interface type that comes from an external library, so we cannot use constructor injection as we did before with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MyRepository&lt;/code&gt; class. The alternative is letting Hilt know what code to run when providing the instance of a type &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#hilt-modules&quot;&gt;using Modules&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@InstallIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SingletonComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutinesScopesModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Singleton&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Provide always the same instance &lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesCoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Run this code when providing an instance of CoroutineScope&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SupervisorJob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#inject-provides&quot;&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; method&lt;/a&gt; is annotated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Singleton&lt;/code&gt; to make Hilt always return the same instance of that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt;. This is because any work that needs to follow the application lifetime should be created using the same instance of a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; that follows the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Application&lt;/code&gt;’s lifecycle.&lt;/p&gt;
+
+&lt;p&gt;Hilt modules are annotated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@InstallIn&lt;/code&gt; that indicates in which Hilt component (and components below in the hierarchy) the binding is installed. In our case, as the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; is needed by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MyRepository&lt;/code&gt; which is scoped to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt;, this binding needs to be installed in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt; as well.&lt;/p&gt;
+
+&lt;p&gt;In Hilt jargon, we could say that we added a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; binding, as now, Hilt knows how to provide instances of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, the code snippet above could be improved. &lt;a href=&quot;https://developer.android.com/kotlin/coroutines/coroutines-best-practices#inject-dispatchers&quot;&gt;Hardcoding dispatchers is a bad practice in coroutines&lt;/a&gt;, we should inject them to &lt;strong&gt;make them configurable and make testing easier&lt;/strong&gt;. Following the previous code, we can create a new Hilt module to let it know which Dispatcher to inject for each case: main, default, and IO.&lt;/p&gt;
+
+&lt;h2 id=&quot;providing-implementations-for-coroutinedispatcher&quot;&gt;Providing implementations for CoroutineDispatcher&lt;/h2&gt;
+
+&lt;p&gt;We have to provide different implementations for the same type: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt;. In other words, we need different bindings for the same type.&lt;/p&gt;
+
+&lt;p&gt;We use &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#multiple-bindings&quot;&gt;&lt;em&gt;qualifiers&lt;/em&gt;&lt;/a&gt; to let Hilt know which binding, or implementation, to use each time. Qualifiers are just annotations that you and Hilt use to identify specific bindings. Let’s create one qualifier per &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt; implementation:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// CoroutinesQualifiers.kt file&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Retention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AnnotationRetention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RUNTIME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Qualifier&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;annotation&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DefaultDispatcher&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Retention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AnnotationRetention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RUNTIME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Qualifier&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;annotation&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IoDispatcher&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Retention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AnnotationRetention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RUNTIME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Qualifier&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;annotation&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainDispatcher&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Retention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AnnotationRetention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;BINARY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Qualifier&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;annotation&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainImmediateDispatcher&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, these qualifiers annotate the different &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; methods to identify a specific binding in Hilt modules. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@DefaultDispatcher&lt;/code&gt; qualifier annotates the method that returns the default dispatcher, and so on.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@InstallIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SingletonComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutinesDispatchersModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@DefaultDispatcher&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesDefaultDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Default&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@IoDispatcher&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesIoDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;IO&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@MainDispatcher&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesMainDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Main&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@MainImmediateDispatcher&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesMainImmediateDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;immediate&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that these &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt;s don’t need to be scoped to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt;. Every time these dependencies are needed, Hilt calls the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; method and returns the corresponding &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;providing-an-application-scoped-coroutinescope&quot;&gt;Providing an application-scoped CoroutineScope&lt;/h2&gt;
+
+&lt;p&gt;To get rid of the hardcoded &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt; from our previous application-scoped &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; code, we need to inject the Hilt-provided default dispatcher. For that, we can pass in the type we want to inject, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt;, using the corresponding qualifier, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@DefaultDispatcher&lt;/code&gt;, as a dependency in the method that provides the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@InstallIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SingletonComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutinesScopesModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Singleton&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesCoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nd&quot;&gt;@DefaultDispatcher&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defaultDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SupervisorJob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defaultDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As Hilt has multiple bindings for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt; type, we disambiguate it using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@DefaultDispatcher&lt;/code&gt; annotation when &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt; is used as a dependency.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-qualifier-for-applicationscope&quot;&gt;A qualifier for ApplicationScope&lt;/h2&gt;
+
+&lt;p&gt;Even though we don’t need multiple bindings for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; at the moment (this could change in the future if we ever need something like a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserCoroutineScope&lt;/code&gt;), adding a qualifier to the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; helps with readability when injecting it as a dependency.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Retention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AnnotationRetention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RUNTIME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Qualifier&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;annotation&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationScope&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@InstallIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SingletonComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutinesScopesModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Singleton&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@ApplicationScope&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesCoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nd&quot;&gt;@DefaultDispatcher&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defaultDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SupervisorJob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defaultDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MyRepository&lt;/code&gt; depends on this scope, it’s very clear which external scope uses as implementation:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Singleton&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyRepository&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@ApplicationScope&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;externalScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineScope&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;replacing-dispatchers-for-instrumentation-tests&quot;&gt;Replacing Dispatchers for instrumentation tests&lt;/h2&gt;
+
+&lt;p&gt;We said before that we should inject dispatchers to make testing easier and have full control over what’s happening. For instrumentation tests, we’d want to make Espresso wait for coroutines to finish.&lt;/p&gt;
+
+&lt;p&gt;Instead of creating a custom &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt; with some &lt;a href=&quot;https://developer.android.com/training/testing/espresso/idling-resource&quot;&gt;Espresso Idling resource&lt;/a&gt; to make it wait for the coroutines to finish, we can take advantage of the &lt;a href=&quot;https://developer.android.com/reference/android/os/AsyncTask&quot;&gt;AsyncTask&lt;/a&gt; API. Even though AsyncTask was deprecated in Android API 30, Espresso hooks into its thread pool to check for idleness. Therefore, any coroutine that should be executed in a background thread could be executed in the AsyncTask’s thread pool.&lt;/p&gt;
+
+&lt;p&gt;Use Hilt’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestInstallIn&lt;/code&gt; API to make Hilt provide a different implementation of a type in tests. Similar to how we provided the different Dispatchers above, we can create a new file under the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;androidTest&lt;/code&gt; package to provide different implementations for those Dispatchers.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// androidTest/projectPath/TestCoroutinesDispatchersModule.kt file&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@TestInstallIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;components&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SingletonComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;replaces&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;CoroutinesDispatchersModule&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TestCoroutinesDispatchersModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@DefaultDispatcher&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesDefaultDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;AsyncTask&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;THREAD_POOL_EXECUTOR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;asCoroutineDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@IoDispatcher&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesIoDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;AsyncTask&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;THREAD_POOL_EXECUTOR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;asCoroutineDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@MainDispatcher&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;providesMainDispatcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CoroutineDispatcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dispatchers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Main&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With the code above, we’re making Hilt “forget” the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutinesDispatchersModule&lt;/code&gt; used in production code in tests. That module will be replaced with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCoroutinesDispatchersModule&lt;/code&gt; which uses the Async Task’s thread pool for work that needs to happen in the background, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dispatchers.Main&lt;/code&gt; for work that needs to happen on the main thread which Espresso also waits for.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Warning: This implementation is obviously a hack that we’re not proud of. However, coroutines don’t currently integrate well with Espresso as there isn’t a way to know if a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt; is idle or not at the moment (&lt;a href=&quot;https://github.com/Kotlin/kotlinx.coroutines/issues/242&quot;&gt;Link to bug&lt;/a&gt;). &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AsyncTask.THREAD_POOL_EXECUTOR&lt;/code&gt; is the best alternative to use at the moment since Espresso doesn’t use Idling resources to check if this executor is idle, Espresso uses a different heuristic that takes into account what’s in the message queue. That makes it a better option than something like &lt;a href=&quot;https://developer.android.com/reference/androidx/test/espresso/idling/concurrent/IdlingThreadPoolExecutor&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;IdlingThreadPoolExecutor&lt;/code&gt;&lt;/a&gt; which unfortunately considers the thread pool idle when a coroutine is suspended due to how coroutines are compiled down to a state machine.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;For more information about testing, check out &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-testing&quot;&gt;Hilt’s testing guide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;In this article, you learnt how to create an application-scoped &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineScope&lt;/code&gt; using Hilt, inject it as a dependency, inject the different &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoroutineDispatcher&lt;/code&gt; instances, and replace their implementations in tests.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="coroutines" />
+      
+        <category term="hilt" />
+      
+
+      
+        <summary type="html">Inject an application-scoped CoroutineScope using Hilt.</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Hilt is stable! Easier dependency injection on Android</title>
+      <link href="https://manuelvivo.dev/hilt-stable" rel="alternate" type="text/html" title="Hilt is stable! Easier dependency injection on Android" />
+      <published>2021-05-04T00:00:00+00:00</published>
+      <updated>2021-05-04T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/hilt-stable</id>
+      <content type="html" xml:base="https://manuelvivo.dev/hilt-stable">&lt;p&gt;Hilt, Jetpack’s recommended dependency injection (DI) solution for Android apps, is already stable!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android&quot;&gt;Hilt&lt;/a&gt;, Jetpack’s recommended &lt;a href=&quot;https://developer.android.com/training/dependency-injection&quot;&gt;dependency injection (DI)&lt;/a&gt; solution for Android apps, is already &lt;strong&gt;stable&lt;/strong&gt;! That means Hilt is fully ready to be used &lt;strong&gt;in production&lt;/strong&gt;. Hilt is simpler than Dagger, enables you to write less boilerplate code, it’s designed for Android and has integration with multiple Jetpack libraries. Several companies have already started taking advantage of Hilt in their apps.&lt;/p&gt;
+
+&lt;p&gt;Hilt was &lt;a href=&quot;https://manuelvivo.dev/di-with-hilt&quot;&gt;first released&lt;/a&gt; as alpha in June 2020 with the mission of defining a &lt;strong&gt;standard way&lt;/strong&gt; to do DI in your Android apps and since then, we’ve received tons of feedback from developers. That not only improved the library, but also, it let us know that we’re working on the right problems.&lt;/p&gt;
+
+&lt;p&gt;Instead of creating dependency graphs by hand, and manually injecting and passing around types where needed, Hilt automatically generates all that code for you at compile time by means of annotations. Hilt can help you &lt;strong&gt;get the most out of DI best practices&lt;/strong&gt; in your app by doing the hard work and &lt;strong&gt;generating all that boilerplate&lt;/strong&gt; you would’ve needed to write otherwise. Also, as it’s fully integrated with Android, Hilt manages the lifecycle of the dependency graphs associated with the Android framework classes automatically for you.&lt;/p&gt;
+
+&lt;p&gt;Let’s see Hilt in action with a quick example! After &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#setup&quot;&gt;setting Hilt up&lt;/a&gt;, using it in your project from scratch to inject a ViewModel in an Activity is as easy as adding few annotations to your code as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@HiltAndroidApp&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Setup Hilt in your app&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Make Hilt aware of this ViewModel&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@HiltViewModel&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginViewModel&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;savedStateHandle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SavedStateHandle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/* ... Other dependencies Hilt takes care of ... */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;c1&quot;&gt;// Make the activity use the right ViewModel factory and&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// inject other dependencies&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt; 
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;loginViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginViewModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// loginViewModel is ready to be used&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Apart from what’s mentioned above, why should you use Hilt in your Android app?&lt;/p&gt;
+
+&lt;h2 id=&quot;simpler-than-dagger&quot;&gt;Simpler than Dagger&lt;/h2&gt;
+
+&lt;p&gt;Hilt is built on top of the popular DI library &lt;a href=&quot;https://developer.android.com/training/dependency-injection/dagger-basics&quot;&gt;Dagger&lt;/a&gt; so benefits from the compile time correctness, runtime performance, scalability, and &lt;a href=&quot;https://manuelvivo.dev/dagger-hilt-navigation-android-studio&quot;&gt;Android Studio support&lt;/a&gt; that Dagger provides. Some Dagger annotations, such as @Inject to tell Dagger and Hilt how to provide an instance of a type, are often used in Hilt. But Hilt is simpler than Dagger!&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“I highly recommend leveraging Dagger for dependency injection in Android applications. However, pure vanilla Dagger can lead to too much room for creativity. When that gets mixed with the complexity of the various lifecycle-aware components that are part of Android development, there’s plenty of room for pitfalls such as memory leaks: for example, accidentally passing in Activity-scoped dependencies into ViewModels. Hilt being opinionated and designed specifically for Android helps you avoid some of the pitfalls when using vanilla Dagger.”&lt;/em&gt; — &lt;a href=&quot;https://twitter.com/mhernand40&quot;&gt;Marcelo Hernandez&lt;/a&gt;, Staff Software Engineer, Tinder&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If you’re already using Dagger in your app and want to migrate to Hilt… fear not! Dagger and Hilt can coexist together, apps can be &lt;a href=&quot;https://dagger.dev/hilt/migration-guide&quot;&gt;migrated&lt;/a&gt; on an as-needed basis.&lt;/p&gt;
+
+&lt;h2 id=&quot;less-boilerplate&quot;&gt;Less boilerplate&lt;/h2&gt;
+
+&lt;p&gt;Hilt is opinionated — this means that it makes decisions for you so that you have less code to write. Hilt defines standard components, or dependency graphs, fully integrated with Android framework classes such as Application, activities, fragments, and views. As well as scope annotations to scope instances of types to those components.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“Hilt automatically generates the test application and test component via @HiltAndroidTest. We were able to remove between 20% and 40% of boilerplate wire up test code after migrating to Hilt!”&lt;/em&gt; — Jusun Lee, Software Engineer, YouTube&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“We are only scratching the surface in terms of migrating to Hilt. However, in one of the modules we migrated to Hilt, we saw +78/-182 in terms of lines changed for this library.”&lt;/em&gt; — Marcelo Hernandez, Staff Software Engineer, Tinder&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;designed-for-android&quot;&gt;Designed for Android&lt;/h2&gt;
+
+&lt;p&gt;As opposed to Dagger that is a dependency injection solution for the Java programming language applications, Hilt solely works in Android apps. Some annotations such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@HiltAndroidApp&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@AndroidEntryPoint&lt;/code&gt;, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@HiltViewModel&lt;/code&gt; are specific to Hilt and define an opinionated way to do DI on Android.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“Hilt finally offers built-in Android lifecycle aware Dagger components. With Hilt, we can solely focus on Dagger @Modules without having to worry about Components, Subcomponents, the Component provider pattern, and so on.”&lt;/em&gt; — Marcelo Hernandez, Staff Software Engineer, Tinder&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;standardization-of-components-and-bindings&quot;&gt;Standardization of components and bindings&lt;/h2&gt;
+
+&lt;p&gt;For those that know about Dagger, Hilt simplifies the dependency graph by using a &lt;a href=&quot;https://dagger.dev/hilt/monolithic&quot;&gt;monolithic component system&lt;/a&gt; to generate less code at compile time.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“With Hilt’s monolithic component system, binding definitions are provided once and shared across all classes that use that component. This is a big win as previously, YouTube used a polylithic component system where modules were manually wired-up into custom components and there were many duplicate binding definitions.”&lt;/em&gt; — Jusun Lee, Software Engineer, YouTube&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“As our Gradle modules separation allows for feature development in isolation, it became easy to be too creative when using Dagger. We’ve found that migrating those modules over to Hilt has actually exposed flaws in which we were inadvertently violating the separation of concerns.”&lt;/em&gt; — Marcelo Hernandez, Staff Software Engineer, Tinder&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;integration-with-other-jetpack-libraries&quot;&gt;Integration with other Jetpack libraries&lt;/h2&gt;
+
+&lt;p&gt;You can use your favourite Jetpack libraries with Hilt out of the box. We provide direct injection support for &lt;strong&gt;ViewModel, WorkManager, Navigation, and Compose&lt;/strong&gt; so far.&lt;/p&gt;
+
+&lt;p&gt;Learn more about Jetpack support in the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-jetpack&quot;&gt;docs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“I really appreciate how Hilt works out of the box with ViewModels and how it eliminates the boilerplate of having to set up a ViewModel.Factory provider with vanilla Dagger.”&lt;/em&gt; — Marcelo Hernandez, Staff Software Engineer, Tinder&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;resources-to-learn-hilt&quot;&gt;Resources to learn Hilt&lt;/h2&gt;
+
+&lt;p&gt;Hilt is Jetpack’s recommended DI solution for Android apps. To learn more about it and start using it in your apps, check out these resources:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Learn about the benefits of dependency injection &lt;a href=&quot;https://developer.android.com/training/dependency-injection&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android&quot;&gt;Documentation&lt;/a&gt; to learn how to use Hilt in your app.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://dagger.dev/hilt/migration-guide&quot;&gt;Migration guide&lt;/a&gt; from Dagger to Hilt.&lt;/li&gt;
+  &lt;li&gt;Codelabs to learn Hilt in a step-by-step approach: &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-hilt&quot;&gt;Using Hilt in your Android app&lt;/a&gt; and &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt&quot;&gt;Migrating from Dagger to Hilt&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Code samples! Check out Hilt in action in the &lt;a href=&quot;https://github.com/google/iosched&quot;&gt;Google I/O 2020&lt;/a&gt; and &lt;a href=&quot;https://github.com/android/sunflower/&quot;&gt;Sunflower&lt;/a&gt; apps.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.android.com/images/training/dependency-injection/hilt-annotations.pdf&quot;&gt;Cheat sheet&lt;/a&gt; to quickly see &lt;em&gt;what&lt;/em&gt; the different Hilt and Dagger annotations do and &lt;em&gt;how&lt;/em&gt; to use them.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Huge thanks to &lt;a href=&quot;https://twitter.com/mhernand40&quot;&gt;Marcelo Hernandez&lt;/a&gt; from the Android Tinder team, and Jusun Lee from the Android YouTube team for taking the time to talk about how and why they’re adopting Hilt in their apps.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+
+      
+        <summary type="html">Hilt, Jetpack’s recommended dependency injection (DI) solution for Android apps, is already stable!</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Using Hilt’s ViewModelComponent</title>
+      <link href="https://manuelvivo.dev/viewmodelcomponent" rel="alternate" type="text/html" title="Using Hilt's ViewModelComponent" />
+      <published>2021-01-21T00:00:00+00:00</published>
+      <updated>2021-01-21T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/viewmodelcomponent</id>
+      <content type="html" xml:base="https://manuelvivo.dev/viewmodelcomponent">&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; is a component in the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy&quot;&gt;Hilt’s component hierarchy&lt;/a&gt; that follows the lifecycle of a ViewModel and allows scoping types to it.&lt;/p&gt;
+
+&lt;p&gt;Before the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; was added to Hilt, ViewModel classes were created and injected by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt;. Therefore, dependencies of ViewModels could only use unscoped types or types scoped to either the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt; whose instance is shared by all ViewModels.&lt;/p&gt;
+
+&lt;p&gt;The above might not seem like a problem if each screen of your app is an Activity, as scoping a type to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt; would mean each ViewModel class would receive a different instance of that type. However, having an activity per screen is not the case for most apps.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SavedStateHandle&lt;/code&gt; type was not available as a default binding in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, ViewModels are created and injected by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; that follows the lifecycle of a ViewModel. Each ViewModel instance has a different instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt;, and to scope a type to it, use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelScoped&lt;/code&gt; annotation.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;600&quot; src=&quot;assets/images/2021-01-21-viewmodelcomponent_1.png&quot; /&gt;
+  &lt;small&gt;Position of the ViewModelComponent in a simplified Hilt's component hierarchy&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; extends from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt;. Therefore, types scoped to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; can depend on types scoped to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt;. In addition to this, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; contains a default binding of the &lt;a href=&quot;https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SavedStateHandle&lt;/code&gt;&lt;/a&gt; associated with its ViewModel.&lt;/p&gt;
+
+&lt;h2 id=&quot;scoping-to-the-viewmodelcomponent&quot;&gt;Scoping to the ViewModelComponent&lt;/h2&gt;
+
+&lt;p&gt;Scoping to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt;, and therefore to a ViewModel, using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelScoped&lt;/code&gt; gives you more flexibility and granularity than what’s possible with other components. ViewModels survive configuration changes and its lifecycle can be controlled by an activity, fragment, or even a &lt;a href=&quot;https://developer.android.com/reference/androidx/navigation/NavBackStackEntry&quot;&gt;navigation graph&lt;/a&gt;!&lt;/p&gt;
+
+&lt;p&gt;Still, scoping to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityComponent&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FragmentComponent&lt;/code&gt; is useful since these components don’t survive configuration changes which might be necessary in some scenarios. Also, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FragmentComponent&lt;/code&gt; extends the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityComponent&lt;/code&gt;, behavior that you cannot have with multiple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt;s.&lt;/p&gt;
+
+&lt;p&gt;Therefore:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;To make all ViewModels share the same instance of a type, annotate it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ActivityRetainedScoped&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;To scope a type to a ViewModel, make it survive configuration changes, and/or be controlled by a navigation graph, annotate it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelScoped&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;To scope a type to the Activity and don’t make it survive configuration changes, annotate with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ActivityScoped&lt;/code&gt;, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@FragmentScoped&lt;/code&gt; if you want that behavior but scoping to a fragment.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;using-viewmodelscoped&quot;&gt;Using @ViewModelScoped&lt;/h2&gt;
+
+&lt;p&gt;This annotation allows you to scope a type to an instance of a ViewModel. The same instance will be injected in all the dependencies that the ViewModel and its dependencies have.&lt;/p&gt;
+
+&lt;p&gt;In the following example, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LoginViewModel&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RegistrationViewModel&lt;/code&gt; make use of a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelScoped&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserInputAuthData&lt;/code&gt; type that contains mutable state.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@ViewModelScoped&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Scopes type to the ViewModel&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SavedStateHandle&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Default binding in ViewModelComponent&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Cached data and logic here */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RegistrationViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;validateUsernameUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidateUsernameUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;validatePasswordUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidatePasswordUseCase&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;validateUsernameUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidateUsernameUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;validatePasswordUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidatePasswordUseCase&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidateUsernameUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserRepository&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidatePasswordUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserRepository&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Since &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserInputAuthData&lt;/code&gt; is scoped to the ViewModel, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RegistrationViewModel&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LoginViewModel&lt;/code&gt; will receive a &lt;em&gt;different instance&lt;/em&gt; of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserInputAuthData&lt;/code&gt;. However, the unscoped UseCase dependencies of each ViewModel use the &lt;em&gt;same instance&lt;/em&gt; that its ViewModel uses.&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-bindings-to-the-viewmodelcomponent&quot;&gt;Adding bindings to the ViewModelComponent&lt;/h2&gt;
+
+&lt;p&gt;You can add bindings to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; as with any other component. If in the code snippet above, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ValidateUsernameUseCase&lt;/code&gt; was an interface, you could tell Hilt the implementation to use as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Module&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@InstallIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ViewModelComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserAuthModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@Provides&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;provideValidateUsernameUseCase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;userInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// scoped to ViewModelComponent&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserRepository&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidateUsernameUseCase&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValidateUsernameUseCaseImpl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userInputAuthData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelComponent&lt;/code&gt; follows the lifecycle of a ViewModel and allows scoping types to it. As ViewModel’s lifecycle can be controlled by an activity, fragment, or even a &lt;a href=&quot;https://developer.android.com/reference/androidx/navigation/NavBackStackEntry&quot;&gt;navigation graph&lt;/a&gt;, you get more flexibility and granularity in the number of places where you can scope.&lt;/p&gt;
+
+&lt;p&gt;To scope a type to a ViewModel, annotate it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelScoped&lt;/code&gt;. To make all ViewModels share the same instance of a type, annotate it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ActivityRetainedScoped&lt;/code&gt;.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+
+      
+        <summary type="html">ViewModelComponent is a component in the Hilt’s component hierarchy that follows the lifecycle of a ViewModel and allows scoping types to it.</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Migrating from Dagger to Hilt — Is it worth it?</title>
+      <link href="https://manuelvivo.dev/migrating-to-Hilt" rel="alternate" type="text/html" title="Migrating from Dagger to Hilt — Is it worth it?" />
+      <published>2020-11-24T00:00:01+00:00</published>
+      <updated>2020-11-24T00:00:01+00:00</updated>
+      <id>https://manuelvivo.dev/migrating-to-Hilt</id>
+      <content type="html" xml:base="https://manuelvivo.dev/migrating-to-Hilt">&lt;p&gt;Consider whether or not you should migrate your Dagger app to Hilt&lt;/p&gt;
+
+&lt;p&gt;Hilt got released in June 2020 as a way to standardize dependency injection (DI) in Android. For new projects, Hilt provides compile time correctness, runtime performance and scalability (read more about that &lt;a href=&quot;https://manuelvivo.dev/di-with-hilt&quot;&gt;here&lt;/a&gt;)! However, what are the benefits for an application that already uses Dagger? &lt;strong&gt;Should you be migrating&lt;/strong&gt; your current app to Hilt? The following are some reasons whether your team should invest migrating from Dagger to Hilt.&lt;/p&gt;
+
+&lt;h2 id=&quot;-androidx-extensions&quot;&gt;✅ AndroidX extensions&lt;/h2&gt;
+
+&lt;p&gt;If you already have Dagger working with ViewModels or WorkManager, you saw that wiring up your ViewModelFactory and WorkerFactory requires quite a lot of boilerplate code and Dagger knowledge. The most common implementation uses &lt;a href=&quot;https://dagger.dev/dev-guide/multibindings.html&quot;&gt;multibindings&lt;/a&gt; which is one of the most complex features in Dagger that developers often struggle to understand. Hilt makes working with AndroidX a lot easier by removing that boilerplate code. What’s even better is that you don’t even need to inject the Factory in the Android framework class, you call it as if Hilt wasn’t there. With &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelInject&lt;/code&gt;, Hilt generates the right &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelProvider.Factory&lt;/code&gt; for you that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@AndroidEntryPoint&lt;/code&gt; activities and fragments can use directly.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PlayViewModel&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@ViewModelInject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MusicDatabase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PlayActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;viewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PlayViewModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;viewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;play&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;-testing-apis&quot;&gt;✅ Testing APIs&lt;/h2&gt;
+
+&lt;p&gt;DI is supposed to make testing easier but ironically, having Dagger working in tests requires &lt;a href=&quot;https://developer.android.com/training/dependency-injection/dagger-android#dagger-testing&quot;&gt;a lot of work&lt;/a&gt;. The fact that you have to maintain both the prod and test Dagger graph at the same time makes it notably worse than &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-testing&quot;&gt;Hilt’s approach&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Hilt tests can explicitly modify the DI graph using the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-testing#replace-binding&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@UninstallModules&lt;/code&gt;&lt;/a&gt; functionality. Apart from that, you get other perks like &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-testing#binding-new&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@BindValue&lt;/code&gt;&lt;/a&gt; that allows you to easily bind fields of your tests into the DI graph.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@UninstallModules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AnalyticsModule&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@HiltAndroidTest&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleTest&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  
+  &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Rule&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;hiltRule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HiltAndroidRule&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  
+  &lt;span class=&quot;nd&quot;&gt;@BindValue&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@JvmField&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsRepository&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FakeAnalyticsRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  
+  &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt; 
+  &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;myTest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;-consistency&quot;&gt;✅ Consistency&lt;/h2&gt;
+
+&lt;p&gt;There are multiple ways to have the same functionality working in Dagger. The historical lack of guidance for Android apps (that we &lt;a href=&quot;https://developer.android.com/training/dependency-injection/dagger-basics&quot;&gt;tackled&lt;/a&gt; last year) has caused multiple debates in the community and ultimately created inconsistencies in the way developers use and set up Dagger in their Android apps.&lt;/p&gt;
+
+&lt;p&gt;You might argue that your current Dagger setup is really good and you perfectly know how everything works and how everything is getting injected. Therefore, migrating to Hilt is not worth it! That might be true in your case, but is it the same for the rest of the team (and potentially future colleagues)? Will you know how everything works when switching to a new project? Understanding the setup and usage of Dagger in an app can be challenging and time consuming.&lt;/p&gt;
+
+&lt;p&gt;That time can be dramatically reduced by using Hilt into your app as the same setup is used by all Hilt applications. A new developer joining your team won’t be surprised about your Hilt setup because it’ll be pretty much the same as what they’re used to.&lt;/p&gt;
+
+&lt;h2 id=&quot;-custom-components&quot;&gt;✅ Custom Components&lt;/h2&gt;
+
+&lt;p&gt;Apart from the defined standard components, Hilt also gives you a way to create custom components and add them to the hierarchy which you can read more about &lt;a href=&quot;https://manuelvivo.dev/hilt-adding-components&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Even though custom components reduce consistency, you still get a lot of benefits! The module auto-discoverability (i.e. the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#hilt-modules&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@InstallIn&lt;/code&gt;&lt;/a&gt; annotation functionality) feature as well as the test replacement features also work with custom components.&lt;/p&gt;
+
+&lt;p&gt;However, the difference between custom components and the Hilt built-in components is that you lose the ability to automatically inject those components into Android framework classes (i.e. what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@AndroidEntryPoint&lt;/code&gt; does).&lt;/p&gt;
+
+&lt;h2 id=&quot;-dagger-and-hilt-interop&quot;&gt;✅ Dagger and Hilt interop&lt;/h2&gt;
+
+&lt;p&gt;Hilt and Dagger can co-exist together! You can benefit from Hilt in certain parts of your app while keeping the other most niche parts using Dagger if you allow Hilt to take over your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SingletonComponent&lt;/code&gt;. This also means that the &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt#0&quot;&gt;migration to Hilt can be done gradually&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;-component-dependencies&quot;&gt;❌ Component dependencies&lt;/h2&gt;
+
+&lt;p&gt;Hilt being opinionated means it makes decisions for you. Hilt uses subcomponents for the component relationships, ready why &lt;a href=&quot;https://dagger.dev/hilt/monolithic&quot;&gt;here&lt;/a&gt;. If you’re a strong believer that your app is better off using component dependencies, Hilt is not the right tool for your app.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Migrating from Dagger to Hilt is worth it in most projects. The benefits Hilt brings to your application outnumbers the efforts of having to update. But you are not on your own! We provided lots of resources to help you out in this journey:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Comprehensive migration &lt;a href=&quot;https://dagger.dev/hilt/migration-guide&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Migrating from Dagger to Hilt &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt#0&quot;&gt;codelab&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Migrating the Google I/O app to Hilt &lt;a href=&quot;https://medium.com/androiddevelopers/migrating-the-google-i-o-app-to-hilt-f3edf03affe5&quot;&gt;blog post&lt;/a&gt; and &lt;a href=&quot;https://github.com/google/iosched/commit/9c20fdd52d446e5fdb03369e50fb196c31ae16e3&quot;&gt;commit&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Hilt and Assisted Injection working together &lt;a href=&quot;https://gist.github.com/manuelvicnt/437668cda3a891d347e134b1de29aee1&quot;&gt;gist&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Leave a comment below if you have any questions or you’re missing any more information about this!&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+
+      
+        <summary type="html">Consider whether or not you should migrate your Dagger app to Hilt</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Scoping in Android and Hilt</title>
+      <link href="https://manuelvivo.dev/scoping-in-android" rel="alternate" type="text/html" title="Scoping in Android and Hilt" />
+      <published>2020-07-21T00:00:00+00:00</published>
+      <updated>2020-07-21T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/scoping-in-android</id>
+      <content type="html" xml:base="https://manuelvivo.dev/scoping-in-android">&lt;p&gt;Learn about scoping in Android and how that relates to scoping in Hilt&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scoping&lt;/strong&gt; an object &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;A&lt;/code&gt; to another object &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;B&lt;/code&gt; means that throughout the lifecycle of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;B&lt;/code&gt;, it’ll always have the same instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;A&lt;/code&gt;. When it comes to dependency injection (DI), an object &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;A&lt;/code&gt; scoped to a container means that the container will always provide the same instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;A&lt;/code&gt; until the container is destroyed.&lt;/p&gt;
+
+&lt;p&gt;In Hilt, you can scope types to containers or components using annotations. For example, let’s say your app has a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; type that handles logins and logouts. You could scope this type to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt; (which is a container managed by the application’s lifecycle) using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Singleton&lt;/code&gt; annotation. The scoped types in the application component flow down the component hierarchy: in the example, the same instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; will be provided to the rest of the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy&quot;&gt;Hilt components in the hierarchy&lt;/a&gt;. Any type in the app that depends on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; will receive the same instance.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: By default, bindings in Hilt are &lt;strong&gt;unscoped&lt;/strong&gt;. They are not part of any component and they can be accessed throughout the entire project. A different instance of that type will be provided every time it is requested. When you scope a binding to a component, it limits where that binding can be used and which dependencies the type can have.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;scoping-in-android&quot;&gt;Scoping in Android&lt;/h2&gt;
+
+&lt;p&gt;With the above definition, you could argue that you can scope a type by using an instance variable of that type in a specific class, and that’s true! Without DI, you could do something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;analyticsAdapter&lt;/code&gt; variable is scoped to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExampleActivity&lt;/code&gt;’s lifecycle, which means it’ll be the same instance as long as this activity isn’t destroyed. If another class needs to access this scoped variable for some reason, they’ll get the same instance every time too. When a new instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExampleActivity&lt;/code&gt; is created (e.g. the activity goes through a configuration change), a new instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; will be created.&lt;/p&gt;
+
+&lt;p&gt;With Hilt, the equivalent code is:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@ActivityScoped&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Every time &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExampleActivity&lt;/code&gt; is created, it’ll hold a new instance of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityComponent&lt;/code&gt; DI container that will provide the same instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; to dependencies below it in the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy&quot;&gt;component hierarchy&lt;/a&gt; until the activity is destroyed.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2020-07-21-scoping-in-android_1.png&quot; /&gt;
+  &lt;small&gt;You get a new instance of `AnalyticsAdapter` and `MainActivity` after a configuration change&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;scoping-with-viewmodel&quot;&gt;Scoping with ViewModel&lt;/h2&gt;
+
+&lt;p&gt;However, we might want &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; to survive configuration changes! We could say that we want to scope that instance to the activity until the user moves away from it.&lt;/p&gt;
+
+&lt;p&gt;For that, you can use an &lt;a href=&quot;https://developer.android.com/topic/libraries/architecture/viewmodel&quot;&gt;Architecture Components ViewModel&lt;/a&gt; because it survives configuration changes.&lt;/p&gt;
+
+&lt;p&gt;Without dependency injection, you could have this code:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;viewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleViewModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;viewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;analyticsAdapter&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And in this way, you scope the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; to the ViewModel. As the activity has access to the ViewModel, it can always grab the same instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;With Hilt, you could achieve the same behavior by scoping &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt; which also survives configuration changes:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@ActivityRetainedScoped&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;assets/images/2020-07-21-scoping-in-android_2.png&quot; /&gt;
+  &lt;small&gt;You get the same instance of `AnalyticsAdapter` after a configuration change using ViewModel or Hilt’s `ActivityRetainedScope` annotation&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;If you still want to keep the ViewModel because it needs to perform some view logic while complying with good DI practices, you can use Hilt to provide the ViewModel dependencies using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelInject&lt;/code&gt; as specified in the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-jetpack#viewmodels&quot;&gt;docs&lt;/a&gt;. This time, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; doesn’t need to be scoped to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt; because it is now manually scoped to the ViewModel:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleViewModel&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@ViewModelInject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;viewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleViewModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;viewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;analyticsAdapter&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What we’ve seen so far can be applied to all Hilt components that are managed by Android framework lifecycle classes; see the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#component-scopes&quot;&gt;full list of scopes available here&lt;/a&gt;. Circling back to our initial example, scoping to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt; is the same as having an instance of that type in the application class without using DI principles.&lt;/p&gt;
+
+&lt;h2 id=&quot;scoping-with-hilt-vs-viewmodel&quot;&gt;Scoping with Hilt vs ViewModel&lt;/h2&gt;
+
+&lt;p&gt;The advantage of scoping with Hilt is that scoped types are available in the Hilt component hierarchy whereas with ViewModel, you have to manually access the scoped types from the ViewModel.&lt;/p&gt;
+
+&lt;p&gt;The advantage of scoping with ViewModel is that you can have ViewModels for any &lt;a href=&quot;https://developer.android.com/reference/androidx/lifecycle/LifecycleOwner&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LifecycleOwner&lt;/code&gt;&lt;/a&gt; objects in your application. For example, if you use the &lt;a href=&quot;https://developer.android.com/guide/navigation/navigation-getting-started&quot;&gt;Jetpack Navigation library&lt;/a&gt;, you can have a ViewModel attached to your &lt;a href=&quot;https://developer.android.com/reference/androidx/navigation/fragment/NavHostFragment&quot;&gt;NavGraph&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Hilt provides a limited number of scopes. You might find that you don’t have a scope for your particular use case — for example, when using nested fragments. For that case, you can fall back to scoping using ViewModel.&lt;/p&gt;
+
+&lt;h2 id=&quot;injecting-viewmodels-with-hilt&quot;&gt;Injecting ViewModels with Hilt&lt;/h2&gt;
+
+&lt;p&gt;As seen above, you can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelInject&lt;/code&gt; to inject dependencies into ViewModels. Under the hood, these bindings are kept in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt;, which is why you can only inject types that are either unscoped, or scoped to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The ViewModel factory generated by Hilt is available in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getDefaultViewModelProviderFactory()&lt;/code&gt; method of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@AndroidEntryPoint&lt;/code&gt;-annotated activities and fragments. That gives you more flexibility as you can use it in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ViewModelProvider&lt;/code&gt; to obtain other ViewModels, e.g. those scoped to a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BackStackEntry&lt;/code&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Scoping can be costly because the provided object stays in memory until the holder is destroyed. Be thoughtful about the use of scoped objects in your application. It is appropriate to scope objects with an internal state that requires the same instance to be used, objects that need synchronization, or objects that you have measured to be expensive to create.&lt;/p&gt;
+
+&lt;p&gt;However, when you do need to scope, you can use Hilt’s scoping annotations or the Android framework directly.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+
+      
+        <summary type="html">Learn about scoping in Android and how that relates to scoping in Hilt</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Hilt — Adding components to the hierarchy</title>
+      <link href="https://manuelvivo.dev/hilt-adding-components" rel="alternate" type="text/html" title="Hilt — Adding components to the hierarchy" />
+      <published>2020-07-09T00:00:00+00:00</published>
+      <updated>2020-07-09T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/hilt-adding-components</id>
+      <content type="html" xml:base="https://manuelvivo.dev/hilt-adding-components">&lt;p&gt;Get more flexibility in Hilt by adding your own components to the hierarchy&lt;/p&gt;
+
+&lt;p&gt;Inserting a component in the middle of the Hilt component hierarchy is not possible. However, you can create a custom component with a Hilt component as a parent and access its scoped types using entry points. In the article, we’ll see what all this implies and how to add a custom component in the &lt;em&gt;Dagger 2 codelab&lt;/em&gt; code.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger/&quot;&gt;Dagger 2 codelab&lt;/a&gt; goes through adding Dagger to a multiple-Activity application. As the user can log in and out of the app, user information is handled in a Dagger component with a lifespan longer than activity components.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-07-09-hilt-adding-components_1.png&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Dagger components in the Dagger codelab app&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;In the diagram above, notice how &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MainActivity&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SettingsActivity&lt;/code&gt; access the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserDataRepository&lt;/code&gt; scoped to it. The in-memory &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserDataRepository&lt;/code&gt; handles information related to a logged-in user. When the user logs out, we want to remove the info from memory.&lt;/p&gt;
+
+&lt;p&gt;In Hilt and Dagger, every component must be held by an object (you can think of it as a lifecycle owner) that knows when the component needs to be created or destroyed. In our example, that class is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; that keeps track of logins and logouts. When the user logs in, a new component is created and when the user logs out, the component is destroyed. In that way, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MainActivity&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SettingsActivity&lt;/code&gt; can access the same instance of the component to get injected by it.&lt;/p&gt;
+
+&lt;p&gt;All components of this app &lt;em&gt;except&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; can be mapped to Hilt’s standard components: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AppComponent&lt;/code&gt; maps to Hilt’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt; while &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RegistrationComponent&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LoginComponent&lt;/code&gt; map to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityComponent&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;What can we do to make &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; more Hilt-friendly? We have different possibilities:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Scope &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserDataRepository&lt;/code&gt; to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt; and handle nullability when the user is logged out. This is what the &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt/#0&quot;&gt;Migrating your Dagger app to Hilt codelab&lt;/a&gt; does. Not ideal, but could work in this case. However, it might add some tricky race conditions to deal with on a user switch.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Make &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MainActivity&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SettingsActivity&lt;/code&gt; fragments, and have the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserDataRepository&lt;/code&gt; scoped to the activity (Hilt’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt;) where those fragments are used. This is a “doing stuff to fit the framework rather than the framework fitting the use case” sort of solution. This doesn’t even work for all situations as you might need to access user information in other places that aren’t tied to the activity like a broadcast receiver.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Keep the same navigation structure and add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; to be used by Hilt.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As an exercise to learn more about the flexibility of Hilt, let’s cover option 3 in this post: adding a component to the Hilt component hierarchy.&lt;/p&gt;
+
+&lt;h2 id=&quot;hilt-design-decisions&quot;&gt;Hilt design decisions&lt;/h2&gt;
+
+&lt;p&gt;Hilt is opinionated on its component hierarchy as it contains the most common set of components an Android app typically uses. Due to compatibility concerns and Hilt not knowing how to create your component (e.g. what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;userId&lt;/code&gt; to use), it’s not possible to &lt;em&gt;insert&lt;/em&gt; a component between the layers (e.g. making a custom component X subcomponent of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt;, and parent of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActivityRetainedComponent&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;What is possible is &lt;em&gt;adding&lt;/em&gt; a component to the hierarchy as a leaf component. In our case, we could make our custom component &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; to be a subcomponent of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt; as seen in the image.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-07-09-hilt-adding-components_2.png&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Adding a subcomponent of ApplicationComponent to the Hilt hierarchy&lt;/small&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The use case in this article consists of adding a custom component (i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt;) to the hierarchy that has &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt; as a parent. However, as we’ll see later, you can make your custom component extend any Component you want, either a predefined Hilt component or your own other custom one.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The main difference between &lt;em&gt;inserting&lt;/em&gt; and &lt;em&gt;adding&lt;/em&gt; a component is that if you insert a component in the hierarchy, its scoped bindings are available in its subcomponents (components below in the hierarchy) whereas if you &lt;em&gt;add&lt;/em&gt; a component, they won’t. You could make those scoped bindings flow down (or being available in) the hierarchy if you create your own hierarchy parallel to Hilt’s one. However, that’d make you lose the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@AndroidEntryPoint&lt;/code&gt; functionality and you’d have to use entry points to obtain dependencies in Android framework classes.&lt;/p&gt;
+
+&lt;p&gt;As we’ll be adding a component to the hierarchy in our example, we won’t have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserDataRepository&lt;/code&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt;’s scoped type) available as a binding in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@AndroidEntryPoint&lt;/code&gt; classes, so we won’t be able to inject it as any other scoped type:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Singleton&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsRepository&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/*...*/) { /* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainActivityAnalyticsAdapter&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// AnalyticsRepository is available as it's scoped to ApplicationComponent&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;analyticsRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// 💥 Build time error!&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// UserDataRepository is NOT available to Hilt in MainActivity as the binding&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// is not available in ActivityComponent, it's in UserComponent and it's not&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// propagated down the Hilt components hierarchy&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;userDataRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserDataRepository&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We’ll see later what are the different options to obtain the scoped instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserDataRepository&lt;/code&gt; in our classes.&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-a-component-to-the-hierarchy&quot;&gt;Adding a component to the hierarchy&lt;/h2&gt;
+
+&lt;p&gt;As shown in the &lt;a href=&quot;https://dagger.dev/hilt/custom-components&quot;&gt;custom components docs&lt;/a&gt;, you can declare a component using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@DefineComponent&lt;/code&gt; annotation.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Annotation for scoping to UserComponent&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Scope&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@MustBeDocumented&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Retention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnnotationRetention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RUNTIME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;annotation&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoggedUserScope&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Types scoped to this component must be annotated with @LoggedUserScope&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@LoggedUserScope&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Make UserComponent subcomponent of ApplicationComponent&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@DefineComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserComponent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Builder to create instances of UserComponent&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@DefineComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Builder&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Builder&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@BindsInstance&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Builder&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserComponent&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We made &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; a subcomponent of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt; as specified in the parent parameter of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@DefineComponent&lt;/code&gt; annotation. Additionally, we created the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@LoggedUserScope&lt;/code&gt; to be able to scope types to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt;. Use the builder annotated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@DefineComponent.Builder&lt;/code&gt; to create instances of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt;, as you’ll see later, this is what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; will be using.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@DefineComponent&lt;/code&gt; to define a new custom component you can use in your app. It takes in the parent component as a parameter. The new component will extend the parent component meaning that all parent bindings will be available in the new component. Because of our the specific use case for this blog post, we used Hilt’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt;, however, you can make it extend any component you want: it could be a Hilt component or any other custom component you already have defined.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;With this, we can scope types to this component already:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@LoggedUserScope&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserDataRepository&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/*...*/) {/* ... */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;managing-the-lifecycle-of-the-component&quot;&gt;Managing the lifecycle of the component&lt;/h2&gt;
+
+&lt;p&gt;A class scoped higher up in the components hierarchy should be responsible for the lifecycle of this component. In our case, this class is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; which is scoped to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;As &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; needs to know how to create instances of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt;, it should receive its builder in the constructor. As &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; is a subcomponent of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationComponent&lt;/code&gt;, the builder is available as a binding in there.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Singleton&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserManager&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Since UserManager will be in charge of managing the UserComponent's&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// lifecycle, it needs to know how to create instances of it. We use the&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// provider (i.e. factory) Dagger generates for us to create instances of UserComponent.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userComponentProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Provider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;UserComponent&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;cm&quot;&gt;/**
+   *  UserComponent is specific to a logged in user. Holds an instance of
+   *  UserComponent. This determines if the user is logged in or not, when the
+   *  user logs in, a new Component will be created.
+   *  When the user logs out, this will be null.
+   */&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;
+
+  &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;userLoggedIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// When the user logs in, we create a new instance of UserComponent&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;userComponent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userComponentProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;logout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// When the user logs out, we remove the instance of UserComponent from memory&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;userComponent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;accessing-the-scoped-bindings&quot;&gt;Accessing the scoped bindings&lt;/h2&gt;
+
+&lt;p&gt;You can access the scoped bindings of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt; with entry points. For our case, we can create an entry point exposing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserDataRepository&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@InstallIn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;UserComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@EntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserComponentEntryPoint&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;userDataRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserDataRepository&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can access this entry point by using an instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserComponent&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// Injected by ActivityComponent&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserManager&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// Populated by UserComponent&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;userDataRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserDataRepository&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;userDataRepository&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EntryPoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;userManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserComponentEntryPoint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;userDataRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Do something with userDataRepository&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;caveats&quot;&gt;Caveats&lt;/h2&gt;
+
+&lt;p&gt;There are some caveats to the code we’ve seen so far:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Scoped types in custom components don’t flow down the Hilt components hierarchy. That’s why you need to use entry points and you cannot have it as a dependency of another class unless you use &lt;a href=&quot;https://github.com/square/AssistedInject&quot;&gt;AssistedInject&lt;/a&gt; as shown in this &lt;a href=&quot;https://github.com/manuelvicnt/android-dagger-to-hilt/pull/1&quot;&gt;example&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;This is not a full login/user solution as this setup works when the user explicitly logs in and out of the app. If your app allows switching accounts while on the same screen, then you’d need to manually restart the activity/fragment when that happens. Alternatively, you could add a callback to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserManager&lt;/code&gt; to know when an account has changed to update the information on the screen accordingly.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Even though inserting a component in the middle of the Hilt component hierarchy is not possible, you can create a component with a Hilt component as a parent and access its scoped types using entry points.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+
+      
+        <summary type="html">Get more flexibility in Hilt by adding your own components to the hierarchy</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Dagger and Hilt navigation support in Android Studio</title>
+      <link href="https://manuelvivo.dev/dagger-hilt-navigation-android-studio" rel="alternate" type="text/html" title="Dagger and Hilt navigation support in Android Studio" />
+      <published>2020-07-01T00:00:00+00:00</published>
+      <updated>2020-07-01T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/dagger-hilt-navigation-android-studio</id>
+      <content type="html" xml:base="https://manuelvivo.dev/dagger-hilt-navigation-android-studio">&lt;p&gt;Easily navigate between Dagger and Hilt related code in Android Studio&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Last update: July 23rd, 2020&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Have you ever got lost in a project trying to figure out from where a Dagger or Hilt dependency is being provided? Does it come from an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Inject&lt;/code&gt; constructor? Or maybe from an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Binds&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Provides&lt;/code&gt; method? Does it have a qualifier? It’s not an easy task…&lt;/p&gt;
+
+&lt;p&gt;🤔 What if you could know that and more with just one click? 🎯 Ask no more!&lt;/p&gt;
+
+&lt;p&gt;Android Studio 4.1 comes with &lt;strong&gt;new gutter icons that allows you to easily navigate between Dagger-related code&lt;/strong&gt;: dependency producers and consumers, components, subcomponents, and modules! Also, you can find the same information in &lt;strong&gt;&lt;em&gt;Find usages&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hilt support&lt;/strong&gt; was added to Android Studio 4.2. Apart from the Dagger features listed above, you can also benefit from easy navigation for &lt;strong&gt;entry points&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_1.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Easy Dagger and Hilt dependency graph navigation in Android Studio&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see, navigating the Dagger graph of your Android app has never been easier! Knowing from &lt;em&gt;exactly&lt;/em&gt; which provider method a dependency is coming is just &lt;strong&gt;one click away&lt;/strong&gt; with the new support in Android Studio.&lt;/p&gt;
+
+&lt;h2 id=&quot;in-action&quot;&gt;In action&lt;/h2&gt;
+
+&lt;p&gt;Starting with Android Studio 4.1 Canary 7, you can see a new gutter icon in projects that use Dagger or Hilt:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+	&lt;img height=&quot;75&quot; src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_2.png&quot; /&gt;
+	&lt;small&gt;New Dagger and Hilt gutter icons in Android Studio&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The behavior of these actions are as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Icon with arrow up -&amp;gt; where the type is provided (i.e. where dependencies come from).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Tree-shaped icon -&amp;gt; where the type is used as a dependency.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s see some examples of the new functionality using the Dagger branch (&lt;a href=&quot;https://github.com/android/architecture-samples/tree/dev-dagger&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dev-dagger&lt;/code&gt;&lt;/a&gt;) of the &lt;a href=&quot;https://github.com/android/architecture-samples/tree/dev-dagger&quot;&gt;architecture-samples GitHub&lt;/a&gt; sample.&lt;/p&gt;
+
+&lt;h3 id=&quot;knowing-where-dependencies-are-coming-from&quot;&gt;Knowing where dependencies are coming from&lt;/h3&gt;
+
+&lt;p&gt;Given a class that can be injected by Dagger, if you tap in the gutter icon with the arrow up of a dependency, you’ll navigate to the method that tells Dagger how to provide that type.&lt;/p&gt;
+
+&lt;p&gt;In the following example, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksViewModel&lt;/code&gt; has a dependency on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksRepository&lt;/code&gt;. Tapping on the gutter icon takes you to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Binds&lt;/code&gt; methods in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AppModuleBinds&lt;/code&gt; that provides &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksRepository&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_3.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Know where a dependency is coming from&lt;/small&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;also-works-with-qualifiers&quot;&gt;Also works with qualifiers!&lt;/h3&gt;
+
+&lt;p&gt;Given the above, if the dependency is provided using a qualifier, it will take you to exactly that provider method!&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DefaultTasksRepository&lt;/code&gt; depends on a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TasksDataSource&lt;/code&gt; provided with a qualifier. Tapping on the gutter icon takes you to the method in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AppModule&lt;/code&gt; that provides that type with that qualifier:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_4.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;It also works with qualifiers!&lt;/small&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;where-is-this-type-being-used-as-a-dependency&quot;&gt;Where is this type being used as a dependency?&lt;/h3&gt;
+
+&lt;p&gt;When you have a method that tells Dagger how to provide a dependency, you can click the gutter icon with the arrow down to navigate to where that dependency is used. If that dependency is used by more than one consumer, you can select the consumer you want to navigate to from a list.&lt;/p&gt;
+
+&lt;p&gt;In our project, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DefaultTasksRepository&lt;/code&gt; is used by different ViewModels. Which ones? You can know it by tapping on the gutter icon of the provider method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Binds&lt;/code&gt; in this case):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_5.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Know where a type is used as a dependency&lt;/small&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;hilt-entry-points&quot;&gt;Hilt entry points&lt;/h3&gt;
+
+&lt;p&gt;When you’re at a &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#not-supported&quot;&gt;Hilt entry point&lt;/a&gt;, the gutter action helps you navigate to where a dependency is coming from. To showcase this feature, we’ll use the &lt;a href=&quot;https://github.com/googlecodelabs/android-dagger-to-hilt/tree/interop&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;interop&lt;/code&gt;&lt;/a&gt; branch of the &lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt/&quot;&gt;migrating Dagger to Hilt codelab&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_6.gif&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Navigate where a type comes from at an entry point&lt;/small&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;find-usages&quot;&gt;Find usages&lt;/h2&gt;
+
+&lt;p&gt;You can find the same relationships between your Dagger/Hilt code with the &lt;em&gt;Find usages&lt;/em&gt; feature in Android Studio.&lt;/p&gt;
+
+&lt;p&gt;If you right-click on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bindRepository&lt;/code&gt; of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AppModuleBinds&lt;/code&gt; class and select &lt;strong&gt;&lt;em&gt;Find usages&lt;/em&gt;&lt;/strong&gt;, for example, you’ll see something similar to this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-04-23-dagger-hilt-navigation-android-studio_7.png&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Find usages about bindRepository&lt;/small&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;What are you waiting for to give it a try? Please, use it in your projects and give us feedback in this &lt;a href=&quot;https://issuetracker.google.com/issues/new?component=192708&amp;amp;template=840533&amp;amp;title=%5BPlease+title+your+report%5D+%23dagger-support&quot;&gt;link&lt;/a&gt;. Hope you enjoy it!&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+        <category term="dagger" />
+      
+
+      
+        <summary type="html">Easily navigate between Dagger and Hilt related code in Android Studio</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Dependency injection on Android with Hilt</title>
+      <link href="https://manuelvivo.dev/di-with-hilt" rel="alternate" type="text/html" title="Dependency injection on Android with Hilt" />
+      <published>2020-06-10T00:00:00+00:00</published>
+      <updated>2020-06-10T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/di-with-hilt</id>
+      <content type="html" xml:base="https://manuelvivo.dev/di-with-hilt">&lt;p&gt;Learn about Jetpack’s recommended library for dependency injection&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.android.com/training/dependency-injection&quot;&gt;Dependency injection&lt;/a&gt; (DI) is a technique widely used in programming and well suited to Android development, where dependencies are provided to a class instead of creating them itself. By following DI principles, you lay the groundwork for good app architecture, greater code reusability, and ease of testing. Have you ever tried manual dependency injection in your app? Even with many of the existing dependency injection libraries today, it requires a lot of boilerplate code as your project becomes larger, since you have to construct every class and its dependencies by hand, and create containers to reuse and manage dependencies.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;By following DI principles, you lay the groundwork for good app architecture, greater code reusability, and ease of testing.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The new &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android&quot;&gt;Hilt&lt;/a&gt; library defines a &lt;strong&gt;standard way&lt;/strong&gt; to do DI in your application by providing containers for every Android class in your project and managing their lifecycles &lt;em&gt;automatically&lt;/em&gt; for you. Hilt is currently in &lt;em&gt;alpha&lt;/em&gt;, try it in your app and give us feedback using this &lt;a href=&quot;https://github.com/google/dagger/issues/new&quot;&gt;link&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Hilt is built on top of the popular DI library &lt;a href=&quot;https://developer.android.com/training/dependency-injection/dagger-basics&quot;&gt;Dagger&lt;/a&gt; so benefits from the &lt;strong&gt;compile time correctness, runtime performance, scalability, and &lt;a href=&quot;https://manuelvivo.dev/dagger-hilt-navigation-android-studio&quot;&gt;Android Studio support&lt;/a&gt;&lt;/strong&gt; that Dagger provides. Due to this, Dagger’s seen great adoption on 30% of top 10k apps of the Google Play Store. However, because of the compile time code generation, expect a build time increase.&lt;/p&gt;
+
+&lt;p&gt;Since many Android framework classes are instantiated by the OS itself, there’s an associated boilerplate when using Dagger in Android apps. Unlike Dagger, Hilt is integrated with Jetpack libraries and Android framework classes and removes most of that boilerplate to let you &lt;strong&gt;focus on just the important parts&lt;/strong&gt; of defining and injecting bindings without worrying about managing all of the Dagger setup and wiring. It automatically generates and provides:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Components for integrating Android framework classes&lt;/strong&gt; with Dagger that you would otherwise need to create by hand.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Scope annotations&lt;/strong&gt; for the components that Hilt generates automatically.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Predefined bindings and qualifiers&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Best of all, &lt;strong&gt;as Dagger and Hilt can coexist together, apps can be migrated on an as-needed basis&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;hilt-in-action&quot;&gt;Hilt in action&lt;/h2&gt;
+
+&lt;p&gt;Just to show you how easy to use Hilt is, let’s perform some quick DI in a typical Android app. Let’s make Hilt inject an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; into our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MainActivity&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;First, enable Hilt in your app by annotating your application class with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@HiltAndroidApp&lt;/code&gt; to trigger Hilt’s code generation:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@HiltAndroidApp&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Second, tell Hilt how to provide instances of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; by annotating its constructor with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Inject&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And third, to inject an instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnalyticsAdapter&lt;/code&gt; into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MainActivity&lt;/code&gt;, enable Hilt in the activity with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@AndroidEntryPoint&lt;/code&gt; annotation and perform field injection using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Inject&lt;/code&gt; annotation:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  
+  &lt;span class=&quot;nd&quot;&gt;@Inject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analytics&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// analytics instance has been populated by Hilt&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// and it's ready to be used&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For more information, you can easily check out what the new annotations do in the cheat sheet section below.&lt;/p&gt;
+
+&lt;h2 id=&quot;comes-with-jetpack-support&quot;&gt;Comes with Jetpack support!&lt;/h2&gt;
+
+&lt;p&gt;You can use your favourite Jetpack libraries with Hilt out of the box. We’re providing direct injection &lt;strong&gt;support for ViewModel and WorkManager&lt;/strong&gt; in this release.&lt;/p&gt;
+
+&lt;p&gt;For example, to inject a &lt;a href=&quot;https://developer.android.com/topic/libraries/architecture/viewmodel&quot;&gt;Architecture Components ViewModel&lt;/a&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LoginViewModel&lt;/code&gt; into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LoginActivity&lt;/code&gt;: annotate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LoginViewModel&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ViewModelInject&lt;/code&gt; and use it in the activity or fragment as you’d expect:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginViewModel&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@ViewModelInject&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;analyticsAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AnalyticsAdapter&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@AndroidEntryPoint&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;loginViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginViewModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// loginViewModel is ready to be used&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Learn more about Jetpack support in the &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-jetpack&quot;&gt;docs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;start-using-hilt&quot;&gt;Start using Hilt&lt;/h2&gt;
+
+&lt;p&gt;If you’re intrigued by Hilt and want to learn more about it, here’s some resources for you to learn in the way you prefer:&lt;/p&gt;
+
+&lt;h3 id=&quot;getting-started-with-hilt&quot;&gt;Getting started with Hilt&lt;/h3&gt;
+
+&lt;p&gt;Learn how to add Hilt in your Android app with this &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android#setup&quot;&gt;guide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;documentation&quot;&gt;Documentation&lt;/h3&gt;
+
+&lt;p&gt;If you’re new to DI or Dagger, check out our &lt;a href=&quot;https://developer.android.com/training/dependency-injection/hilt-android&quot;&gt;guide to add Hilt to an Android app&lt;/a&gt;. Alternatively, if you already know Dagger, we’re also providing &lt;a href=&quot;https://dagger.dev/hilt&quot;&gt;documentation on dagger.dev&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you’re just curious about the new annotations and what you can do with Hilt, check out this cheat sheet in the section below.&lt;/p&gt;
+
+&lt;h3 id=&quot;for-dagger-users&quot;&gt;For Dagger users&lt;/h3&gt;
+
+&lt;p&gt;If you’re already using Dagger or dagger.android in your app, check out this &lt;a href=&quot;https://dagger.dev/hilt/migration-guide&quot;&gt;migration guide&lt;/a&gt; or the codelab mentioned below to help you switch to Hilt. As Dagger and Hilt can coexist together, you can migrate your app incrementally.&lt;/p&gt;
+
+&lt;h3 id=&quot;codelabs&quot;&gt;Codelabs&lt;/h3&gt;
+
+&lt;p&gt;To learn Hilt in a step-by-step approach, we just released two codelabs:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-hilt&quot;&gt;Using Hilt in your Android app&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt&quot;&gt;Migrate from Dagger to Hilt&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;sample-code&quot;&gt;Sample code&lt;/h3&gt;
+
+&lt;p&gt;Do you want to see how Hilt is used in existing apps? Go check its usage in the &lt;a href=&quot;https://github.com/google/iosched&quot;&gt;Google I/O 2020 app&lt;/a&gt; and in the &lt;a href=&quot;https://github.com/android/architecture-samples/tree/dev-hilt&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dev-hilt&lt;/code&gt;&lt;/a&gt; branch of the Android &lt;a href=&quot;https://github.com/android/architecture-samples/tree/dev-hilt&quot;&gt;architecture-samples Github repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Hilt is currently in &lt;em&gt;alpha&lt;/em&gt;, try it in your app and give us feedback using this &lt;a href=&quot;https://github.com/google/dagger/issues/new&quot;&gt;link&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;cheat-sheet&quot;&gt;Cheat sheet&lt;/h2&gt;
+
+&lt;p&gt;This cheat sheet allows you to quickly see &lt;strong&gt;&lt;em&gt;what&lt;/em&gt;&lt;/strong&gt; the different Hilt and Dagger annotations do and &lt;strong&gt;&lt;em&gt;how&lt;/em&gt;&lt;/strong&gt; to use them.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.android.com/images/training/dependency-injection/hilt-annotations.pdf&quot;&gt;&lt;strong&gt;Download cheat sheet in PDF&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/2020-06-10-di-with-hilt.webp&quot; alt=&quot;img&quot; /&gt;
+&lt;small&gt;Hilt and Dagger annotations cheat sheet. &lt;a href=&quot;(https://developer.android.com/images/training/dependency-injection/hilt-annotations.pdf)&quot;&gt;Download in PDF here&lt;/a&gt;.&lt;/small&gt;&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="hilt" />
+      
+
+      
+        <summary type="html">Learn about Jetpack’s recommended library for dependency injection</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

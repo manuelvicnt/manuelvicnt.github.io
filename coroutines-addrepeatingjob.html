@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>A safer way to collect flows from Android UIs</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/coroutines-addrepeatingjob" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="A safer way to collect flows from Android UIs" />
+    <meta property="og:description" content="Learn how to use the Lifecycle.repeatOnLifecycle API to safely collect flows from the UI layer in Android. In an Android app, Kotlin flows are typically collected from the UI layer to display data updates on the screen. However, you want to collect these flows making sure you’re not doing more" />
+    <meta property="og:url" content="https://manuelvivo.dev/coroutines-addrepeatingjob" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2021-03-26-coroutines-addrepeatingjob.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2021-03-26T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2021-03-26T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="A safer way to collect flows from Android UIs" />
+    <meta name="twitter:description" content="Learn how to use the Lifecycle.repeatOnLifecycle API to safely collect flows from the UI layer in Android. In an Android app, Kotlin flows are typically collected from the UI layer to display data updates on the screen. However, you want to collect these flows making sure you’re not doing more" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2021-03-26-coroutines-addrepeatingjob.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/coroutines-addrepeatingjob",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2021-03-26-coroutines-addrepeatingjob.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/coroutines-addrepeatingjob"
+    },
+    "description": "Learn how to use the Lifecycle.repeatOnLifecycle API to safely collect flows from the UI layer in Android. In an Android app, Kotlin flows are typically collected from the UI layer to display data updates on the screen. However, you want to collect these flows making sure you’re not doing more"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="A safer way to collect flows from Android UIs" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>A safer way to collect flows from Android UIs | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="A safer way to collect flows from Android UIs" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn how to use the Lifecycle.repeatOnLifecycle API to safely collect flows from the UI layer in Android." />
+<meta property="og:description" content="Learn how to use the Lifecycle.repeatOnLifecycle API to safely collect flows from the UI layer in Android." />
+<link rel="canonical" href="https://manuelvivo.dev/coroutines-addrepeatingjob" />
+<meta property="og:url" content="https://manuelvivo.dev/coroutines-addrepeatingjob" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-26T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="A safer way to collect flows from Android UIs" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2021-03-26T00:00:00+00:00","datePublished":"2021-03-26T00:00:00+00:00","description":"Learn how to use the Lifecycle.repeatOnLifecycle API to safely collect flows from the UI layer in Android.","headline":"A safer way to collect flows from Android UIs","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/coroutines-addrepeatingjob"},"url":"https://manuelvivo.dev/coroutines-addrepeatingjob"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="26 March 2021">26 March 2021</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">A safer way to collect flows from Android UIs</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2021-03-26-coroutines-addrepeatingjob.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Learn how to use the <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code> API to safely collect flows from the UI layer in Android.</p>
+
+<p>In an Android app, <a href="https://developer.android.com/kotlin/flow">Kotlin flows</a> are typically collected from the UI layer to display data updates on the screen. However, you want to collect these flows making sure you’re not doing more work than necessary, wasting resources (both CPU and memory) or leaking data when the view goes to the background.</p>
+
+<p>In this article, you’ll learn how the <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code>, and <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> APIs protect you from wasting resources and why they’re a good default to use for flow collection in the UI layer.</p>
+
+<h2 id="wasting-resources">Wasting resources</h2>
+
+<p>It’s <a href="https://developer.android.com/kotlin/coroutines/coroutines-best-practices#coroutines-data-layer">recommended</a> to expose the <code class="language-plaintext highlighter-rouge">Flow&lt;T&gt;</code> API from lower layers of your app hierarchy regardless of the flow producer implementation details. However, you should also collect them safely.</p>
+
+<p>A cold flow backed by a <a href="https://kotlinlang.org/docs/channels.html">channel</a> or using operators with buffers such as <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/buffer.html"><code class="language-plaintext highlighter-rouge">buffer</code></a>, <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/conflate.html"><code class="language-plaintext highlighter-rouge">conflate</code></a>, <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/flow-on.html"><code class="language-plaintext highlighter-rouge">flowOn</code></a>, or <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/share-in.html"><code class="language-plaintext highlighter-rouge">shareIn</code></a> is <strong>not safe to collect</strong> with some of the existing APIs such as <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/launch.html"><code class="language-plaintext highlighter-rouge">CoroutineScope.launch</code></a>, <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/launch-in.html"><code class="language-plaintext highlighter-rouge">Flow&lt;T&gt;.launchIn</code></a>, or <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleCoroutineScope"><code class="language-plaintext highlighter-rouge">LifecycleCoroutineScope.launchWhenX</code></a>, unless you manually cancel the <code class="language-plaintext highlighter-rouge">Job</code> that started the coroutine when the activity goes to the background. These APIs will keep the underlying flow producer active while emitting items into the buffer in the background, and thus wasting resources.</p>
+
+<blockquote>
+  <p>Note: A <strong>cold</strong> flow is a type of flow that executes the producer block of code on-demand when a new subscriber collects.</p>
+</blockquote>
+
+<p>For example, consider this flow that emits Location updates using <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/callback-flow.html"><code class="language-plaintext highlighter-rouge">callbackFlow</code></a>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Implementation of a cold flow backed by a Channel that sends Location updates</span>
+<span class="k">fun</span> <span class="nc">FusedLocationProviderClient</span><span class="p">.</span><span class="nf">locationFlow</span><span class="p">()</span> <span class="p">=</span> <span class="n">callbackFlow</span><span class="p">&lt;</span><span class="nc">Location</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="kd">object</span> <span class="err">: </span><span class="nc">LocationCallback</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">override</span> <span class="k">fun</span> <span class="nf">onLocationResult</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="nc">LocationResult</span><span class="p">?)</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">?:</span> <span class="k">return</span>
+            <span class="k">try</span> <span class="p">{</span> <span class="nf">offer</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">lastLocation</span><span class="p">)</span> <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nf">requestLocationUpdates</span><span class="p">(</span><span class="nf">createLocationRequest</span><span class="p">(),</span> <span class="n">callback</span><span class="p">,</span> <span class="nc">Looper</span><span class="p">.</span><span class="nf">getMainLooper</span><span class="p">())</span>
+        <span class="p">.</span><span class="nf">addOnFailureListener</span> <span class="p">{</span> <span class="n">e</span> <span class="p">-&gt;</span>
+            <span class="nf">close</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="c1">// in case of exception, close the Flow</span>
+        <span class="p">}</span>
+    <span class="c1">// clean up when Flow collection ends</span>
+    <span class="nf">awaitClose</span> <span class="p">{</span>
+        <span class="nf">removeLocationUpdates</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note: Internally, <code class="language-plaintext highlighter-rouge">callbackFlow</code> uses a <a href="https://kotlinlang.org/docs/reference/coroutines/channels.html">channel</a>, which is conceptually very similar to a blocking <a href="https://en.wikipedia.org/wiki/Queue_(abstract_data_type)">queue</a>, and has a default capacity of 64 elements.</p>
+</blockquote>
+
+<p>Collecting this flow from the UI layer using any of the aforementioned APIs keeps the flow emitting locations even if the view is not displaying them in the UI! See the example below:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="c1">// Collects from the flow when the View is at least STARTED and</span>
+        <span class="c1">// SUSPENDS the collection when the lifecycle is STOPPED.</span>
+        <span class="c1">// Collecting the flow cancels when the View is DESTROYED.</span>
+        <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launchWhenStarted</span> <span class="p">{</span>
+            <span class="n">locationProvider</span><span class="p">.</span><span class="nf">locationFlow</span><span class="p">().</span><span class="nf">collect</span> <span class="p">{</span>
+                <span class="c1">// New location! Update the map</span>
+            <span class="p">}</span> 
+        <span class="p">}</span>
+        <span class="c1">// Same issue with:</span>
+        <span class="c1">// - lifecycleScope.launch { /* Collect from locationFlow() here */ }</span>
+        <span class="c1">// - locationProvider.locationFlow().onEach { /* ... */ }.launchIn(lifecycleScope)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">lifecycleScope.launchWhenStarted</code> suspends the execution of the coroutine. New locations are not processed, but the <code class="language-plaintext highlighter-rouge">callbackFlow</code> producer keeps sending locations nonetheless. Using the <code class="language-plaintext highlighter-rouge">lifecycleScope.launch</code> or <code class="language-plaintext highlighter-rouge">launchIn</code> APIs are even more dangerous as the view keeps consuming locations even if it’s in the background! Which could potentially make your app crash.</p>
+
+<p>To solve this issue with these APIs, you’d need to manually cancel collection when the view goes to the background to cancel the <code class="language-plaintext highlighter-rouge">callbackFlow</code> and avoid the location provider emitting items and wasting resources. For example, you could do something like the following:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// Coroutine listening for Locations</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">locationUpdatesJob</span><span class="p">:</span> <span class="nc">Job</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStart</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onStart</span><span class="p">()</span>
+        <span class="n">locationUpdatesJob</span> <span class="p">=</span> <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="n">locationProvider</span><span class="p">.</span><span class="nf">locationFlow</span><span class="p">().</span><span class="nf">collect</span> <span class="p">{</span>
+                <span class="c1">// New location! Update the map</span>
+            <span class="p">}</span> 
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Stop collecting when the View goes to the background</span>
+        <span class="n">locationUpdatesJob</span><span class="o">?.</span><span class="nf">cancel</span><span class="p">()</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onStop</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That’s a good solution, but that’s boilerplate, friends! And if there’s a universal truth about Android developers, it’s that we absolutely detest writing boilerplate code. One of the biggest benefits of not having to write boilerplate code is that with less code, there are fewer chances of making a mistake!</p>
+
+<h2 id="lifecyclerepeatonlifecycle">Lifecycle.repeatOnLifecycle</h2>
+
+<p>Now that we all are on the same page and know where the problem lies, it’s time to come up with a solution. The solution needs to be 1) simple, 2) friendly or easy to remember/understand, and more importantly 3) safe! It should work for all use cases regardless of the flow implementation details.</p>
+
+<p>Without further ado, the API you should use is <strong><code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code></strong> available in the <a href="https://developer.android.com/jetpack/androidx/releases/lifecycle"><em>lifecycle-runtime-ktx</em></a> library.</p>
+
+<blockquote>
+  <p>Note: This API is available in the <code class="language-plaintext highlighter-rouge">lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01</code> library or later.</p>
+</blockquote>
+
+<p>Take a look at the following code:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="c1">// Create a new coroutine since repeatOnLifecycle is a suspend function</span>
+        <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="c1">// The block passed to repeatOnLifecycle is executed when the lifecycle</span>
+            <span class="c1">// is at least STARTED and is cancelled when the lifecycle is STOPPED.</span>
+            <span class="c1">// It automatically restarts the block when the lifecycle is STARTED again.</span>
+            <span class="n">lifecycle</span><span class="p">.</span><span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Safely collect from locationFlow when the lifecycle is STARTED</span>
+                <span class="c1">// and stops collection when the lifecycle is STOPPED</span>
+                <span class="n">locationProvider</span><span class="p">.</span><span class="nf">locationFlow</span><span class="p">().</span><span class="nf">collect</span> <span class="p">{</span>
+                    <span class="c1">// New location! Update the map</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> is a suspend function that takes a <a href="https://developer.android.com/reference/android/arch/lifecycle/Lifecycle.State"><code class="language-plaintext highlighter-rouge">Lifecycle.State</code></a> as a parameter that is used to <strong>automatically create and launch a new coroutine</strong> with the block passed to it when the lifecycle reaches that <code class="language-plaintext highlighter-rouge">state</code>, and <strong>cancel the ongoing coroutine</strong> when the lifecycle falls below the <code class="language-plaintext highlighter-rouge">state</code>.</p>
+
+<p>This avoids any boilerplate code since the associated code to cancel the coroutine when it’s no longer needed is automatically done by <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code>. As you could guess, it’s recommended to call this API in the activity’s <code class="language-plaintext highlighter-rouge">onCreate</code> or fragment’s <code class="language-plaintext highlighter-rouge">onViewCreated</code> methods to avoid unexpected behaviors. See the example below using fragments:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationFragment</span><span class="p">:</span> <span class="nc">Fragment</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onViewCreated</span><span class="p">(</span><span class="n">view</span><span class="p">:</span> <span class="nc">View</span><span class="p">,</span> <span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+        <span class="n">viewLifecycleOwner</span><span class="p">.</span><span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="n">viewLifecycleOwner</span><span class="p">.</span><span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">locationProvider</span><span class="p">.</span><span class="nf">locationFlow</span><span class="p">().</span><span class="nf">collect</span> <span class="p">{</span>
+                    <span class="c1">// New location! Update the map</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Important</strong>: Fragments should always use the <code class="language-plaintext highlighter-rouge">viewLifecycleOwner</code> to trigger UI updates. However, that’s not the case for <code class="language-plaintext highlighter-rouge">DialogFragment</code>s which might not have a View sometimes. For <code class="language-plaintext highlighter-rouge">DialogFragment</code>s, you can use the <code class="language-plaintext highlighter-rouge">lifecycleOwner</code>.</p>
+
+<blockquote>
+  <p>Note: This API is available in the <code class="language-plaintext highlighter-rouge">lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01</code> library or later.</p>
+</blockquote>
+
+<h3 id="under-the-hood">Under the hood</h3>
+
+<p><code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> suspends the calling coroutine, re-launches the block when the lifecycle moves in and out of the target <code class="language-plaintext highlighter-rouge">state</code> in a <em>new</em> coroutine, and <strong>resumes the calling coroutine when the <code class="language-plaintext highlighter-rouge">Lifecycle</code> is destroyed</strong>. This last point is very important: the coroutine that calls <code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> won’t resume executing until the lifecycle is destroyed.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="c1">// Create a coroutine</span>
+        <span class="n">lifecycleScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            
+            <span class="n">lifecycle</span><span class="p">.</span><span class="nf">repeatOnLifecycle</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">RESUMED</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Repeat when the lifecycle is RESUMED, cancel when PAUSED</span>
+            <span class="p">}</span>
+
+            <span class="c1">// `lifecycle` is DESTROYED when the coroutine resumes. repeatOnLifecycle</span>
+            <span class="c1">// suspends the execution of the coroutine until the lifecycle is DESTROYED.</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="visual-diagram">Visual diagram</h2>
+
+<p>Circling back to the beginning, collecting <code class="language-plaintext highlighter-rouge">locationFlow</code> directly from a coroutine started with <code class="language-plaintext highlighter-rouge">lifecycleScope.launch</code> is dangerous since the collection keeps happening even when the View is in the background.</p>
+
+<p><code class="language-plaintext highlighter-rouge">repeatOnLifecycle</code> prevents you from wasting resources and app crashes because it stops and restarts the flow collection when the lifecycle moves in and out of the target state.</p>
+
+<p><img src="assets/images/2021-03-26-coroutines-addrepeatingjob_2.png" alt="img" />
+<small>Difference between using and not using the repeatOnLifecycle API.</small></p>
+
+<h2 id="flowflowwithlifecycle">Flow.flowWithLifecycle</h2>
+
+<p>You can also use the <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> operator when you have only one flow to collect. This API uses the <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code> API under the hood, and emits items and cancels the underlying producer when the <code class="language-plaintext highlighter-rouge">Lifecycle</code> moves in and out of the target state.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LocationActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+        <span class="n">locationProvider</span><span class="p">.</span><span class="nf">locationFlow</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">flowWithLifecycle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">onEach</span> <span class="p">{</span>
+                <span class="c1">// New location! Update the map</span>
+            <span class="p">}</span>
+            <span class="p">.</span><span class="nf">launchIn</span><span class="p">(</span><span class="n">lifecycleScope</span><span class="p">)</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note: This API name takes the <code class="language-plaintext highlighter-rouge">Flow.flowOn(CoroutineContext)</code> operator as a precedent since <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> changes the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> used to collect the upstream flow while leaving the downstream unaffected. Also, similar to <code class="language-plaintext highlighter-rouge">flowOn</code>, <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> adds a buffer in case the consumer doesn’t keep up with the producer. This is due to the fact that its implementation uses a <code class="language-plaintext highlighter-rouge">callbackFlow</code>.</p>
+</blockquote>
+
+<h2 id="configuring-the-underlying-producer">Configuring the underlying producer</h2>
+
+<p>Even if you use these APIs, watch out for hot flows that could waste resources even if they aren’t collected by anyone! There are some valid use cases for them, but do keep that in mind and document it if needed. Having the underlying flow producer active in the background, even if wasting resources, can be beneficial for some use cases: you instantly have fresh data available rather than <em>catching up</em> and temporarily showing stale data. <strong>Depending on the use case, decide whether the producer needs to be always active or not</strong>.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">MutableStateFlow</code> and <code class="language-plaintext highlighter-rouge">MutableSharedFlow</code> APIs expose a <code class="language-plaintext highlighter-rouge">subscriptionCount</code> field that you can use to stop the underlying producer when <code class="language-plaintext highlighter-rouge">subscriptionCount</code> is zero. By default, they will keep the producer active as long as the object that holds the flow instance is in memory. There are some valid use cases for this though, for example, a <code class="language-plaintext highlighter-rouge">UiState</code> exposed from the ViewModel to the UI using <code class="language-plaintext highlighter-rouge">StateFlow</code>. That’s ok! This use case demands the ViewModel to always provide the latest UI state to the View.</p>
+
+<p>Similarly, the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/state-in.html"><code class="language-plaintext highlighter-rouge">Flow.stateIn</code></a> and <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/share-in.html"><code class="language-plaintext highlighter-rouge">Flow.shareIn</code></a> operators can be configured with the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-sharing-started/index.html">sharing started policy</a> for this. <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-sharing-started/-while-subscribed.html"><code class="language-plaintext highlighter-rouge">WhileSubscribed()</code></a> will stop the underlying producer when there are no active observers! On the contrary, <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-sharing-started/-eagerly.html"><code class="language-plaintext highlighter-rouge">Eagerly</code></a> or <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-sharing-started/-lazily.html"><code class="language-plaintext highlighter-rouge">Lazily</code></a> will keep the underlying producer active as long as the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> they use is active.</p>
+
+<blockquote>
+  <p>Note: The APIs shown in this article are a good default to collect flows from the UI and should be used regardless of the flow implementation detail. These APIs do what they need to do: stop collecting if the UI isn’t visible on screen. It’s up to the flow implementation if it should be always active or not.</p>
+</blockquote>
+
+<h2 id="safe-flow-collection-in-jetpack-compose">Safe Flow collection in Jetpack Compose</h2>
+
+<p>The <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#collectasstate"><code class="language-plaintext highlighter-rouge">Flow.collectAsState</code></a> function is used in Compose to collect flows from composables and represent the values as <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State"><code class="language-plaintext highlighter-rouge">State&lt;T&gt;</code></a> to be able to update Compose UI. Even if Compose doesn’t recompose the UI when the host activity or fragment is in the background, the flow producer is still active and can waste resources. Compose can suffer from the same problem as the View system.</p>
+
+<p>When collecting flows in Compose, use the <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> operator as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">LocationScreen</span><span class="p">(</span><span class="n">locationFlow</span><span class="p">:</span> <span class="nc">Flow</span><span class="p">&lt;</span><span class="nc">Flow</span><span class="p">&gt;)</span> <span class="p">{</span>
+
+    <span class="kd">val</span> <span class="py">lifecycleOwner</span> <span class="p">=</span> <span class="nc">LocalLifecycleOwner</span><span class="p">.</span><span class="n">current</span>
+    <span class="kd">val</span> <span class="py">locationFlowLifecycleAware</span> <span class="p">=</span> <span class="nf">remember</span><span class="p">(</span><span class="n">locationFlow</span><span class="p">,</span> <span class="n">lifecycleOwner</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">locationFlow</span><span class="p">.</span><span class="nf">flowWithLifecycle</span><span class="p">(</span><span class="n">lifecycleOwner</span><span class="p">.</span><span class="n">lifecycle</span><span class="p">,</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">State</span><span class="p">.</span><span class="nc">STARTED</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="py">location</span> <span class="k">by</span> <span class="n">locationFlowLifecycleAware</span><span class="p">.</span><span class="nf">collectAsState</span><span class="p">()</span>
+
+    <span class="c1">// Current location, do something with it</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Notice that you <a href="https://developer.android.com/jetpack/compose/state">need to <code class="language-plaintext highlighter-rouge">remember</code></a> the flow that is aware of the lifecycle with <code class="language-plaintext highlighter-rouge">locationFlow</code> and <code class="language-plaintext highlighter-rouge">lifecycleOwner</code> as keys to always use the same flow unless one of the keys change.</p>
+
+<p>In Compose, side effects must be performed in a <a href="https://developer.android.com/jetpack/compose/lifecycle#state-effect-use-cases">controlled environment</a>. For that, use <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#launchedeffect_1"><code class="language-plaintext highlighter-rouge">LaunchedEffect</code></a> to create a coroutine that follows the composable’s lifecycle. In its block, you could call the suspend <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code> if you need it to re-launch a block of code when the host lifecycle is in a certain <code class="language-plaintext highlighter-rouge">State</code>.</p>
+
+<h2 id="comparison-with-livedata">Comparison with LiveData</h2>
+
+<p>You might’ve noticed that this API behaves similarly to <a href="https://developer.android.com/topic/libraries/architecture/livedata"><code class="language-plaintext highlighter-rouge">LiveData</code></a>, and that’s true! <code class="language-plaintext highlighter-rouge">LiveData</code> is aware of Lifecycle, and its restarting behavior makes it ideal for observing streams of data from the UI. And that’s also the case for the <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code>, and <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> APIs!</p>
+
+<p>Collecting flows using these APIs is a natural replacement for <code class="language-plaintext highlighter-rouge">LiveData</code> in <em>Kotlin-only</em> apps. If you use these APIs for flow collection, <code class="language-plaintext highlighter-rouge">LiveData</code> doesn’t offer any benefits over coroutines and flow. Even more, flows are more flexible since they can be collected from any <code class="language-plaintext highlighter-rouge">Dispatcher</code> and they can be powered with <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/">all its operators</a>. As opposed to <code class="language-plaintext highlighter-rouge">LiveData</code>, which has limited operators available and whose values are always observed from the UI thread.</p>
+
+<h3 id="stateflow-support-in-data-binding">StateFlow support in data binding</h3>
+
+<p>On a different note, one of the reasons you might be using <code class="language-plaintext highlighter-rouge">LiveData</code> is because it’s supported by data binding. Well, so is <a href="https://developer.android.com/kotlin/flow/stateflow-and-sharedflow"><code class="language-plaintext highlighter-rouge">StateFlow</code></a>! For more information about <code class="language-plaintext highlighter-rouge">StateFlow</code> support in data binding, <a href="https://developer.android.com/topic/libraries/data-binding/observability#stateflow">check out the official documentation</a>.</p>
+
+<hr />
+
+<p>Use the <code class="language-plaintext highlighter-rouge">Lifecycle.repeatOnLifecycle</code> or <code class="language-plaintext highlighter-rouge">Flow.flowWithLifecycle</code> APIs to safely collect flows from the UI layer in Android.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/coroutines-addrepeatingjob';
+                            this.page.identifier = '/coroutines-addrepeatingjob';
+                            this.page.title = 'A safer way to collect flows from Android UIs';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/hilt-stable">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-05-04-hilt-stable.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/hilt-stable">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Hilt</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Hilt is stable! Easier dependency injection on Android</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/musas-interview">
+                <div class="post-card-image" style="background-image: url(/assets/images/2021-02-28-musas-interview.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/musas-interview">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Spanish</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Cómo la música ha influenciado mi carrera</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">A safer way to collect flows from Android UIs</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=A+safer+way+to+collect+flows+from+Android+UIs&amp;url=https://manuelvivo.dev/coroutines-addrepeatingjob"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/coroutines-addrepeatingjob"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

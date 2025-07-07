@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Coroutines - First things first</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/coroutines-cancellation-exceptions-1" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Coroutines - First things first" />
+    <meta property="og:description" content="Learn about the most basics coroutines concepts This series of blog posts goes in-depth into cancellation and exceptions in Coroutines. Cancellation is important for avoiding doing more work than needed which can waste memory and battery life; proper exception handling is key to a great user experience. As the foundation" />
+    <meta property="og:url" content="https://manuelvivo.dev/coroutines-cancellation-exceptions-1" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2020-coroutines.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2020-03-11T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2020-03-11T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Coroutines - First things first" />
+    <meta name="twitter:description" content="Learn about the most basics coroutines concepts This series of blog posts goes in-depth into cancellation and exceptions in Coroutines. Cancellation is important for avoiding doing more work than needed which can waste memory and battery life; proper exception handling is key to a great user experience. As the foundation" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2020-coroutines.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/coroutines-cancellation-exceptions-1",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2020-coroutines.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/coroutines-cancellation-exceptions-1"
+    },
+    "description": "Learn about the most basics coroutines concepts This series of blog posts goes in-depth into cancellation and exceptions in Coroutines. Cancellation is important for avoiding doing more work than needed which can waste memory and battery life; proper exception handling is key to a great user experience. As the foundation"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Coroutines - First things first" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Coroutines - First things first | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Coroutines - First things first" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn about the most basics coroutines concepts" />
+<meta property="og:description" content="Learn about the most basics coroutines concepts" />
+<link rel="canonical" href="https://manuelvivo.dev/coroutines-cancellation-exceptions-1" />
+<meta property="og:url" content="https://manuelvivo.dev/coroutines-cancellation-exceptions-1" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Coroutines - First things first" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2020-03-11T00:00:00+00:00","datePublished":"2020-03-11T00:00:00+00:00","description":"Learn about the most basics coroutines concepts","headline":"Coroutines - First things first","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/coroutines-cancellation-exceptions-1"},"url":"https://manuelvivo.dev/coroutines-cancellation-exceptions-1"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="11 March 2020">11 March 2020</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">Coroutines - First things first</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2020-coroutines.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Learn about the most basics coroutines concepts</p>
+
+<p>This series of blog posts goes in-depth into cancellation and exceptions in Coroutines. Cancellation is important for avoiding doing more work than needed which can waste memory and battery life; proper exception handling is key to a great user experience. As the foundation for the other 2 parts of the series (<a href="https://medium.com/androiddevelopers/cancellation-in-coroutines-aa6b90163629">part 2: cancellation</a>, <a href="https://manuelvivo.dev/coroutines-cancellation-exceptions-3">part 3: exceptions</a>), it’s important to define some core coroutine concepts such as <code class="language-plaintext highlighter-rouge">CoroutineScope</code>, <code class="language-plaintext highlighter-rouge">Job</code> and <code class="language-plaintext highlighter-rouge">CoroutineContext</code> so that we all are on the same page.</p>
+
+<p>If you prefer video, check out this talk from KotlinConf’19 by <a href="https://twitter.com/FMuntenescu">Florina Muntenescu</a> and I:</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w0kfnydnFWI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h2 id="coroutinescope">CoroutineScope</h2>
+
+<p>A <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/"><code class="language-plaintext highlighter-rouge">CoroutineScope</code></a> keeps track of any coroutine you create using <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/launch.html"><code class="language-plaintext highlighter-rouge">launch</code></a> or <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/async.html"><code class="language-plaintext highlighter-rouge">async</code></a> (these are extension functions on <code class="language-plaintext highlighter-rouge">CoroutineScope</code>). The ongoing work (running coroutines) can be canceled by calling <code class="language-plaintext highlighter-rouge">scope.cancel()</code> at any point in time.</p>
+
+<p>You should create a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> whenever you want to start and control the lifecycle of coroutines in a particular layer of your app. In some platforms like Android, there are KTX libraries that already provide a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> in certain lifecycle classes such as <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#(androidx.lifecycle.ViewModel).viewModelScope:kotlinx.coroutines.CoroutineScope"><code class="language-plaintext highlighter-rouge">viewModelScope</code></a> and <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#lifecyclescope"><code class="language-plaintext highlighter-rouge">lifecycleScope</code></a>.</p>
+
+<p>When creating a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> it takes a <code class="language-plaintext highlighter-rouge">CoroutineContext</code> as a parameter to its constructor. You can create a new scope &amp; coroutine with the following code:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Job and Dispatcher are combined into a CoroutineContext which</span>
+<span class="c1">// will be discussed shortly</span>
+<span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Job</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Main</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">job</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="c1">// new coroutine</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="job">Job</h2>
+
+<p>A <code class="language-plaintext highlighter-rouge">Job</code> is a handle to a coroutine. For every coroutine that you create (by <code class="language-plaintext highlighter-rouge">launch</code> or <code class="language-plaintext highlighter-rouge">async</code>), it returns a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html"><code class="language-plaintext highlighter-rouge">Job</code></a> instance that uniquely identifies the coroutine and manages its lifecycle. As we saw above, you can also pass a <code class="language-plaintext highlighter-rouge">Job</code> to a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> to keep a handle on its lifecycle.</p>
+
+<h2 id="coroutinecontext">CoroutineContext</h2>
+
+<p>The <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><code class="language-plaintext highlighter-rouge">CoroutineContext</code></a> is a set of elements that define the behavior of a coroutine. It’s made of:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">Job</code> — controls the lifecycle of the coroutine.</p>
+  </li>
+  <li>
+    <p><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html"><code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code></a> — dispatches work to the appropriate thread.</p>
+  </li>
+  <li>
+    <p><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-name/index.html"><code class="language-plaintext highlighter-rouge">CoroutineName</code></a> — name of the coroutine, useful for debugging.</p>
+  </li>
+  <li>
+    <p><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-exception-handler/index.html"><code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code></a> — handles uncaught exceptions, will be covered in Part 3 of the series.</p>
+  </li>
+</ul>
+
+<p>What’s the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of a new coroutine? We already know that a new instance of <code class="language-plaintext highlighter-rouge">Job</code> will be created, allowing us to control its lifecycle. The rest of the elements will be inherited from the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of its parent (either another coroutine or the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> where it was created).</p>
+
+<p>Since a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> can create coroutines and you can create more coroutines inside a coroutine, an implicit <strong><em>task hierarchy</em></strong> is created. In the following code snippet, apart from creating a new coroutine using the <code class="language-plaintext highlighter-rouge">CoroutineScope</code>, see how you can create more coroutines inside a coroutine:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Job</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Main</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">job</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="c1">// New coroutine that has CoroutineScope as a parent</span>
+    <span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="nf">async</span> <span class="p">{</span>
+        <span class="c1">// New coroutine that has the coroutine started by </span>
+        <span class="c1">// launch as a parent</span>
+    <span class="p">}.</span><span class="nf">await</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The root of that hierarchy is usually the <code class="language-plaintext highlighter-rouge">CoroutineScope</code>. We could visualise that hierarchy as follows:</p>
+
+<p align="center">
+  <img src="assets/images/2020-03-11-coroutines-cancellation-exceptions-1_1.png" />
+  <small>Coroutines are executed in a task hierarchy. The parent can be either a CoroutineScope or another coroutine</small>
+</p>
+
+<h2 id="job-lifecycle">Job lifecycle</h2>
+
+<p>A <code class="language-plaintext highlighter-rouge">Job</code> can go through a set of states: New, Active, Completing, Completed, Cancelling and Cancelled. While we don’t have access to the states themselves, we can access properties of a Job: <code class="language-plaintext highlighter-rouge">isActive</code>, <code class="language-plaintext highlighter-rouge">isCancelled</code> and <code class="language-plaintext highlighter-rouge">isCompleted</code>.</p>
+
+<p align="center">
+  <img src="assets/images/2020-03-11-coroutines-cancellation-exceptions-1_2.png" />
+  <small>Job lifecycle</small>
+</p>
+
+<p>If the coroutine is in an active state, the failure of the coroutine or calling <code class="language-plaintext highlighter-rouge">job.cancel()</code> will move the job in the Cancelling state (<code class="language-plaintext highlighter-rouge">isActive = false</code>, <code class="language-plaintext highlighter-rouge">isCancelled = true</code>). Once all children have completed their work the coroutine will go in the Cancelled state and <code class="language-plaintext highlighter-rouge">isCompleted = true</code>.</p>
+
+<h2 id="parent-coroutinecontext-explained">Parent CoroutineContext explained</h2>
+
+<p>In the task hierarchy, each coroutine has a parent that can be either a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> or another coroutine. However, the resulting parent <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of a coroutine can be different from the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of the parent since it’s calculated based on this formula:</p>
+
+<blockquote>
+  <p><strong>Parent context</strong> = Defaults + inherited <code class="language-plaintext highlighter-rouge">CoroutineContext</code> + arguments</p>
+</blockquote>
+
+<p>Where:</p>
+
+<ul>
+  <li>
+    <p>Some elements have <strong>default</strong> values: <code class="language-plaintext highlighter-rouge">Dispatchers.Default</code> is the default of <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> and <code class="language-plaintext highlighter-rouge">“coroutine”</code> the default of <code class="language-plaintext highlighter-rouge">CoroutineName</code>.</p>
+  </li>
+  <li>
+    <p>The <strong>inherited <code class="language-plaintext highlighter-rouge">CoroutineContext</code></strong> is the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> or coroutine that created it.</p>
+  </li>
+  <li>
+    <p><strong>Arguments</strong> passed in the coroutine builder will take precedence over those elements in the inherited context.</p>
+  </li>
+</ul>
+
+<p><strong><em>Note</em></strong>: <code class="language-plaintext highlighter-rouge">CoroutineContext</code>s can be combined using the + operator. As the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> is a set of elements, a new <code class="language-plaintext highlighter-rouge">CoroutineContext</code> will be created with the elements on the right side of the plus overriding those on the left. E.g. (<code class="language-plaintext highlighter-rouge">Dispatchers.Main, “name”) + (Dispatchers.IO) = (Dispatchers.IO, “name”</code>)</p>
+
+<p align="center">
+  <img src="assets/images/2020-03-11-coroutines-cancellation-exceptions-1_3.png" />
+  <small>Every coroutine started by this CoroutineScope will have at least those elements in the CoroutineContext. CoroutineName is gray because it comes from the default values.</small>
+</p>
+
+<p>Now that we know what’s the parent <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of a new coroutine, its actual <code class="language-plaintext highlighter-rouge">CoroutineContext</code> will be:</p>
+
+<blockquote>
+  <p><strong>New coroutine context</strong> = parent context + <code class="language-plaintext highlighter-rouge">Job()</code></p>
+</blockquote>
+
+<p>If with the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> shown in the image above we create a new coroutine like this:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">job</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">IO</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// new coroutine</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What’s the parent <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of that coroutine and its actual <code class="language-plaintext highlighter-rouge">CoroutineContext</code>? See the solution in the image below!</p>
+
+<p align="center">
+  <img src="assets/images/2020-03-11-coroutines-cancellation-exceptions-1_4.png" />
+  <small>The Job in the CoroutineContext and in the parent context will never be the same instance as a new coroutine always get a new instance of a Job</small>
+</p>
+
+<p>The resulting parent <code class="language-plaintext highlighter-rouge">CoroutineContext</code> has <code class="language-plaintext highlighter-rouge">Dispatchers.IO</code> instead of the scope’s <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> since it was overridden by the argument of the coroutine builder. Also, check that the <code class="language-plaintext highlighter-rouge">Job</code> in the parent <code class="language-plaintext highlighter-rouge">CoroutineContext</code> is the instance of the scope’s <code class="language-plaintext highlighter-rouge">Job</code> (red color), and a new instance of <code class="language-plaintext highlighter-rouge">Job</code> (green color) has been assigned to the actual <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of the new coroutine.</p>
+
+<p>As we will see in Part 3 of the series, a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> can have a different implementation of <code class="language-plaintext highlighter-rouge">Job</code> called <code class="language-plaintext highlighter-rouge">SupervisorJob</code> in its <code class="language-plaintext highlighter-rouge">CoroutineContext</code> that changes how the <code class="language-plaintext highlighter-rouge">CoroutineScope</code> deals with exceptions. Therefore, a new coroutine created with that scope can have <code class="language-plaintext highlighter-rouge">SupervisorJob</code> as a parent <code class="language-plaintext highlighter-rouge">Job</code>. However, when the parent of a coroutine is another coroutine, the parent <code class="language-plaintext highlighter-rouge">Job</code> will always be of type <code class="language-plaintext highlighter-rouge">Job</code>.</p>
+
+<hr />
+
+<p>Now that you know the basics of coroutines, start learning more about cancellation and exceptions in coroutines with <a href="https://medium.com/androiddevelopers/cancellation-in-coroutines-aa6b90163629">part 2</a> for cancellation, <a href="https://manuelvivo.dev/coroutines-cancellation-exceptions-3">part 3</a> for exceptions, and <a href="https://manuelvivo.dev/coroutines-cancellation-exceptions-4">part 4</a> for work that shouldn’t be cancelled.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/coroutines-cancellation-exceptions-1';
+                            this.page.identifier = '/coroutines-cancellation-exceptions-1';
+                            this.page.title = 'Coroutines - First things first';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/coroutines-cancellation-exceptions-3">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-coroutines.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-cancellation-exceptions-3">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Exceptions in coroutines</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/dagger-cheat-sheets">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-03-30-dagger-cheat-sheets.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/dagger-cheat-sheets">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Dagger</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Dagger code generation cheat sheets</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Coroutines - First things first</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Coroutines+-+First+things+first&amp;url=https://manuelvivo.dev/coroutines-cancellation-exceptions-1"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/coroutines-cancellation-exceptions-1"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Testing two consecutive LiveData emissions in Coroutines</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/testing-two-livedata" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Testing two consecutive LiveData emissions in Coroutines" />
+    <meta property="og:description" content="Learn how to pause and resume a TestCoroutineDispatcher This article is about how we unit tested two consecutive LiveData emissions by pausing and resuming the CoroutineDispatcher of a Coroutine in the open-source Plaid application. Don’t forget to check out the Good Practices section at the end of the article to" />
+    <meta property="og:url" content="https://manuelvivo.dev/testing-two-livedata" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2019-10-15-testing-two-livedata.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2019-10-15T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2019-10-15T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Testing two consecutive LiveData emissions in Coroutines" />
+    <meta name="twitter:description" content="Learn how to pause and resume a TestCoroutineDispatcher This article is about how we unit tested two consecutive LiveData emissions by pausing and resuming the CoroutineDispatcher of a Coroutine in the open-source Plaid application. Don’t forget to check out the Good Practices section at the end of the article to" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2019-10-15-testing-two-livedata.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/testing-two-livedata",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2019-10-15-testing-two-livedata.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/testing-two-livedata"
+    },
+    "description": "Learn how to pause and resume a TestCoroutineDispatcher This article is about how we unit tested two consecutive LiveData emissions by pausing and resuming the CoroutineDispatcher of a Coroutine in the open-source Plaid application. Don’t forget to check out the Good Practices section at the end of the article to"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Testing two consecutive LiveData emissions in Coroutines" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Testing two consecutive LiveData emissions in Coroutines | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Testing two consecutive LiveData emissions in Coroutines" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn how to pause and resume a TestCoroutineDispatcher" />
+<meta property="og:description" content="Learn how to pause and resume a TestCoroutineDispatcher" />
+<link rel="canonical" href="https://manuelvivo.dev/testing-two-livedata" />
+<meta property="og:url" content="https://manuelvivo.dev/testing-two-livedata" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-10-15T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Testing two consecutive LiveData emissions in Coroutines" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2019-10-15T00:00:00+00:00","datePublished":"2019-10-15T00:00:00+00:00","description":"Learn how to pause and resume a TestCoroutineDispatcher","headline":"Testing two consecutive LiveData emissions in Coroutines","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/testing-two-livedata"},"url":"https://manuelvivo.dev/testing-two-livedata"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime="15 October 2019">15 October 2019</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">Testing two consecutive LiveData emissions in Coroutines</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2019-10-15-testing-two-livedata.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Learn how to pause and resume a TestCoroutineDispatcher</p>
+
+<p>This article is about how we unit tested two consecutive LiveData emissions by pausing and resuming the <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> of a Coroutine in the open-source <a href="https://github.com/android/plaid">Plaid application</a>.</p>
+
+<p>Don’t forget to check out the Good Practices section at the end of the article to make your tests accurate, fast and reliable.</p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>We wanted to test two consecutive LiveData emissions (one of those executed in a coroutine) but it wasn’t possible since we <a href="https://github.com/android/plaid/pull/695/files#diff-0c645491d198785a12b5fa5afd6598f5">used to inject <code class="language-plaintext highlighter-rouge">Dispatchers.Unconfined</code></a> that executed all coroutines immediately. Because of this, by the time we could assert the emissions in the unit test, the first LiveData emission was missed and we could only check the second emission. More details to follow:</p>
+
+<p>On the <a href="http://www.dribbble.com/">Dribbble</a> (one of Plaid’s data sources) details screen, we wanted to show the screen as quickly as possible, but some elements could take some time to process before presenting (due to lazily formatting markdown into <code class="language-plaintext highlighter-rouge">Spannables</code>). To solve this we decided to rapidly emit a simplified version of the UI state, then kick off a background operation to produce the processed version and then emit it.</p>
+
+<p align="center">
+  <img width="300" src="assets/images/2019-10-15-testing-two-livedata_1.png" />
+  <small>Dribbble Shot details screen in Plaid</small>
+</p>
+
+<p>For this, we use LiveData and Coroutines: LiveData for UI communication and Coroutines to perform operations off the main thread. When the ViewModel starts, we emit a basic UI model to the LiveData the UI observes. Then, we call the <a href="https://github.com/android/plaid/blob/master/dribbble/src/main/java/io/plaidapp/dribbble/domain/CreateShotUiModelUseCase.kt"><code class="language-plaintext highlighter-rouge">CreateShotUiModel</code> use case</a> that moves execution to the background and creates the complete UI model. When the use case finishes, the ViewModel emits the complete UI model to the same LiveData as before. This can be seen in the code below:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ShotViewModel</span><span class="p">(</span><span class="o">..</span><span class="p">.)</span> <span class="p">{</span>
+
+    <span class="nf">init</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">shotsRepository</span><span class="p">.</span><span class="nf">getShot</span><span class="p">(</span><span class="n">shotId</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="k">is</span> <span class="nc">Result</span><span class="p">.</span><span class="nc">Success</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// FIRST UI EMISSION with an incomplete UI Model</span>
+            <span class="n">_shotUiModel</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="nf">toShotUiModel</span><span class="p">()</span>
+            <span class="nf">processUiModel</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">processUiModel</span><span class="p">(</span><span class="n">shot</span><span class="p">:</span> <span class="nc">Shot</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="n">dispatcherProvider</span><span class="p">.</span><span class="n">main</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Processing full model in the background</span>
+            <span class="c1">// The createShotUseCase makes this call main-safe</span>
+            <span class="kd">val</span> <span class="py">uiModel</span> <span class="p">=</span> <span class="nf">createShotUiModel</span><span class="p">(</span><span class="n">shot</span><span class="p">)</span>
+            <span class="c1">// SECOND UI EMISSION with the full UI Model</span>
+            <span class="n">_shotUiModel</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="n">uiModel</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://github.com/android/plaid/blob/master/dribbble/src/main/java/io/plaidapp/dribbble/ui/shot/ShotViewModel.kt"><em>See full code here</em></a></p>
+
+<p>We want to test that both UI states were emitted to the UI. However, we couldn’t verify the first emission because the two UI states were emitted consecutively and the LiveData instance contained the second emission only. This happened because the coroutine started in <code class="language-plaintext highlighter-rouge">processUiModel</code> executed synchronously in our tests due to <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-unconfined.html"><code class="language-plaintext highlighter-rouge">Dispatchers.Unconfined</code></a> being injected.</p>
+
+<p>Plaid uses a class called <a href="https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/data/CoroutinesDispatcherProvider.kt"><code class="language-plaintext highlighter-rouge">CoroutinesDispatcherProvider</code></a> to inject coroutine Dispatchers to classes that work with coroutines.</p>
+
+<blockquote>
+  <p>LiveData only holds the last value it receives. To test the content of a LiveData in tests, we use the <a href="https://github.com/android/architecture-components-samples/blob/master/LiveDataSample/app/src/test/java/com/android/example/livedatabuilder/util/LiveDataTestUtil.kt"><code class="language-plaintext highlighter-rouge">LiveData.getOrAwaitValue()</code></a> extension function.</p>
+</blockquote>
+
+<p>The following unit test with our requirements fails:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="k">fun</span> <span class="nf">loadShot_emitsTwoUiModels</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// When the ViewModel has started</span>
+    <span class="kd">val</span> <span class="py">viewModel</span> <span class="p">=</span> <span class="cm">/* ... */</span> <span class="c1">// Creates viewModel</span>
+
+    <span class="c1">// Then the fast result has been emitted</span>
+    <span class="kd">val</span> <span class="py">fastResult</span> <span class="p">=</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">shotUiModel</span><span class="p">.</span><span class="nf">getOrAwaitValue</span><span class="p">()</span>
+    <span class="c1">// THIS FAILS!!! The slow result has already been emitted because the coroutine</span>
+    <span class="c1">// was executed immediately and shotUiModel LiveData contains the slow result</span>
+    <span class="nf">assertTrue</span><span class="p">(</span><span class="n">fastResult</span><span class="p">.</span><span class="n">formattedDescription</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">())</span>
+
+    <span class="c1">// And then, the slow result has been emitted</span>
+    <span class="kd">val</span> <span class="py">slowResult</span> <span class="p">=</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">shotUiModel</span><span class="p">.</span><span class="nf">getOrAwaitValue</span><span class="p">()</span>
+    <span class="nf">assertTrue</span><span class="p">(</span><span class="n">slowResult</span><span class="p">.</span><span class="n">formattedDescription</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>How can we test this behavior?</p>
+
+<h2 id="the-solution">The solution</h2>
+
+<p>We used the new <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-test-coroutine-dispatcher/"><code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code></a> from the coroutines library (<code class="language-plaintext highlighter-rouge">kotlinx.coroutines.test</code> package) to be able to pause and resume the <code class="language-plaintext highlighter-rouge">CoroutineDispatcher</code> of the coroutine created by the ViewModel.</p>
+
+<blockquote>
+  <p>Disclaimer: TestCoroutineDispatcher is still an experimental API.</p>
+</blockquote>
+
+<p>With an injected instance of <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code>, we can control when the coroutines start executing. The test logic is the following:</p>
+
+<ol>
+  <li>Before the test starts, pause the dispatcher and check the fast result was emitted during ViewModel init.</li>
+  <li>Resume the test Dispatcher that kicks off the coroutine of the <code class="language-plaintext highlighter-rouge">processUiModel</code> method in the ViewModel.</li>
+  <li>Verify that the slow result was emitted.</li>
+</ol>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ShotViewModelTest</span> <span class="p">{</span>
+    <span class="c1">// This CoroutineDispatcher is injected in the ViewModel and use case</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">testCoroutineDispatcher</span> <span class="p">=</span> <span class="nc">TestCoroutineDispatcher</span><span class="p">()</span>
+
+    <span class="nd">@After</span>
+    <span class="k">fun</span> <span class="nf">tearDown</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">testCoroutineDispatcher</span><span class="p">.</span><span class="nf">cleanupTestCoroutines</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="k">fun</span> <span class="nf">loadShot_emitsTwoUiModels</span><span class="p">()</span> <span class="p">=</span> <span class="n">testCoroutineDispatcher</span><span class="p">.</span><span class="nf">runBlockingTest</span> <span class="p">{</span>
+        <span class="c1">// 1) Given coroutines have not started yet and the View Model is created</span>
+        <span class="n">testCoroutineDispatcher</span><span class="p">.</span><span class="nf">pauseDispatcher</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">viewModel</span> <span class="p">=</span> <span class="cm">/* ... */</span> <span class="c1">// Creates viewModel injecting testCoroutineDispatcher</span>
+
+        <span class="c1">// Then the fast result has been emitted</span>
+        <span class="kd">val</span> <span class="py">fastResult</span> <span class="p">=</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">shotUiModel</span><span class="p">.</span><span class="nf">getOrAwaitValue</span><span class="p">()</span>
+        <span class="nf">assertTrue</span><span class="p">(</span><span class="n">fastResult</span><span class="p">.</span><span class="n">formattedDescription</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">())</span>
+
+        <span class="c1">// 2) When the coroutine starts</span>
+        <span class="n">testCoroutineDispatcher</span><span class="p">.</span><span class="nf">resumeDispatcher</span><span class="p">()</span>
+
+        <span class="c1">// 3) Then the slow result has been emitted</span>
+        <span class="kd">val</span> <span class="py">slowResult</span> <span class="p">=</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">shotUiModel</span><span class="p">.</span><span class="nf">getOrAwaitValue</span><span class="p">()</span>
+        <span class="nf">assertTrue</span><span class="p">(</span><span class="n">slowResult</span><span class="p">.</span><span class="n">formattedDescription</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://github.com/android/plaid/blob/master/dribbble/src/test/java/io/plaidapp/dribbble/ui/shot/ShotViewModelTest.kt#L159"><em>See full code here</em></a></p>
+
+<p>See the difference between the injected <a href="https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/data/CoroutinesDispatcherProvider.kt"><code class="language-plaintext highlighter-rouge">CoroutinesDispatcherProvider</code></a> in tests <a href="https://github.com/android/plaid/pull/695/files#diff-0c645491d198785a12b5fa5afd6598f5">here</a>.</p>
+
+<p>We include the test body and assertions inside the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/run-blocking-test.html"><code class="language-plaintext highlighter-rouge">testCoroutineDispatcher.runBlockingTest</code></a> body lambda because, similarly to <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/run-blocking.html"><code class="language-plaintext highlighter-rouge">runBlocking</code></a>, it will execute the coroutines that use <code class="language-plaintext highlighter-rouge">testCoroutineDispatcher</code> synchronously.</p>
+
+<blockquote>
+  <p>Disclaimer 2: To avoid having to set up and tear down a <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> every test, you can use this <a href="https://github.com/android/plaid/blob/master/test_shared/src/main/java/io/plaidapp/test/shared/MainCoroutineRule.kt">JUnit test rule</a> as used in other <a href="https://github.com/android/plaid/blob/master/search/src/test/java/io/plaidapp/search/ui/SearchViewModelTest.kt">tests</a>.</p>
+</blockquote>
+
+<h3 id="an-alternative-approach">An Alternative Approach</h3>
+
+<p>There are other approaches you could choose to solve this problem. We chose the one that we thought it was the best when we faced this issue since it did not require changing the application code.</p>
+
+<p>An alternative implementation could be using the new <a href="https://developer.android.com/topic/libraries/architecture/coroutines#livedata">liveData coroutines builder</a> in the ViewModel to emit the two items and in tests, use the <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-master-dev/lifecycle/lifecycle-livedata-ktx/src/main/java/androidx/lifecycle/FlowLiveData.kt?source=post_page---------------------------%2F%2F%2F%2F%2F&amp;autodive=0%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F#86"><code class="language-plaintext highlighter-rouge">LiveData.asFlow()</code></a> extension function to assert those elements as you can see in <a href="https://github.com/android/plaid/pull/770">this PR</a>. This approach avoids stopping the dispatcher in the test and helps decouple the test from the implementation but requires changing the ViewModel implementation to use latest APIs available in the Lifecycle coroutines extension.</p>
+
+<h2 id="and-the-good-practices">And the Good Practices</h2>
+
+<p>To make your tests accurate, fast and reliable, you should:</p>
+
+<h3 id="always-inject-dispatchers">Always inject Dispatchers!</h3>
+
+<p>We couldn’t have solved the problem if Dispatchers weren’t injected into the ViewModel allowing us to use a <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> in tests.</p>
+
+<p>As a good practice, <strong>always inject Dispatchers to those classes that use them</strong>. You shouldn’t use the predefined Dispatchers that come with the coroutines library (e.g. <code class="language-plaintext highlighter-rouge">Dispatchers.IO</code>) in your classes directly since it makes testing more difficult, pass them as a dependency.</p>
+
+<p>Seeing those used directly in any class is a code smell as seen in the code below:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Bad practice</span>
+<span class="kd">class</span> <span class="nc">MyViewModel</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">example</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// ------------------ code smell ---------</span>
+        <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">IO</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Inject Dispatchers as shown below!</span>
+<span class="kd">class</span> <span class="nc">MyViewModel</span><span class="p">(</span><span class="k">private</span> <span class="kd">val</span> <span class="py">ioDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span><span class="p">):</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">example</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// ------------------ good practice -----</span>
+        <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="n">ioDispatcher</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Talking about <a href="https://developer.android.com/topic/libraries/architecture/viewmodel">AAC ViewModels</a> specifically and the usage of <code class="language-plaintext highlighter-rouge">viewModelScope</code> that defaults to <code class="language-plaintext highlighter-rouge">Dispatchers.Main</code>, since the <code class="language-plaintext highlighter-rouge">viewModelScope</code> code cannot be changed, instead of injecting it, you need to override it. We do it by using <a href="https://github.com/android/plaid/blob/master/test_shared/src/main/java/io/plaidapp/test/shared/MainCoroutineRule.kt">this JUnit rule</a> with the same <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> instance that gets injected in the other classes, see <a href="https://github.com/android/plaid/blob/master/search/src/test/java/io/plaidapp/search/ui/SearchViewModelTest.kt#L72">an example here</a>. To know more about this, read this <a href="https://medium.com/androiddevelopers/easy-coroutines-in-android-viewmodelscope-25bffb605471">article about <code class="language-plaintext highlighter-rouge">viewModelScope</code></a>.</p>
+
+<h3 id="inject-testcoroutinedispatcher-instead-of-dispatchersunconfined">Inject TestCoroutineDispatcher instead of Dispatchers.Unconfined</h3>
+
+<p>Inject an instance of <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-test-coroutine-dispatcher/"><code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code></a> to your classes and use the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/run-blocking-test.html"><code class="language-plaintext highlighter-rouge">runBlockingTest</code></a> method to run the coroutines that use that dispatcher synchronously in your tests. You can also use <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> to be able to resume and pause Coroutines as you wish.</p>
+
+<p>As a general rule, inject the same instance of <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> in the three predefined Dispatchers (i.e. <code class="language-plaintext highlighter-rouge">Main</code>, <code class="language-plaintext highlighter-rouge">Default</code>, <code class="language-plaintext highlighter-rouge">IO</code>). If you need to verify the timing of tasks in a multithreaded scenario (e.g. you want to test permutations of coroutines running at the same time), create and inject a different instance of <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> per each predefined Dispatcher.</p>
+
+<h3 id="what-about-dispatchersunconfined">What about Dispatchers.Unconfined?</h3>
+
+<p>You can also inject <code class="language-plaintext highlighter-rouge">Dispatchers.Unconfined</code> for testing if you want to execute the code inside coroutines synchronously (<code class="language-plaintext highlighter-rouge">kotlinx-coroutines</code> currently uses it for tests). However, <code class="language-plaintext highlighter-rouge">Unconfined</code> gives you less flexibility than a <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code>: you cannot pause <code class="language-plaintext highlighter-rouge">Unconfined</code> and it’s limited to immediate dispatch.</p>
+
+<p>It will also break assumptions and timings for code that use different dispatchers. This is more notable when testing parallel computations, for example, they’ll be executed in the other they’re written and you cannot test the different permutations of those computations finishing at different times.</p>
+
+<p>Both <code class="language-plaintext highlighter-rouge">Unconfined</code> and <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> explicitly avoid parallel execution. However, <code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code> gives you some more control over the ordering of concurrent execution in paused mode, but it’s not sufficient — by itself — to test every permutation. Regular testing advice would apply here, you’d need to design the code with testability in mind if you’re doing complex concurrency behavior.</p>
+
+<h3 id="testing-livedata">Testing LiveData</h3>
+
+<p>For more best practices about testing LiveData, check out <a href="https://twitter.com/ppvi">Jose Alcerreca</a>’s <a href="https://medium.com/androiddevelopers/unit-testing-livedata-and-other-common-observability-problems-bb477262eb04">post about this</a>.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/testing-two-livedata';
+                            this.page.identifier = '/testing-two-livedata';
+                            this.page.title = 'Testing two consecutive LiveData emissions in Coroutines';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/di-guidance-android-talk">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-10-24-di-guidance-android.webp)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/di-guidance-android-talk">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Dagger</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">An opinionated guide to Dependency Injection on Android - Android Developer Summit 2019</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/dagger-kotlin-optimizations">
+                <div class="post-card-image" style="background-image: url(/assets/images/2019-07-30-dagger-kotlin-optimizations.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/dagger-kotlin-optimizations">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Dagger</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Dagger in Kotlin - Gotchas and Optimizations</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Testing two consecutive LiveData emissions in Coroutines</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Testing+two+consecutive+LiveData+emissions+in+Coroutines&amp;url=https://manuelvivo.dev/testing-two-livedata"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/testing-two-livedata"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

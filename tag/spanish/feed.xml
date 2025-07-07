@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator>
+  <link href="https://manuelvivo.dev/tag/spanish/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://manuelvivo.dev/" rel="alternate" type="text/html" />
+  <updated>2025-07-07T10:14:22+00:00</updated>
+  <id>https://manuelvivo.dev/tag/spanish/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Manuel Vivo .dev | </title>
+  
+
+  
+    <subtitle>A place where you can learn about Android development</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">Cómo la música ha influenciado mi carrera</title>
+      <link href="https://manuelvivo.dev/musas-interview" rel="alternate" type="text/html" title="Cómo la música ha influenciado mi carrera" />
+      <published>2021-02-28T00:00:00+00:00</published>
+      <updated>2021-02-28T00:00:00+00:00</updated>
+      <id>https://manuelvivo.dev/musas-interview</id>
+      <content type="html" xml:base="https://manuelvivo.dev/musas-interview">&lt;p&gt;Entrevista sobre cómo la música, la trompeta 🎺 y Las Musas me han influenciado en mi carrera como ingeniero Android.&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;«El ❤️ de Las Musas» es una serie de entrevistas a personas que han estado (y están) relacionadas, de alguna forma, con &lt;a href=&quot;https://www.lasmusas.es&quot;&gt;Las Musas de Guadalupe&lt;/a&gt;. En ellas conoceremos su trayectoria, y cómo sintieron su paso por esta casa.&lt;/p&gt;
+
+&lt;p&gt;Este domingo tenemos con nosotros a Manuel Vicente Vivo, antiguo trompetista de esta familia y, en la actualidad, Android Developer Relations Enginner at Google.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/omnZx3Q8NZ0&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Manuel Vivo</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="spanish" />
+      
+
+      
+        <summary type="html">Entrevista sobre cómo la música, la trompeta 🎺 y Las Musas me han influenciado en mi carrera como ingeniero Android.</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

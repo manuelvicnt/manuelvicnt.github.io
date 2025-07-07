@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Hilt — Adding components to the hierarchy</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/hilt-adding-components" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hilt — Adding components to the hierarchy" />
+    <meta property="og:description" content="Get more flexibility in Hilt by adding your own components to the hierarchy Inserting a component in the middle of the Hilt component hierarchy is not possible. However, you can create a custom component with a Hilt component as a parent and access its scoped types using entry points. In" />
+    <meta property="og:url" content="https://manuelvivo.dev/hilt-adding-components" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2020-hilt.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2020-07-09T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2020-07-09T00:00:00+00:00" />
+    <meta property="article:tag" content="Hilt" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hilt — Adding components to the hierarchy" />
+    <meta name="twitter:description" content="Get more flexibility in Hilt by adding your own components to the hierarchy Inserting a component in the middle of the Hilt component hierarchy is not possible. However, you can create a custom component with a Hilt component as a parent and access its scoped types using entry points. In" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2020-hilt.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Hilt" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/hilt-adding-components",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2020-hilt.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/hilt-adding-components"
+    },
+    "description": "Get more flexibility in Hilt by adding your own components to the hierarchy Inserting a component in the middle of the Hilt component hierarchy is not possible. However, you can create a custom component with a Hilt component as a parent and access its scoped types using entry points. In"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Hilt — Adding components to the hierarchy" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hilt — Adding components to the hierarchy | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Hilt — Adding components to the hierarchy" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Get more flexibility in Hilt by adding your own components to the hierarchy" />
+<meta property="og:description" content="Get more flexibility in Hilt by adding your own components to the hierarchy" />
+<link rel="canonical" href="https://manuelvivo.dev/hilt-adding-components" />
+<meta property="og:url" content="https://manuelvivo.dev/hilt-adding-components" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-09T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hilt — Adding components to the hierarchy" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2020-07-09T00:00:00+00:00","datePublished":"2020-07-09T00:00:00+00:00","description":"Get more flexibility in Hilt by adding your own components to the hierarchy","headline":"Hilt — Adding components to the hierarchy","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/hilt-adding-components"},"url":"https://manuelvivo.dev/hilt-adding-components"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-hilt post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime=" 9 July 2020"> 9 July 2020</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/hilt/'>Hilt</a></span>
+                  
+              
+                <h1 class="post-full-title">Hilt — Adding components to the hierarchy</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2020-hilt.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Get more flexibility in Hilt by adding your own components to the hierarchy</p>
+
+<p>Inserting a component in the middle of the Hilt component hierarchy is not possible. However, you can create a custom component with a Hilt component as a parent and access its scoped types using entry points. In the article, we’ll see what all this implies and how to add a custom component in the <em>Dagger 2 codelab</em> code.</p>
+
+<p>The <a href="https://codelabs.developers.google.com/codelabs/android-dagger/">Dagger 2 codelab</a> goes through adding Dagger to a multiple-Activity application. As the user can log in and out of the app, user information is handled in a Dagger component with a lifespan longer than activity components.</p>
+
+<p><img src="assets/images/2020-07-09-hilt-adding-components_1.png" alt="img" />
+<small>Dagger components in the Dagger codelab app</small></p>
+
+<p>In the diagram above, notice how <code class="language-plaintext highlighter-rouge">MainActivity</code> and <code class="language-plaintext highlighter-rouge">SettingsActivity</code> access the <code class="language-plaintext highlighter-rouge">UserComponent</code> with <code class="language-plaintext highlighter-rouge">UserDataRepository</code> scoped to it. The in-memory <code class="language-plaintext highlighter-rouge">UserDataRepository</code> handles information related to a logged-in user. When the user logs out, we want to remove the info from memory.</p>
+
+<p>In Hilt and Dagger, every component must be held by an object (you can think of it as a lifecycle owner) that knows when the component needs to be created or destroyed. In our example, that class is <code class="language-plaintext highlighter-rouge">UserManager</code> that keeps track of logins and logouts. When the user logs in, a new component is created and when the user logs out, the component is destroyed. In that way, <code class="language-plaintext highlighter-rouge">MainActivity</code> and <code class="language-plaintext highlighter-rouge">SettingsActivity</code> can access the same instance of the component to get injected by it.</p>
+
+<p>All components of this app <em>except</em> <code class="language-plaintext highlighter-rouge">UserComponent</code> can be mapped to Hilt’s standard components: <code class="language-plaintext highlighter-rouge">AppComponent</code> maps to Hilt’s <code class="language-plaintext highlighter-rouge">ApplicationComponent</code> while <code class="language-plaintext highlighter-rouge">RegistrationComponent</code> and <code class="language-plaintext highlighter-rouge">LoginComponent</code> map to <code class="language-plaintext highlighter-rouge">ActivityComponent</code>.</p>
+
+<p>What can we do to make <code class="language-plaintext highlighter-rouge">UserComponent</code> more Hilt-friendly? We have different possibilities:</p>
+
+<ul>
+  <li>
+    <p>Scope <code class="language-plaintext highlighter-rouge">UserDataRepository</code> to the <code class="language-plaintext highlighter-rouge">ApplicationComponent</code> and handle nullability when the user is logged out. This is what the <a href="https://codelabs.developers.google.com/codelabs/android-dagger-to-hilt/#0">Migrating your Dagger app to Hilt codelab</a> does. Not ideal, but could work in this case. However, it might add some tricky race conditions to deal with on a user switch.</p>
+  </li>
+  <li>
+    <p>Make <code class="language-plaintext highlighter-rouge">MainActivity</code> and <code class="language-plaintext highlighter-rouge">SettingsActivity</code> fragments, and have the <code class="language-plaintext highlighter-rouge">UserDataRepository</code> scoped to the activity (Hilt’s <code class="language-plaintext highlighter-rouge">ActivityRetainedComponent</code>) where those fragments are used. This is a “doing stuff to fit the framework rather than the framework fitting the use case” sort of solution. This doesn’t even work for all situations as you might need to access user information in other places that aren’t tied to the activity like a broadcast receiver.</p>
+  </li>
+  <li>
+    <p>Keep the same navigation structure and add the <code class="language-plaintext highlighter-rouge">UserComponent</code> to be used by Hilt.</p>
+  </li>
+</ul>
+
+<p>As an exercise to learn more about the flexibility of Hilt, let’s cover option 3 in this post: adding a component to the Hilt component hierarchy.</p>
+
+<h2 id="hilt-design-decisions">Hilt design decisions</h2>
+
+<p>Hilt is opinionated on its component hierarchy as it contains the most common set of components an Android app typically uses. Due to compatibility concerns and Hilt not knowing how to create your component (e.g. what <code class="language-plaintext highlighter-rouge">userId</code> to use), it’s not possible to <em>insert</em> a component between the layers (e.g. making a custom component X subcomponent of <code class="language-plaintext highlighter-rouge">ApplicationComponent</code>, and parent of <code class="language-plaintext highlighter-rouge">ActivityRetainedComponent</code>).</p>
+
+<p>What is possible is <em>adding</em> a component to the hierarchy as a leaf component. In our case, we could make our custom component <code class="language-plaintext highlighter-rouge">UserComponent</code> to be a subcomponent of <code class="language-plaintext highlighter-rouge">ApplicationComponent</code> as seen in the image.</p>
+
+<p><img src="assets/images/2020-07-09-hilt-adding-components_2.png" alt="img" />
+<small>Adding a subcomponent of ApplicationComponent to the Hilt hierarchy</small></p>
+
+<blockquote>
+  <p>The use case in this article consists of adding a custom component (i.e. <code class="language-plaintext highlighter-rouge">UserComponent</code>) to the hierarchy that has <code class="language-plaintext highlighter-rouge">ApplicationComponent</code> as a parent. However, as we’ll see later, you can make your custom component extend any Component you want, either a predefined Hilt component or your own other custom one.</p>
+</blockquote>
+
+<p>The main difference between <em>inserting</em> and <em>adding</em> a component is that if you insert a component in the hierarchy, its scoped bindings are available in its subcomponents (components below in the hierarchy) whereas if you <em>add</em> a component, they won’t. You could make those scoped bindings flow down (or being available in) the hierarchy if you create your own hierarchy parallel to Hilt’s one. However, that’d make you lose the <code class="language-plaintext highlighter-rouge">@AndroidEntryPoint</code> functionality and you’d have to use entry points to obtain dependencies in Android framework classes.</p>
+
+<p>As we’ll be adding a component to the hierarchy in our example, we won’t have <code class="language-plaintext highlighter-rouge">UserDataRepository</code> (<code class="language-plaintext highlighter-rouge">UserComponent</code>’s scoped type) available as a binding in <code class="language-plaintext highlighter-rouge">@AndroidEntryPoint</code> classes, so we won’t be able to inject it as any other scoped type:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Singleton</span>
+<span class="kd">class</span> <span class="nc">AnalyticsRepository</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span><span class="cm">/*...*/) { /* ... */</span> <span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">MainActivityAnalyticsAdapter</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span>
+  <span class="c1">// AnalyticsRepository is available as it's scoped to ApplicationComponent</span>
+  <span class="n">analyticsRepository</span><span class="p">:</span> <span class="nc">AnalyticsRepository</span><span class="p">,</span>
+
+  <span class="c1">// 💥 Build time error!</span>
+  <span class="c1">// UserDataRepository is NOT available to Hilt in MainActivity as the binding</span>
+  <span class="c1">// is not available in ActivityComponent, it's in UserComponent and it's not</span>
+  <span class="c1">// propagated down the Hilt components hierarchy</span>
+  <span class="n">userDataRepository</span><span class="p">:</span> <span class="nc">UserDataRepository</span>
+<span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>We’ll see later what are the different options to obtain the scoped instance of <code class="language-plaintext highlighter-rouge">UserDataRepository</code> in our classes.</p>
+
+<h2 id="adding-a-component-to-the-hierarchy">Adding a component to the hierarchy</h2>
+
+<p>As shown in the <a href="https://dagger.dev/hilt/custom-components">custom components docs</a>, you can declare a component using the <code class="language-plaintext highlighter-rouge">@DefineComponent</code> annotation.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Annotation for scoping to UserComponent</span>
+<span class="nd">@Scope</span>
+<span class="nd">@MustBeDocumented</span>
+<span class="nd">@Retention</span><span class="p">(</span><span class="n">value</span> <span class="p">=</span> <span class="nc">AnnotationRetention</span><span class="p">.</span><span class="nc">RUNTIME</span><span class="p">)</span>
+<span class="k">annotation</span> <span class="kd">class</span> <span class="nc">LoggedUserScope</span>
+
+<span class="c1">// Types scoped to this component must be annotated with @LoggedUserScope</span>
+<span class="nd">@LoggedUserScope</span>
+<span class="c1">// Make UserComponent subcomponent of ApplicationComponent</span>
+<span class="nd">@DefineComponent</span><span class="p">(</span><span class="n">parent</span> <span class="p">=</span> <span class="nc">ApplicationComponent</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="kd">interface</span> <span class="nc">UserComponent</span> <span class="p">{</span>
+
+    <span class="c1">// Builder to create instances of UserComponent</span>
+    <span class="nd">@DefineComponent</span><span class="p">.</span><span class="nc">Builder</span>
+    <span class="kd">interface</span> <span class="nc">Builder</span> <span class="p">{</span>
+        <span class="k">fun</span> <span class="nf">setUser</span><span class="p">(</span><span class="nd">@BindsInstance</span> <span class="n">user</span><span class="p">:</span> <span class="nc">User</span><span class="p">):</span> <span class="nc">UserComponent</span><span class="p">.</span><span class="nc">Builder</span>
+        <span class="k">fun</span> <span class="nf">build</span><span class="p">():</span> <span class="nc">UserComponent</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We made <code class="language-plaintext highlighter-rouge">UserComponent</code> a subcomponent of <code class="language-plaintext highlighter-rouge">ApplicationComponent</code> as specified in the parent parameter of the <code class="language-plaintext highlighter-rouge">@DefineComponent</code> annotation. Additionally, we created the <code class="language-plaintext highlighter-rouge">@LoggedUserScope</code> to be able to scope types to <code class="language-plaintext highlighter-rouge">UserComponent</code>. Use the builder annotated with <code class="language-plaintext highlighter-rouge">@DefineComponent.Builder</code> to create instances of <code class="language-plaintext highlighter-rouge">UserComponent</code>, as you’ll see later, this is what <code class="language-plaintext highlighter-rouge">UserManager</code> will be using.</p>
+
+<blockquote>
+  <p>Use <code class="language-plaintext highlighter-rouge">@DefineComponent</code> to define a new custom component you can use in your app. It takes in the parent component as a parameter. The new component will extend the parent component meaning that all parent bindings will be available in the new component. Because of our the specific use case for this blog post, we used Hilt’s <code class="language-plaintext highlighter-rouge">ApplicationComponent</code>, however, you can make it extend any component you want: it could be a Hilt component or any other custom component you already have defined.</p>
+</blockquote>
+
+<p>With this, we can scope types to this component already:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@LoggedUserScope</span>
+<span class="kd">class</span> <span class="nc">UserDataRepository</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span><span class="cm">/*...*/) {/* ... */</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="managing-the-lifecycle-of-the-component">Managing the lifecycle of the component</h2>
+
+<p>A class scoped higher up in the components hierarchy should be responsible for the lifecycle of this component. In our case, this class is <code class="language-plaintext highlighter-rouge">UserManager</code> which is scoped to the <code class="language-plaintext highlighter-rouge">ApplicationComponent</code>.</p>
+
+<p>As <code class="language-plaintext highlighter-rouge">UserManager</code> needs to know how to create instances of <code class="language-plaintext highlighter-rouge">UserComponent</code>, it should receive its builder in the constructor. As <code class="language-plaintext highlighter-rouge">UserComponent</code> is a subcomponent of <code class="language-plaintext highlighter-rouge">ApplicationComponent</code>, the builder is available as a binding in there.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Singleton</span>
+<span class="kd">class</span> <span class="nc">UserManager</span> <span class="nd">@Inject</span> <span class="k">constructor</span><span class="p">(</span>
+    <span class="c1">// Since UserManager will be in charge of managing the UserComponent's</span>
+    <span class="c1">// lifecycle, it needs to know how to create instances of it. We use the</span>
+    <span class="c1">// provider (i.e. factory) Dagger generates for us to create instances of UserComponent.</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">userComponentProvider</span><span class="p">:</span> <span class="nc">Provider</span><span class="p">&lt;</span><span class="nc">UserComponent</span><span class="err">.</span><span class="nc">Builder</span><span class="p">&gt;</span>
+<span class="p">)</span> <span class="p">{</span>
+
+  <span class="cm">/**
+   *  UserComponent is specific to a logged in user. Holds an instance of
+   *  UserComponent. This determines if the user is logged in or not, when the
+   *  user logs in, a new Component will be created.
+   *  When the user logs out, this will be null.
+   */</span>
+  <span class="kd">var</span> <span class="py">userComponent</span><span class="p">:</span> <span class="nc">UserComponent</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+      <span class="k">private</span> <span class="k">set</span>
+
+  <span class="o">..</span><span class="p">.</span>
+
+  <span class="k">private</span> <span class="k">fun</span> <span class="nf">userLoggedIn</span><span class="p">(</span><span class="n">userId</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// When the user logs in, we create a new instance of UserComponent</span>
+    <span class="kd">val</span> <span class="py">user</span> <span class="p">=</span> <span class="nf">createUser</span><span class="p">(</span><span class="n">userId</span><span class="p">)</span>
+    <span class="n">userComponent</span> <span class="p">=</span> <span class="n">userComponentProvider</span><span class="p">.</span><span class="k">get</span><span class="p">().</span><span class="nf">setUser</span><span class="p">(</span><span class="n">user</span><span class="p">).</span><span class="nf">build</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="k">private</span> <span class="k">fun</span> <span class="nf">logout</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// When the user logs out, we remove the instance of UserComponent from memory</span>
+    <span class="n">userComponent</span> <span class="p">=</span> <span class="k">null</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="accessing-the-scoped-bindings">Accessing the scoped bindings</h2>
+
+<p>You can access the scoped bindings of <code class="language-plaintext highlighter-rouge">UserComponent</code> with entry points. For our case, we can create an entry point exposing the <code class="language-plaintext highlighter-rouge">UserDataRepository</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@InstallIn</span><span class="p">(</span><span class="nc">UserComponent</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@EntryPoint</span>
+<span class="kd">interface</span> <span class="nc">UserComponentEntryPoint</span> <span class="p">{</span>
+  <span class="k">fun</span> <span class="nf">userDataRepository</span><span class="p">():</span> <span class="nc">UserDataRepository</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can access this entry point by using an instance of <code class="language-plaintext highlighter-rouge">UserComponent</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@AndroidEntryPoint</span>
+<span class="kd">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="c1">// Injected by ActivityComponent</span>
+  <span class="nd">@Inject</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">userManager</span><span class="p">:</span> <span class="nc">UserManager</span>
+
+  <span class="c1">// Populated by UserComponent</span>
+  <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">userDataRepository</span><span class="p">:</span> <span class="nc">UserDataRepository</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+    <span class="n">userDataRepository</span> <span class="p">=</span> <span class="nc">EntryPoints</span><span class="p">.</span><span class="k">get</span><span class="p">(</span>
+      <span class="n">userManager</span><span class="p">.</span><span class="n">userComponent</span><span class="p">,</span> <span class="nc">UserComponentEntryPoint</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span>
+    <span class="p">).</span><span class="nf">userDataRepository</span><span class="p">()</span>
+
+    <span class="c1">// Do something with userDataRepository</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="caveats">Caveats</h2>
+
+<p>There are some caveats to the code we’ve seen so far:</p>
+
+<ul>
+  <li>
+    <p>Scoped types in custom components don’t flow down the Hilt components hierarchy. That’s why you need to use entry points and you cannot have it as a dependency of another class unless you use <a href="https://github.com/square/AssistedInject">AssistedInject</a> as shown in this <a href="https://github.com/manuelvicnt/android-dagger-to-hilt/pull/1">example</a>.</p>
+  </li>
+  <li>
+    <p>This is not a full login/user solution as this setup works when the user explicitly logs in and out of the app. If your app allows switching accounts while on the same screen, then you’d need to manually restart the activity/fragment when that happens. Alternatively, you could add a callback to <code class="language-plaintext highlighter-rouge">UserManager</code> to know when an account has changed to update the information on the screen accordingly.</p>
+  </li>
+</ul>
+
+<hr />
+
+<p>Even though inserting a component in the middle of the Hilt component hierarchy is not possible, you can create a component with a Hilt component as a parent and access its scoped types using entry points.</p>
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/hilt-adding-components';
+                            this.page.identifier = '/hilt-adding-components';
+                            this.page.title = 'Hilt — Adding components to the hierarchy';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/hilt/">Hilt</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/hilt-stable">Hilt is stable! Easier dependency injection on Android</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/viewmodelcomponent">Using Hilt's ViewModelComponent</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/hilt/">
+                                
+                                    See all 7 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/coroutines-in-2020">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-07-13-coroutines-in-2020.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-in-2020">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Android Coroutines - How to manage async tasks in Kotlin</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/dagger-hilt-navigation-android-studio">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-07-01-dagger-hilt-navigation-android-studio.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/dagger-hilt-navigation-android-studio">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Hilt</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Dagger</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Dagger and Hilt navigation support in Android Studio</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Hilt — Adding components to the hierarchy</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Hilt+%E2%80%94+Adding+components+to+the+hierarchy&amp;url=https://manuelvivo.dev/hilt-adding-components"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/hilt-adding-components"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>

@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Coroutines & Patterns for work that shouldn’t be cancelled</title>
+
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="A place where you can learn about Android development" />
+    <link rel="shortcut icon" href="https://manuelvivo.dev/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://manuelvivo.dev/coroutines-cancellation-exceptions-4" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Manuel Vivo .dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Coroutines & Patterns for work that shouldn’t be cancelled" />
+    <meta property="og:description" content="Best practices for work that needs to run beyond its current scope with an applicationScope! In part 2 of the Cancellation and Exceptions in Coroutines series, we learnt the importance of cancelling work when it’s no longer needed. On Android, you can use the CoroutineScopes provided by Jetpack: viewModelScope or" />
+    <meta property="og:url" content="https://manuelvivo.dev/coroutines-cancellation-exceptions-4" />
+    <meta property="og:image" content="https://manuelvivo.dev/assets/images/2020-coroutines.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2020-04-07T00:00:00+00:00" />
+    <meta property="article:modified_time" content="2020-04-07T00:00:00+00:00" />
+    <meta property="article:tag" content="Coroutines" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Coroutines & Patterns for work that shouldn’t be cancelled" />
+    <meta name="twitter:description" content="Best practices for work that needs to run beyond its current scope with an applicationScope! In part 2 of the Cancellation and Exceptions in Coroutines series, we learnt the importance of cancelling work when it’s no longer needed. On Android, you can use the CoroutineScopes provided by Jetpack: viewModelScope or" />
+    <meta name="twitter:url" content="https://manuelvivo.dev/" />
+    <meta name="twitter:image" content="https://manuelvivo.dev/assets/images/2020-coroutines.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Manuel Vivo .dev" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Coroutines" />
+    <meta name="twitter:site" content="@manuelvicnt" />
+    <meta name="twitter:creator" content="@manuelvicnt" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Manuel Vivo .dev",
+        "logo": "https://manuelvivo.dev/"
+    },
+    "url": "https://manuelvivo.dev/coroutines-cancellation-exceptions-4",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://manuelvivo.dev/assets/images/2020-coroutines.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://manuelvivo.dev/coroutines-cancellation-exceptions-4"
+    },
+    "description": "Best practices for work that needs to run beyond its current scope with an applicationScope! In part 2 of the Cancellation and Exceptions in Coroutines series, we learnt the importance of cancelling work when it’s no longer needed. On Android, you can use the CoroutineScopes provided by Jetpack: viewModelScope or"
+}
+    </script>
+
+<!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+<script type="text/javascript">
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "f84a07a72b17"
+});
+</script> -->
+
+<meta name="generator" content="Jekyll 3.6.2" />
+<link rel="alternate" type="application/rss+xml" title="Coroutines & Patterns for work that shouldn’t be cancelled" href="/feed.xml" />
+
+<style>
+    .highlighter-rouge, .highlight, code {
+        width: 100%;
+    }
+</style>
+
+<!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Coroutines &amp; Patterns for work that shouldn’t be cancelled | Manuel Vivo .dev</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Coroutines &amp; Patterns for work that shouldn’t be cancelled" />
+<meta name="author" content="Manuel Vivo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Best practices for work that needs to run beyond its current scope with an applicationScope!" />
+<meta property="og:description" content="Best practices for work that needs to run beyond its current scope with an applicationScope!" />
+<link rel="canonical" href="https://manuelvivo.dev/coroutines-cancellation-exceptions-4" />
+<meta property="og:url" content="https://manuelvivo.dev/coroutines-cancellation-exceptions-4" />
+<meta property="og:site_name" content="Manuel Vivo .dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Coroutines &amp; Patterns for work that shouldn’t be cancelled" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@manuelvicnt" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Manuel Vivo","url":"github.com/manuelvicnt"},"dateModified":"2020-04-07T00:00:00+00:00","datePublished":"2020-04-07T00:00:00+00:00","description":"Best practices for work that needs to run beyond its current scope with an applicationScope!","headline":"Coroutines &amp; Patterns for work that shouldn’t be cancelled","mainEntityOfPage":{"@type":"WebPage","@id":"https://manuelvivo.dev/coroutines-cancellation-exceptions-4"},"url":"https://manuelvivo.dev/coroutines-cancellation-exceptions-4"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/built/syntax.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://manuelvivo.dev/">Manuel Vivo .dev</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">Home</a></li>
+    <li class="nav-book" role="menuitem"><a href="https://topmate.io/manuelvivo" target="_blank">🗓️ Book a 1:1 with me!</a></li>
+    <li class="nav-digitalproduct" role="menuitem"><a href="/digitalproduct/">Products</a></li>
+    <li class="nav-publicspeaking" role="menuitem"><a href="/publicspeaking/">Public Speaking</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">About</a></li>
+    <li class="nav-gallery" role="menuitem"><a href="/gallery/">Gallery</a></li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+                <a class="social-link social-link-tw" href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+</a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-coroutines post ">
+
+            <header class="post-full-header">
+              <section class="post-full-meta">
+                  <time class="post-full-meta-date" datetime=" 7 April 2020"> 7 April 2020</time>
+              </section>
+
+              
+                  
+                    <span class="post-card-tags"><a style="color:white;" href='/tag/coroutines/'>Coroutines</a></span>
+                  
+              
+                <h1 class="post-full-title">Coroutines & Patterns for work that shouldn’t be cancelled</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/assets/images/2020-coroutines.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <p>Best practices for work that needs to run beyond its current scope with an applicationScope!</p>
+
+<p>In <a href="https://medium.com/androiddevelopers/cancellation-in-coroutines-aa6b90163629">part 2 of the Cancellation and Exceptions in Coroutines series</a>, we learnt the importance of cancelling work when it’s no longer needed. On Android, you can use the <code class="language-plaintext highlighter-rouge">CoroutineScopes</code> provided by Jetpack: <code class="language-plaintext highlighter-rouge">viewModelScope</code> or <code class="language-plaintext highlighter-rouge">lifecycleScope</code> that cancel any running work when their scope completes — that is when the <code class="language-plaintext highlighter-rouge">Activity/Fragment/Lifecycle</code> completes. If you’re creating your own <code class="language-plaintext highlighter-rouge">CoroutineScope</code>, make sure you tie it to a <code class="language-plaintext highlighter-rouge">Job</code> and call cancel when needed.</p>
+
+<p>However, there are cases when you want an operation to complete even if the user navigated away from a screen. As such, you <em>don’t</em> want the work to be cancelled (e.g. writing to a database or making a certain network request to your server).</p>
+
+<p>Keep reading for a pattern to achieve this!</p>
+
+<h2 id="coroutines-or-workmanager">Coroutines or WorkManager?</h2>
+
+<p>Coroutines will run as long as your application process is alive. If you need to run operations that should outlive the process (e.g. sending logs to your remote server), use <a href="https://developer.android.com/topic/libraries/architecture/workmanager">WorkManager</a> instead on Android. WorkManager is the library to use for critical operations that are expected to execute at some point in the future.</p>
+
+<p>Use coroutines for operations that are valid in the current process and can be cancelled if the user kills the app (e.g. making a network request you want to cache). What’s the pattern to trigger these operations?</p>
+
+<h2 id="coroutines-best-practices">Coroutines best practices</h2>
+
+<p>Since this pattern builds upon other coroutine best practices; let’s recap them:</p>
+
+<h3 id="1-inject-dispatchers-into-classes">1. Inject Dispatchers into classes</h3>
+
+<p>Don’t hardcode them when creating new coroutines or calling <code class="language-plaintext highlighter-rouge">withContext</code>.</p>
+
+<p>✅ Benefits: ease of testing as you can easily replace them for both unit and instrumentation tests.</p>
+
+<h3 id="2-the-viewmodelpresenter-layer-should-create-coroutines">2. The ViewModel/Presenter layer should create coroutines</h3>
+
+<p>If it’s a UI-only operation, then the UI layer can do it. If you think this is not possible in your project, it’s likely you’re not following best practice #1 (i.e. it’s more difficult to test VMs that don’t inject <code class="language-plaintext highlighter-rouge">Dispatchers</code>; in that case exposing suspend functions makes it doable).</p>
+
+<p>✅ Benefits: The UI layer should be dumb and not directly trigger any business logic. Instead, defer that responsibility to the ViewModel/Presenter layer. Testing the UI layer requires instrumentation tests in Android which need an emulator to run.</p>
+
+<h3 id="3-the-layers-below-the-viewmodelpresenter-layer-should-expose-suspend-functions-and-flows">3. The layers below the ViewModel/Presenter layer should expose suspend functions and Flows</h3>
+
+<p>If you need to create coroutines, use <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/coroutine-scope.html"><code class="language-plaintext highlighter-rouge">coroutineScope</code></a> or <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/supervisor-scope.html"><code class="language-plaintext highlighter-rouge">supervisorScope</code></a>. If you need them to follow a different scope, this is what this article is about! Keep reading!</p>
+
+<p>✅ Benefits: The caller (generally the ViewModel layer) can control the execution and lifecycle of the work happening in those layers, being able to cancel when needed.</p>
+
+<h2 id="operations-that-shouldnt-be-cancelled-in-coroutines">Operations that shouldn’t be cancelled in Coroutines</h2>
+
+<p>Imagine we have a ViewModel and a Repository in our app with the following logic:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyViewModel</span><span class="p">(</span><span class="k">private</span> <span class="kd">val</span> <span class="py">repo</span><span class="p">:</span> <span class="nc">Repository</span><span class="p">)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">fun</span> <span class="nf">callRepo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+      <span class="n">repo</span><span class="p">.</span><span class="nf">doWork</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Repository</span><span class="p">(</span><span class="k">private</span> <span class="kd">val</span> <span class="py">ioDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">doWork</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">withContext</span><span class="p">(</span><span class="n">ioDispatcher</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">doSomeOtherWork</span><span class="p">()</span>
+      <span class="nf">veryImportantOperation</span><span class="p">()</span> <span class="c1">// This shouldn’t be cancelled</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We don’t want <code class="language-plaintext highlighter-rouge">veryImportantOperation()</code> to be controlled by <code class="language-plaintext highlighter-rouge">viewModelScope</code> as it could be cancelled at any point. We want that operation to outlive <code class="language-plaintext highlighter-rouge">viewModelScope</code>. How can we achieve that?</p>
+
+<p>To do this, <strong>create your own scope in the Application class and call those operations in coroutines started by it</strong>. That scope should be injected in the classes that need it.</p>
+
+<p>The benefits of creating your own <code class="language-plaintext highlighter-rouge">CoroutineScope</code> vs other solutions we’ll see later (like <code class="language-plaintext highlighter-rouge">GlobalScope</code>) is that you can configure it as you wish. Do you need a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-exception-handler/"><code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code></a>? Do you have your own thread pool you use as a <code class="language-plaintext highlighter-rouge">Dispatcher</code>? Place all that common configuration there in its <code class="language-plaintext highlighter-rouge">CoroutineContext</code>!</p>
+
+<p>You can call it <code class="language-plaintext highlighter-rouge">applicationScope</code> and it must contain a <code class="language-plaintext highlighter-rouge">SupervisorJob()</code> so that failures in coroutines don’t propagate in the hierarchy (as seen in <a href="https://manuelvivo.dev/coroutines-cancellation-exceptions-3">part 3 of the series</a>):</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyApplication</span> <span class="p">:</span> <span class="nc">Application</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// No need to cancel this scope as it'll be torn down with the process</span>
+  <span class="kd">val</span> <span class="py">applicationScope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="n">otherConfig</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We don’t need to cancel this scope since we want it to remain active as long as the application process is alive, so we don’t hold a reference to the <code class="language-plaintext highlighter-rouge">SupervisorJob</code>. We can use this scope to run coroutines that need a longer lifetime than the calling scope might offer in our app.</p>
+
+<blockquote>
+  <p>For operations that shouldn’t be cancelled, call them from a coroutine created by an application CoroutineScope</p>
+</blockquote>
+
+<p><strong>Whenever you create a new Repository instance, pass in the applicationScope we created above</strong>. For tests, check out the <em>Testing</em> section below.</p>
+
+<h3 id="which-coroutine-builder-to-use">Which coroutine builder to use?</h3>
+
+<p>Depending on <code class="language-plaintext highlighter-rouge">veryImportantOperation</code>’s behavior, you’d need to start a new coroutine using either launch or async:</p>
+
+<ul>
+  <li>
+    <p>If it needs to return a result, use <strong><code class="language-plaintext highlighter-rouge">async</code></strong> and call <strong><code class="language-plaintext highlighter-rouge">await</code></strong> to wait for it to finish.</p>
+  </li>
+  <li>
+    <p>If not, use <strong><code class="language-plaintext highlighter-rouge">launch</code></strong> and wait for it to finish with <strong><code class="language-plaintext highlighter-rouge">join</code></strong>. Note that as explained in <a href="https://manuelvivo.dev/coroutines-cancellation-exceptions-3">part 3 of the series</a>, you have to handle exceptions manually inside the launch block.</p>
+  </li>
+</ul>
+
+<p>This is how you’d trigger the coroutine using <code class="language-plaintext highlighter-rouge">launch</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Repository</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span><span class="p">,</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">ioDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">doWork</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">withContext</span><span class="p">(</span><span class="n">ioDispatcher</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">doSomeOtherWork</span><span class="p">()</span>
+      <span class="n">externalScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+        <span class="c1">// if this can throw an exception, wrap inside try/catch</span>
+        <span class="c1">// or rely on a CoroutineExceptionHandler installed</span>
+        <span class="c1">// in the externalScope's CoroutineScope</span>
+        <span class="nf">veryImportantOperation</span><span class="p">()</span>
+      <span class="p">}.</span><span class="nf">join</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>or using <code class="language-plaintext highlighter-rouge">async</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Repository</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span><span class="p">,</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">ioDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">doWork</span><span class="p">():</span> <span class="nc">Any</span> <span class="p">{</span> <span class="c1">// Use a specific type in Result</span>
+    <span class="nf">withContext</span><span class="p">(</span><span class="n">ioDispatcher</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">doSomeOtherWork</span><span class="p">()</span>
+      <span class="k">return</span> <span class="n">externalScope</span><span class="p">.</span><span class="nf">async</span> <span class="p">{</span>
+        <span class="c1">// Exceptions are exposed when calling await, they will be</span>
+        <span class="c1">// propagated in the coroutine that called doWork. Watch</span>
+        <span class="c1">// out! They will be ignored if the calling context cancels.</span>
+        <span class="nf">veryImportantOperation</span><span class="p">()</span>
+      <span class="p">}.</span><span class="nf">await</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In any case, the ViewModel code doesn’t change and with the above, even if the <code class="language-plaintext highlighter-rouge">viewModelScope</code> gets destroyed, the work using <code class="language-plaintext highlighter-rouge">externalScope</code> will keep running. Furthermore, <code class="language-plaintext highlighter-rouge">doWork()</code> won’t return until <code class="language-plaintext highlighter-rouge">veryImportantOperation()</code> completes as with any other suspend call.</p>
+
+<h3 id="what-about-something-simpler">What about something simpler?</h3>
+
+<p>Another pattern that could serve some use cases (and it’s probably the first solution anyone would come up with) is wrapping <code class="language-plaintext highlighter-rouge">veryImportantOperation</code> in the <code class="language-plaintext highlighter-rouge">externalScope</code>’s context using <code class="language-plaintext highlighter-rouge">withContext</code> as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Repository</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">externalScope</span><span class="p">:</span> <span class="nc">CoroutineScope</span><span class="p">,</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">ioDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">doWork</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">withContext</span><span class="p">(</span><span class="n">ioDispatcher</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">doSomeOtherWork</span><span class="p">()</span>
+      <span class="nf">withContext</span><span class="p">(</span><span class="n">externalScope</span><span class="p">.</span><span class="n">coroutineContext</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">veryImportantOperation</span><span class="p">()</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>However, this approach has some caveats that you should be aware of:</p>
+
+<ul>
+  <li>
+    <p>If the coroutine that calls <code class="language-plaintext highlighter-rouge">doWork</code> is cancelled while <code class="language-plaintext highlighter-rouge">veryImportantOperation</code> is getting executed, the coroutine will keep executing until the next cancellation point, not after <code class="language-plaintext highlighter-rouge">veryImportantOperation</code> finishes executing.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>s don’t work as you’d expect when the context is used in <code class="language-plaintext highlighter-rouge">withContext</code> since the exception will be re-thrown.</p>
+  </li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+
+<p>As we’ll need to inject both <code class="language-plaintext highlighter-rouge">Dispatchers</code> and <code class="language-plaintext highlighter-rouge">CoroutineScope</code>s, what should you inject in those cases?</p>
+
+<p><img src="assets/images/2020-04-07-coroutines-cancellation-exceptions-4.png" alt="img" />
+<small>What to inject in testing</small></p>
+
+<p>🔖 Legend: <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-test-coroutine-dispatcher/index.html"><code class="language-plaintext highlighter-rouge">TestCoroutineDispatcher</code></a>, <a href="https://github.com/android/plaid/blob/master/test_shared/src/main/java/io/plaidapp/test/shared/MainCoroutineRule.kt"><code class="language-plaintext highlighter-rouge">MainCoroutineRule</code></a>, <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-test-coroutine-scope/"><code class="language-plaintext highlighter-rouge">TestCoroutineScope</code></a>, <a href="https://github.com/google/iosched/blob/adssched/mobile/src/androidTest/java/com/google/samples/apps/iosched/tests/di/TestCoroutinesModule.kt#L36"><code class="language-plaintext highlighter-rouge">AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()</code></a></p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<p>There are other ways to implement this behavior with Coroutines. However, those solutions cannot be applied systematically in all use cases. Let’s see some alternatives and why/when you should/shouldn’t use them.</p>
+
+<h3 id="-globalscope">❌ GlobalScope</h3>
+
+<p>There are multiple reasons why you shouldn’t use <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/"><code class="language-plaintext highlighter-rouge">GlobalScope</code></a>:</p>
+
+<ul>
+  <li>
+    <p><strong>Promotes hard-coding values</strong>. It might be tempting to hardcode <code class="language-plaintext highlighter-rouge">Dispatchers</code> if you use <code class="language-plaintext highlighter-rouge">GlobalScope</code> straight-away. That’s a bad practice!</p>
+  </li>
+  <li>
+    <p><strong>It makes testing very hard</strong>. As your code is going to be executed in an uncontrolled scope, you won’t be able to manage execution of work started by it.</p>
+  </li>
+  <li>
+    <p><strong>You can’t have a common CoroutineContext for all coroutines</strong> built into the scope as we did with the <code class="language-plaintext highlighter-rouge">applicationScope</code>. Instead, you’d have to pass a common <code class="language-plaintext highlighter-rouge">CoroutineContext</code> to all coroutines started by <code class="language-plaintext highlighter-rouge">GlobalScope</code>.</p>
+  </li>
+</ul>
+
+<p><strong>Recommendation: Don’t use it directly.</strong></p>
+
+<h3 id="-processlifecycleowner-scope-in-android">❌ ProcessLifecycleOwner scope in Android</h3>
+
+<p>In Android, there’s an <code class="language-plaintext highlighter-rouge">applicationScope</code> available in the <code class="language-plaintext highlighter-rouge">androidx.lifecycle:lifecycle-process</code> library, accessed with <code class="language-plaintext highlighter-rouge">ProcessLifecycleOwner.get().lifecycleScope</code>.</p>
+
+<p>In this case, you’d inject a <code class="language-plaintext highlighter-rouge">LifecycleOwner</code> instead of a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> as we did before. In production, you’d pass in <code class="language-plaintext highlighter-rouge">ProcessLifecycleOwner.get()</code> and in unit tests, you can create a fake <code class="language-plaintext highlighter-rouge">LifecycleOwner</code> using <code class="language-plaintext highlighter-rouge">LifecycleRegistry</code>.</p>
+
+<p>Notice that the default <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of this scope uses <code class="language-plaintext highlighter-rouge">Dispatchers.Main.immediate</code> which might not be desirable for background work. As with <code class="language-plaintext highlighter-rouge">GlobalScope</code>, you’d have to pass a common <code class="language-plaintext highlighter-rouge">CoroutineContext</code> to all coroutines started by it.</p>
+
+<p>Because of all the above, this alternative requires more work than just creating a <code class="language-plaintext highlighter-rouge">CoroutineScope</code> in the <code class="language-plaintext highlighter-rouge">Application</code> class. Also, I don’t personally like having classes related to the Android lifecycle in layers below the ViewModel/Presenter as these layers should be platform agnostic.</p>
+
+<p><strong>Recommendation: Don’t use it directly.</strong></p>
+
+<h3 id="️-disclaimer">⚠️ Disclaimer</h3>
+
+<p>If it turns out that the <code class="language-plaintext highlighter-rouge">CoroutineContext</code> of your <code class="language-plaintext highlighter-rouge">applicationScope</code> matches the <code class="language-plaintext highlighter-rouge">GlobalScope</code> or <code class="language-plaintext highlighter-rouge">ProcessLifecycleOwner.get().lifecycleScope</code> one, you can directly assign them as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyApplication</span> <span class="p">:</span> <span class="nc">Application</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">val</span> <span class="py">applicationScope</span> <span class="p">=</span> <span class="nc">GlobalScope</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You still get all the <em>benefits</em> mentioned above and you can easily change it if needed in the future.</p>
+
+<h3 id="--using-noncancellable">❌ ✅ Using NonCancellable</h3>
+
+<p>As seen in <a href="https://medium.com/androiddevelopers/cancellation-in-coroutines-aa6b90163629">part 2 of the series</a>, you can use <code class="language-plaintext highlighter-rouge">withContext(NonCancellable)</code> to be able to call suspend functions in a cancelled coroutine. We suggested using it to perform cleanup code that can suspend. However, you shouldn’t abuse it.</p>
+
+<p>Doing this is very risky as you lose control of the execution of the coroutine. It’s true that it produces more concise and easier to read code but the problems this can cause in the future are unpredictable.</p>
+
+<p>Example of its usage:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Repository</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">ioDispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">doWork</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">withContext</span><span class="p">(</span><span class="n">ioDispatcher</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">doSomeOtherWork</span><span class="p">()</span>
+      <span class="nf">withContext</span><span class="p">(</span><span class="nc">NonCancellable</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">veryImportantOperation</span><span class="p">()</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As very tempting as it can be to do, you might not always know what’s behind <code class="language-plaintext highlighter-rouge">veryImportantOperation()</code>: maybe it’s an external library, maybe the implementation is behind an interface,… What problems can happen?</p>
+
+<ul>
+  <li>
+    <p>You won’t be able to stop those operations in tests.</p>
+  </li>
+  <li>
+    <p>An endless loop that uses delay won’t be able to cancel anymore.</p>
+  </li>
+  <li>
+    <p>Collecting a Flow within it makes the Flow non-cancellable from the outside.</p>
+  </li>
+  <li>
+    <p>…</p>
+  </li>
+</ul>
+
+<p>These problems can lead to subtle and very hard to debug bugs.</p>
+
+<p><strong>Recommendation: use it ONLY for suspending cleanup code.</strong></p>
+
+<hr />
+
+<p>Whenever you need some work to run beyond its current scope, we recommend creating a custom scope in your <code class="language-plaintext highlighter-rouge">Application</code> class and running coroutines within it. Avoid using <code class="language-plaintext highlighter-rouge">GlobalScope</code>, <code class="language-plaintext highlighter-rouge">ProcessLifecycleOwner</code> scope and <code class="language-plaintext highlighter-rouge">NonCancellable</code> for this type of work.</p>
+
+
+                </div>
+            </section>
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="manuel" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/author/manuel">Manuel Vivo</a></h4>
+                                
+                                    <p>Android Developer Relations @ Google</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/author/manuel">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = 'https://manuelvivo.dev/coroutines-cancellation-exceptions-4';
+                            this.page.identifier = '/coroutines-cancellation-exceptions-4';
+                            this.page.title = 'Coroutines & Patterns for work that shouldn’t be cancelled';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://manuelvivo.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Manuel Vivo .dev &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/tag/coroutines/">Coroutines</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/kotlin-flows-in-practice">Kotlin Flows in practice</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/repeatonlifecycle">repeatOnLifecycle API design story</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/coroutinescope-hilt">Create an application CoroutineScope using Hilt</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                    
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/tag/coroutines/">
+                                
+                                    See all 18 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/di-with-hilt">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-hilt.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/di-with-hilt">
+                <header class="post-card-header">
+                    
+                        
+                            
+                                <span class="post-card-tags">Hilt</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Dependency injection on Android with Hilt</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/coroutines-101-talk">
+                <div class="post-card-image" style="background-image: url(/assets/images/2020-04-02-coroutines-101-talk.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/coroutines-101-talk">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Talks</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Coroutines</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Coroutines 101</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p></p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        <img class="author-profile-image" src="/assets/images/manuelvicnt.jpg" alt="Manuel Vivo" />
+                        
+                        <span class="post-card-author">
+                            <a href="/author/manuel/">Manuel Vivo</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://manuelvivo.dev/">
+            
+            <span>Manuel Vivo .dev</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Coroutines & Patterns for work that shouldn’t be cancelled</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Coroutines+%26+Patterns+for+work+that+shouldn%E2%80%99t+be+cancelled&amp;url=https://manuelvivo.dev/coroutines-cancellation-exceptions-4"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://manuelvivo.dev/coroutines-cancellation-exceptions-4"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://manuelvivo.dev/">Manuel Vivo .dev</a> &copy; 2025</section>
+                <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyller/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8WG7TD0NF4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8WG7TD0NF4');
+</script>
+
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+    <!-- Jekyll Ideal Image Slider Include -->
+<!-- https://github.com/jekylltools/jekyll-ideal-image-slider-include -->
+<!-- v1.8 -->
+
+</body>
+</html>
