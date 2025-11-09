@@ -10,7 +10,7 @@ subclass: 'post page'
 
 ## Content
 
-* 🎤 More talks - [2025](#2025-talks), [2023](#2023-talks), [2022](#2022-talks), [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
+* 🎤 Talks - [2025](#2025-talks), [2023](#2023-talks), [2022](#2022-talks), [2021](#2021-talks), [2020](#2020-talks), [2019](#2019-talks)
 * 👨‍💻 Live coding - [2021](#2021-live-coding)
 * 👥 Panels - [2022](#2022-panels), [2021](#2021-panels), [2020](#2020-panels)
 * 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
@@ -23,6 +23,10 @@ subclass: 'post page'
 
 ### 🎤 Talks <a name="2025-talks"/>
 
+- <b>Keynote: The Future of Android...And How to Prepare For It</b> - [Video](https://www.youtube.com/watch?v=CmTSnxCTyIk)<br/>_Droidcon London 2025 - October 31st, 2025_
+- <b>Collect Like a Pro: a deep dive on the lifecycle-aware coroutines APIs</b> - [Video](https://www.youtube.com/watch?v=qJB5iX2cOu0)<br/>_Droidcon London 2025 - October 30th, 2025_
+- <b>System Design for Mobile: Sharpening Your Architecture Skills Beyond Interviews</b><br/>_Droidcon Berlin 2025 - September 25th, 2025_
+- <b>Keynote: The Future of Android...And How to Prepare For It</b> - [Video](https://www.youtube.com/watch?v=CmTSnxCTyIk)<br/>_Droidcon Berlin 2025 - September 24th, 2025_
 - <b>Collect Like a Pro: a deep dive on the lifecycle-aware coroutines APIs</b> - [Video](https://www.youtube.com/watch?v=qJB5iX2cOu0)<br/>_KotlinConf 2025 - May 23rd, 2025_
 
 # 2023 <a name="2023"/>
