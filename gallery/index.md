@@ -2,6 +2,7 @@
 layout: page
 current: gallery
 title: Gallery
+description: Photos and personal pictures of Manuel Vivo, Staff Mobile Architect and Android Engineer.
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template

@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-12-14-new-app-architecture.png
 navigation: True
 title: Rebuilding our guide to app architecture
+description: Explore the revamped Google guide to Android app architecture. Learn about UI, domain, and data layers, and how to build scalable, robust, and testable apps.
 date: 2021-12-14 00:00:00
 tags: [architecture]
 class: post-template

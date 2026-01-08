@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-coroutines.png
 navigation: True
 title: Coroutines - First things first
+description: Foundation of Kotlin Coroutines. Learn about CoroutineScope, Job, and CoroutineContext to master cancellation and exception handling in Android apps.
 date: 2020-03-11 00:00:00
 tags: [coroutines]
 class: post-template

@@ -2,6 +2,7 @@
 layout: page
 current: about
 title: Hello World! I'm Manuel 👋
+description: Manuel Vicente Vivo is a Staff Mobile Architect and seasoned Android engineer with experience at leading companies including Capital One, Google, and Bumble Inc.
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template

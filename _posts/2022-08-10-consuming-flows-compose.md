@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2022-08-10-consuming-flows-compose.png
 navigation: True
 title: Consuming flows safely in Jetpack Compose
+description: Use the collectAsStateWithLifecycle API in Jetpack Compose to collect Kotlin Flows safely in a lifecycle-aware manner. Save resources and improve device health.
 date: 2022-08-10 00:00:00
 tags: [architecture]
 class: post-template

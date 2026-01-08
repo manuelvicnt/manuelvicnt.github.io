@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-02-28-musas-interview.webp
 navigation: True
 title: Cómo la música ha influenciado mi carrera
+description: Una entrevista personal sobre cómo la música y la trompeta han influenciado la carrera de Manuel Vivo como ingeniero de software y arquitecto móvil.
 date: 2021-02-28 00:00:00
 tags: [spanish]
 class: post-template

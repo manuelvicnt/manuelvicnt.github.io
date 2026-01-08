@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-05-18-libraries-in-compose-talk.jpeg
 navigation: True
 title: Using Jetpack libraries in Compose talk
+description: Learn how to use Jetpack libraries like ViewModel, Room, and Hilt with Jetpack Compose. A guide to integrating Compose into existing Android app architectures.
 date: 2021-05-18 00:00:00
 tags: [talks, compose]
 class: post-template

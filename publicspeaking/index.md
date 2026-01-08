@@ -1,7 +1,8 @@
 ---
 layout: page
-current: about
+current: publicspeaking
 title: 🎙️ Public Speaking 🎤
+description: Explore talks, podcasts, and interviews by Manuel Vivo on Android development, Kotlin Coroutines, Jetpack Compose, and Mobile System Design.
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template

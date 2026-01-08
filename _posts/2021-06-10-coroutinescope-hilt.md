@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-06-10-coroutinescope-hilt.webp
 navigation: True
 title: Create an application CoroutineScope using Hilt
+description: Learn how to create and inject an application-scoped CoroutineScope using Hilt. Best practices for launching coroutines that outlive the caller's scope.
 date: 2021-06-10 00:00:00
 tags: [coroutines, hilt]
 class: post-template

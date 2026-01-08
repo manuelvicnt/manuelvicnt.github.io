@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-coroutines.png
 navigation: True
 title: Coroutines & Patterns for work that shouldn’t be cancelled
+description: Best practices for implementing an applicationScope for Kotlin Coroutines. Learn how to handle work that shouldn't be cancelled when users navigate away.
 date: 2020-04-07 00:00:00
 tags: [coroutines]
 class: post-template

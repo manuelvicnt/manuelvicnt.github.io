@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-02-03-coroutines-and-threads.png
 navigation: True
 title: Bridging the gap between coroutines, JVM threads, and concurrency problems
+description: Bridge the gap between Kotlin Coroutines and JVM threads. Learn how coroutines are executed, how they relate to threads, and how to handle concurrency issues.
 date: 2021-02-03 00:00:00
 tags: [coroutines]
 class: post-template

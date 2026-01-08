@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-11-26-lessons-learnt-flow-ads-2019.png
 navigation: True
 title: Lessons learnt using Coroutines Flow in the Android Dev Summit 2019 app
+description: Practical lessons and best practices for using Kotlin Flow in Android apps. Insights from the ADS 2019 open-source project architecture.
 date: 2019-11-26 00:00:00
 tags: [coroutines]
 class: post-template

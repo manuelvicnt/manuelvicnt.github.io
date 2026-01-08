@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2024-01-29-prepare-interviews-with-me.webp
 navigation: True
 title: Prepare your interviews with me
+description: Prepare for your next mobile engineering interview with Manuel Vivo. Mock interviews, cheat sheets, and 1:1 sessions for Android, System Design, and DS/A.
 date: 2024-01-29 00:00:00
 tags: [mentoring]
 class: post-template

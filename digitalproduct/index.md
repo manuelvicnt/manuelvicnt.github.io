@@ -2,6 +2,7 @@
 layout: page
 current: digitalproduct
 title: Products
+description: Expert resources for Mobile System Design Interviews. Get the Mobile System Design Interview book, cheat sheets, and free Android development guides by Manuel Vivo.
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template

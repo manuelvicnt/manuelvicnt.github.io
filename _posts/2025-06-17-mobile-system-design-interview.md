@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2025-06-17-mobile-system-design-interview.webp
 navigation: True
 title: Mobile System Design Interview book
+description: The Mobile System Design Interview book is finally here! Learn a proven framework for Android and iOS platforms to nail your next mobile system design interview.
 date: 2025-06-17 00:00:00
 tags: [architecture]
 class: post-template

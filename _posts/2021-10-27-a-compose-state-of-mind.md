@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-10-27-a-compose-state-of-mind.jpg
 navigation: True
 title: A Compose State of Mind
+description: Master state management in Jetpack Compose. Learn about automatic state observation, hoisting, state holders, and mutating state safely outside the Composition.
 date: 2021-10-27 00:00:01
 tags: [talks, compose]
 class: post-template

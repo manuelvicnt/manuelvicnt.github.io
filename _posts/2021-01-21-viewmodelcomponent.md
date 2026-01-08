@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-01-21-viewmodelcomponent.png
 navigation: True
 title: Using Hilt's ViewModelComponent
+description: Deep dive into Hilt's ViewModelComponent. Learn how to scope dependencies to a ViewModel's lifecycle and use SavedStateHandle as a default binding.
 date: 2021-01-21 00:00:00
 tags: [hilt]
 class: post-template

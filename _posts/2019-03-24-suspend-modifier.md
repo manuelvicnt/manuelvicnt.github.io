@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-03-24-suspend-modifier.webp
 navigation: True
 title: The suspend modifier — under the hood
+description: Understand how the Kotlin compiler handles the suspend modifier under the hood. Learn about state machines, suspension points, and coroutine execution in Android.
 date: 2019-03-24 00:00:00
 tags: [coroutines]
 class: post-template

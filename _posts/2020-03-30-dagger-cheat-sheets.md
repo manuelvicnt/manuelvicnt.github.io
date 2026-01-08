@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-03-30-dagger-cheat-sheets.webp
 navigation: True
 title: Dagger code generation cheat sheets
+description: Deep dive into Dagger's code generation with these cheat sheets. Understand how Dagger interprets annotations and generates dependency injection code for Android.
 date: 2020-03-03 00:00:00
 tags: [dagger]
 class: post-template

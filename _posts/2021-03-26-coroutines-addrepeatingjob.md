@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-03-26-coroutines-addrepeatingjob.png
 navigation: True
 title: A safer way to collect flows from Android UIs
+description: Learn how to use the Lifecycle.repeatOnLifecycle and Flow.flowWithLifecycle APIs to safely collect Kotlin Flows from the UI layer in Android without wasting resources.
 date: 2021-03-26 00:00:00
 tags: [coroutines]
 class: post-template

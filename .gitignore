@@ -9,6 +9,8 @@
 # webstorm
 .idea/
 
+.junie/
+
 # others
 *.swp
 package-lock.json

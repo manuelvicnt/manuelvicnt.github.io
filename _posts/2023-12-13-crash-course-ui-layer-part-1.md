@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2023-12-13-crash-course-ui-layer-part-1.webp
 navigation: True
 title: Crash Course on the Android UI Layer | Part 1
+description: Part 1 of the Crash Course on the Android UI Layer. Learn about the UI, UI state, Unidirectional Data Flow (UDF), and how to model, produce, and consume UI state.
 date: 2023-12-13 00:00:00
 tags: [architecture]
 class: post-template

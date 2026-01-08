@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-11-24-migrating-to-Hilt.png
 navigation: True
 title: Migrating from Dagger to Hilt — Is it worth it?
+description: Is it worth migrating your Dagger app to Hilt? Explore the benefits of Hilt's AndroidX extensions, reduced boilerplate, and standardized DI setup.
 date: 2020-11-24 00:00:01
 tags: [hilt]
 class: post-template

@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-10-15-testing-two-livedata.png
 navigation: True
 title: Testing two consecutive LiveData emissions in Coroutines
+description: Learn how to test consecutive LiveData emissions in Android unit tests using Kotlin Coroutines, TestCoroutineDispatcher, and pausing execution.
 date: 2019-10-15 00:00:00
 tags: [coroutines]
 class: post-template

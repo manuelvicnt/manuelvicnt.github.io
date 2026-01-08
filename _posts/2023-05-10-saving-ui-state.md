@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2023-05-10-saving-ui-state.jpg
 navigation: True
 title: Saving UI state on Android
+description: Learn best practices to save UI state on Android for both the View system and Jetpack Compose. Compare APIs like remember, rememberSaveable, onSaveInstanceState, ViewModel, and SavedStateHandle.
 date: 2023-05-10 00:00:00
 tags: [talks, architecture]
 class: post-template

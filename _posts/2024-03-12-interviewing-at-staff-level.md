@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2024-03-12-interviewing-at-staff-level.webp
 navigation: True
 title: Interviewing at Staff+ level
+description: Learn how to prepare for Staff+ level engineering interviews. Insights on Data Structures, Algorithms, Android expertise, System Design, and Behavioral interviews.
 date: 2024-03-12 00:00:00
 tags: [mentoring]
 class: post-template

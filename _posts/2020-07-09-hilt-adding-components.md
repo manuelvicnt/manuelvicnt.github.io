@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-hilt.png
 navigation: True
 title: Hilt — Adding components to the hierarchy
+description: Extend Hilt's capabilities by adding custom components to its hierarchy. Learn how to use entry points to access scoped types in multi-activity apps.
 date: 2020-07-09 00:00:00
 tags: [hilt]
 class: post-template

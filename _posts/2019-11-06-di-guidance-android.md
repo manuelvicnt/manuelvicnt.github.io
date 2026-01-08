@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-03-30-dagger-cheat-sheets.webp
 navigation: True
 title: Dependency Injection guidance on Android — ADS 2019
+description: Comprehensive guidance on Dependency Injection for Android. Why Dagger is recommended for professional apps and how to structure your DI layer.
 date: 2019-11-06 00:00:00
 tags: [dagger]
 class: post-template

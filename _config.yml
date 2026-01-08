@@ -11,18 +11,27 @@ url: https://manuelvivo.dev
 
 # Website info
 title: Manuel Vivo .dev
-description: A place where you can learn about Android development
+description: Staff Mobile Architect & Android Engineer. Personal website of Manuel Vicente Vivo, featuring insights on Android development, system design, mentoring, and public speaking.
+image: assets/images/blog-cover.jpg
 cover: assets/images/blog-cover.jpg
 #logo: assets/images/blog-icon.png
 #logo_dark: assets/images/favicon.png
 favicon: assets/images/favicon.png
-production_url: https://manuelvivo.dev/
-source_url: https://github.com/manuelvicnt/manuelvicnt.github.io
 CNAME: manuelvivo.dev #add cname for website to be created
-
 # Social info
 navigation: True # show the navbar links
 twitter: manuelvicnt
+
+# SEO Tag configuration
+author:
+  name: Manuel Vivo
+  twitter: manuelvicnt
+social:
+  name: Manuel Vivo
+  links:
+    - https://twitter.com/manuelvicnt
+    - https://github.com/manuelvicnt
+    - https://www.linkedin.com/in/manuel-vicente-vivo-54498653/
 
 # Disqus
 disqus: True

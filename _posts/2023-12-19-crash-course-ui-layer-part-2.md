@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2023-12-19-crash-course-ui-layer-part-2.webp
 navigation: True
 title: Crash Course on the Android UI Layer | Part 2
+description: Part 2 of the Crash Course on the Android UI Layer. Learn about state holders, where to hoist state, and how to save UI state on Android.
 date: 2023-12-19 00:00:00
 tags: [architecture]
 class: post-template

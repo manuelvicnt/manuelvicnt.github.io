@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-10-24-testing-coroutines-talk.jpg
 navigation: True
 title: Testing coroutines - Android Developer Summit 2019
+description: Master testing asynchronicity with Kotlin Coroutines on Android. Learn about Dispatchers.Main, TestCoroutineDispatcher, and controlling event timing in tests.
 date: 2019-10-24 00:00:01
 tags: [talks, coroutines]
 class: post-template

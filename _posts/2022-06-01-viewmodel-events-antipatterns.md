@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2022-06-01-viewmodel-events-antipatterns.png
 navigation: True
 title: ViewModel One-off event antipatterns
+description: Avoid antipatterns when handling one-off events in Android ViewModels. Learn why you should handle events immediately, reduce them to UI state, and use observable data holders.
 date: 2022-06-01 00:00:00
 tags: [architecture]
 class: post-template

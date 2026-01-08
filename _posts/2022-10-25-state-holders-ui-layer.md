@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2022-10-25-state-holders-ui-layer.jpg
 navigation: True
 title: State holders and state production in the UI Layer
+description: Dive deep into the UI state production pipeline and state holders in the Android UI layer. Learn about the differences between UI and business logic, ViewModels, and plain state holder classes.
 date: 2022-10-25 00:00:01
 tags: [talks, architecture]
 class: post-template

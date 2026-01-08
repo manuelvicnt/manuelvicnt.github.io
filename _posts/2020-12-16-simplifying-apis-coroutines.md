@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-03-24-suspend-modifier.webp
 navigation: True
 title: Simplifying APIs with coroutines and Flow
+description: Simplify your library or 3rd party APIs with coroutine adapters. Learn how to use suspendCancellableCoroutine and callbackFlow for a more Kotlin-friendly surface.
 date: 2020-12-16 00:00:00
 tags: [coroutines]
 class: post-template

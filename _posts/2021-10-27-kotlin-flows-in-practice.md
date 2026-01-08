@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-10-27-kotlin-flows-in-practice.jpg
 navigation: True
 title: Kotlin Flows in practice
+description: Practical guide to using Kotlin Flow in Android apps. Learn about lifecycle-aware APIs and how to handle data streams effectively across all app layers.
 date: 2021-10-27 00:00:00
 tags: [talks, coroutines]
 class: post-template

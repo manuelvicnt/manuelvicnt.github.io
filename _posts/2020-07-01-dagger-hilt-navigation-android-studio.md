@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-07-01-dagger-hilt-navigation-android-studio.png
 navigation: True
 title: Dagger and Hilt navigation support in Android Studio
+description: Improve your productivity with Dagger and Hilt navigation support in Android Studio. Easily find where dependencies are provided with a single click.
 date: 2020-07-01 00:00:00
 tags: [hilt, dagger]
 class: post-template

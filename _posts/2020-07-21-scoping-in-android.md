@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-hilt.png
 navigation: True
 title: Scoping in Android and Hilt
+description: Understand scoping in Android and Hilt. Learn how to use annotations like @Singleton and @ActivityScoped to manage object lifecycles in your DI container.
 date: 2020-07-21 00:00:00
 tags: [hilt]
 class: post-template

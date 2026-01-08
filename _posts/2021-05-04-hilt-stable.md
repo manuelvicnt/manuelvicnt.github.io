@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-05-04-hilt-stable.png
 navigation: True
 title: Hilt is stable! Easier dependency injection on Android
+description: Hilt is now stable! Explore the benefits of using Hilt for dependency injection in production Android apps, including less boilerplate and better Jetpack integration.
 date: 2021-05-04 00:00:00
 tags: [hilt]
 class: post-template

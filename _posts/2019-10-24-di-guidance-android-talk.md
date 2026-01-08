@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-10-24-di-guidance-android.webp
 navigation: True
 title: An opinionated guide to Dependency Injection on Android - Android Developer Summit 2019
+description: Manuel Vivo shares an opinionated guide to Dependency Injection on Android at ADS 2019. Deep dive into Dagger setup and architecture recommendations.
 date: 2019-10-24 00:00:00
 tags: [talks, dagger]
 class: post-template

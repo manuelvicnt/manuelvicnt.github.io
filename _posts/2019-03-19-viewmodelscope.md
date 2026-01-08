@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-03-19-viewmodelscope.png
 navigation: True
 title: Easy Coroutines in Android - viewModelScope
+description: Use the viewModelScope KTX extension for easier coroutine management in Android ViewModels. Automatically cancel coroutines when the ViewModel is cleared.
 date: 2019-03-19 00:00:00
 tags: [coroutines]
 class: post-template

@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2022-10-25-collecting-flows-video.jpg
 navigation: True
 title: Collecting flows in a lifecycle-aware manner
+description: Learn the recommended way to collect Kotlin Flows on Android in a lifecycle-aware manner. Explore APIs like repeatOnLifecycle and collectAsStateWithLifecycle in Jetpack Compose.
 date: 2022-10-25 00:00:00
 tags: [talks, architecture]
 class: post-template

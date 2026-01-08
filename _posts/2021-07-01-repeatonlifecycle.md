@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-07-01-repeatonlifecycle.webp
 navigation: True
 title: repeatOnLifecycle API design story
+description: Discover the design story and trade-offs behind the repeatOnLifecycle API in Android. Learn why it's a suspend function and how it ensures safer Flow collection.
 date: 2021-07-01 00:00:00
 tags: [coroutines]
 class: post-template

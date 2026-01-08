@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2021-05-07-sharein-statein.png
 navigation: True
 title: Things to know about Flow’s shareIn and stateIn operators
+description: Master Kotlin Flow’s shareIn and stateIn operators. Learn how to convert cold flows to hot flows, improve performance, and avoid common pitfalls in Android development.
 date: 2021-05-07 00:00:00
 tags: [coroutines]
 class: post-template

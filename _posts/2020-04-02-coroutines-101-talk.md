@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-04-02-coroutines-101-talk.jpg
 navigation: True
 title: Coroutines 101
+description: An introductory talk to Kotlin Coroutines for Android. Learn about solving asynchronicity problems, implementation details, and testing strategies.
 date: 2020-04-02 00:00:00
 tags: [talks, coroutines]
 class: post-template

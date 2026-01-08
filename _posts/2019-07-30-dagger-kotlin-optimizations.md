@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2019-07-30-dagger-kotlin-optimizations.png
 navigation: True
 title: Dagger in Kotlin - Gotchas and Optimizations
+description: Optimize your Android build time with Dagger and Kotlin. Best practices for dependency injection, annotation processing, and avoiding Kotlin-specific gotchas.
 date: 2019-07-30 00:00:00
 tags: [dagger]
 class: post-template

@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2025-10-14-times-square-billboard.webp
 navigation: True
 title: Times Square's billboard highlight
+description: Manuel Vivo highlighted on a Times Square billboard! A huge milestone and shoutout to Topmate for their incredible platform for mentors and learners.
 date: 2025-10-14 00:00:00
 tags: []
 class: post-template

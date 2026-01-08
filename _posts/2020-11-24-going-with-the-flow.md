@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-11-24-going-with-the-flow.jpg
 navigation: True
 title: Going with the Flow
+description: Introduction to Kotlin Flow for Android developers. Learn how to create streams of data and handle multiple results over time with coroutines.
 date: 2020-11-24 00:00:00
 tags: [talks, coroutines]
 class: post-template

@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2022-04-11-blueprints-migration-compose.jpeg
 navigation: True
 title: Migrating Architecture Blueprints to Jetpack Compose
+description: The story of migrating Android Architecture Blueprints to Jetpack Compose. Insights into modernizing UI patterns and consolidating architecture best practices.
 date: 2022-04-11 00:00:00
 tags: [architecture, compose]
 class: post-template

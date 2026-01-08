@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-hilt.png
 navigation: True
 title: Dependency injection on Android with Hilt
+description: Introduction to Hilt, Jetpack's recommended library for Dependency Injection on Android. Simplify DI with standardized containers and automatic lifecycle management.
 date: 2020-06-10 00:00:00
 tags: [hilt]
 class: post-template

@@ -4,6 +4,7 @@ current: post
 cover: assets/images/2020-coroutines.png
 navigation: True
 title: Exceptions in coroutines
+description: Master exception handling in Kotlin Coroutines. Learn how exceptions propagate and how to ensure a smooth user experience even when things go wrong.
 date: 2020-03-11 00:00:01
 tags: [coroutines]
 class: post-template
