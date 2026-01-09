@@ -122,8 +122,9 @@ subclass: 'post page'
   }
 
   .author-image {
-    width: 150px;
-    height: 150px;
+    width: 150px !important;
+    height: 150px !important;
+    flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--brand-color-light);
@@ -392,7 +393,7 @@ subclass: 'post page'
 </style>
 
 <p class="page-subtitle">
-Unlike general system design books, this is the first comprehensive guide specifically for mobile platforms.
+Unlike general system design books, this is the first comprehensive guide written specifically for mobile platforms.
 </p>
 
 <div class="book-landing">
@@ -495,7 +496,7 @@ Unlike general system design books, this is the first comprehensive guide specif
     <a href="https://geni.us/bbg-msd" class="button">Grab your copy now!</a>
   </div>
 
-  <section class="faq-section" style="margin-bottom: 0px; margin-top: 80px">
+  <section class="faq-section" style="margin-bottom: 0px; margin-top: 60px">
     <h2>Frequently Asked Questions</h2>
     
     <div class="faq-container">
