@@ -32,6 +32,8 @@ social:
     - https://twitter.com/manuelvicnt
     - https://github.com/manuelvicnt
     - https://www.linkedin.com/in/manuel-vicente-vivo-54498653/
+webmaster_verifications:
+  google: # add your google verification code here if you have one
 
 # Disqus
 disqus: True

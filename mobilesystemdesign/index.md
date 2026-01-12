@@ -1,8 +1,8 @@
 ---
 layout: page
 current: mobilesystemdesign
-title: "Mobile System Design"
-description: Master the mobile system design interview, and mobile system design in general, with this comprehensive guide by Manuel Vivo.
+title: Mobile System Design
+description: Master the mobile system design interview for Android and iOS. A comprehensive guide and framework for senior engineers and architects by Manuel Vivo.
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template
@@ -140,49 +140,54 @@ subclass: 'post page'
     color: var(--brand-color);
   }
 
-  .testimonial-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0px;
-  }
 
   .testimonial-card {
     position: relative;
-    padding: 70px 25px 25px 25px;
+    padding: 25px;
     background: white;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.04);
     border-top: 4px solid var(--brand-color);
-    transition: transform 0.3s ease, max-height 0.5s ease;
+    transition: transform 0.3s ease;
     margin: 0;
     font-style: italic;
     line-height: 1.6;
     color: #444;
-    max-height: 150px;
-    overflow: hidden;
     font-size: 0.95em;
   }
 
+  .testimonial-highlight {
+    font-weight: bold;
+    cursor: pointer;
+    padding-top: 5px;
+    padding-right: 90px;
+  }
+
+  .testimonial-full {
+    display: none;
+    margin-top: 15px;
+    padding-right: 0;
+  }
+
+  .testimonial-card.expanded .testimonial-highlight {
+    padding-right: 0;
+  }
+
+  .testimonial-card.expanded .testimonial-full {
+    display: block;
+  }
+
+  .testimonial-author {
+    margin-top: 20px;
+    font-weight: bold;
+    font-style: normal;
+    text-align: right;
+    color: var(--brand-color);
+    font-size: 0.9em;
+  }
+
   .testimonial-card.expanded {
-    max-height: 1500px;
     padding-bottom: 60px;
-  }
-
-  .testimonial-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background: linear-gradient(transparent, white);
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .testimonial-card.expanded::after,
-  .testimonial-card.no-fade::after {
-    opacity: 0;
   }
 
   .testimonial-card .read-more {
@@ -211,7 +216,7 @@ subclass: 'post page'
   }
 
   .testimonial-card::before {
-    content: '“';
+    content: '"';
     position: absolute;
     top: 10px;
     left: 15px;
@@ -445,7 +450,7 @@ Unlike general system design books, this is the first comprehensive guide writte
   <section class="what-you-learn" style="margin-bottom: 60px; padding: 40px; background: var(--brand-color-light); border-radius: 12px;">
     <h2 style="border-bottom-color: var(--brand-color); margin-top: 0px;">What you'll learn</h2>
     <ul style="line-height: 2; font-size: 1.1em; list-style: none; padding: 0; margin-bottom: 0px;">
-      <li style="margin-bottom: 15px;">🏆 <strong>A proven 5-step playbook:</strong> Turns any “Design X” prompt into a structured answer that speaks the interviewer's language.</li>
+      <li style="margin-bottom: 15px;">🏆 <strong>A proven 5-step playbook:</strong> Turns any "Design X" prompt into a structured answer that speaks the interviewer's language.</li>
       <li style="margin-bottom: 15px;">📝 <strong>7 fully solved questions:</strong> Every decision, diagram, and pitfall exposed for real-world apps.</li>
       <li style="margin-bottom: 15px;">🔢 <strong>175 topics:</strong> Covering the full spectrum of mobile system design principles.</li>
       <li style="margin-bottom: 0;">🔧 <strong>Practical to the core:</strong> Real-world case studies, reusable checklists, and trade-off cheat sheets.</li>
@@ -457,25 +462,63 @@ Unlike general system design books, this is the first comprehensive guide writte
     <a href="https://bytebytego.com/courses/mobile-system-design-interview/introduction" class="button">Read the first chapters for FREE!</a>
   </div>
 
-  <section class="readers-say" style="margin-bottom: 60px;">
+  <section class="use-cases" style="margin-bottom: 60px;">
     <h2>What readers say</h2>
-    <div class="testimonial-grid">
-      <blockquote class="testimonial-card">
-        <br>I bought this book just a week before my system design interview and crammed through it, and it worked! The explanations were clear, the examples practical, and it gave me the exact framework I needed to approach the questions confidently. I’m happy to say I passed my interviews. Huge thanks to the author for putting together such a helpful resource!<br><br>
-      </blockquote>
-      <blockquote class="testimonial-card">
-        <br>For anyone serious about mastering mobile system design, this book is an absolute game-changer. Unlike many general system design books that focus heavily on backend infrastructure, this resource is truly specific to the mobile platform. It delves into the unique challenges and concerns that mobile developers face, such as battery consumption, network latency, offline data synchronization, and platform-specific nuances.<br><br>
-      </blockquote>
-      <blockquote class="testimonial-card">
-        <br>A while ago, I started diving deep into System Design and surprisingly, I couldn’t find resources that truly speak to Mobile Developers. So I decided to order this book from the US and a few days later, it arrived. And honestly, it turned out to be one of the best books I’ve read in a long time. The book doesn’t just present concepts, it walks you through multiple solution paths, explains trade-offs, and helps you understand why a certain architecture is the best fit for a particular problem. After reading it, the way you look at mobile app development will completely change.<br><br>
-      </blockquote>
-      <blockquote class="testimonial-card">
-        <br>Just started Mobile System Design Interview by Manuel Vicente Vivo, and it’s already a game-changer!! It takes complex system design concepts and makes them super easy to understand. This book is a gem.<br><br>
-      </blockquote>
-      <blockquote class="testimonial-card">
-        <br>In a world where everyone’s chasing quick AI-powered productivity hacks, we often overlook one of our greatest abilities, the power to deeply learn and rethink how we build things. 📚 Lately, I’ve been diving into "Mobile System Design Interview" by Manuel Vicente Vivo, and I’m halfway through, already impressed by how it’s reshaping my approach to mobile architecture and system-level thinking.<br><br>
-        This book isn’t just about interview prep. It’s about learning to think like a senior engineer. If you're preparing for senior roles, architecture discussions, or just want to level up your fundamentals, then this is a must-read. Let’s not just automate more. Let’s understand more. 🔍<br><br>
-      </blockquote>
+
+    <div class="use-case-item" style="margin-bottom: 40px;">
+      <h3 style="margin-bottom: 15px; color: var(--brand-color);">Walk into the interview with a playbook and leave with a 'yes'</h3>
+      <div class="testimonial-card">
+        <div class="testimonial-highlight">"...and it worked... I passed my interviews!"</div>
+        <div class="testimonial-full">
+          I bought this book just a week before my system design interview and crammed through it, and it worked! The explanations were clear, the examples practical, and it gave me the exact framework I needed to approach the questions confidently. I'm happy to say I passed my interviews. Huge thanks to the author for putting together such a helpful resource!
+          <div class="testimonial-author">Amir - Amazon</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-case-item" style="margin-bottom: 40px;">
+      <h3 style="margin-bottom: 15px; color: var(--brand-color);">Make 'it depends' sound like clarity, not hesitation</h3>
+      <div class="testimonial-card">
+        <div class="testimonial-highlight">"It's about learning to think like a senior engineer."</div>
+        <div class="testimonial-full">
+          In a world where everyone's chasing quick AI-powered productivity hacks, we often overlook one of our greatest abilities, the power to deeply learn and rethink how we build things. 📚 Lately, I've been diving into "Mobile System Design Interview" by Manuel Vicente Vivo, and I'm halfway through, already impressed by how it's reshaping my approach to mobile architecture and system-level thinking.<br><br>
+          This book isn't just about interview prep. It's about learning to think like a senior engineer. If you're preparing for senior roles, architecture discussions, or just want to level up your fundamentals, then this is a must-read. Let's not just automate more. Let's understand more. 🔍
+          <div class="testimonial-author">Cawin - LinkedIn</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-case-item" style="margin-bottom: 40px;">
+      <h3 style="margin-bottom: 15px; color: var(--brand-color);">Lead the design discussion. Align iOS + Android. Ship with confidence.</h3>
+      <div class="testimonial-card">
+        <div class="testimonial-highlight">"This dual-platform approach makes it an invaluable resource for any mobile engineer"</div>
+        <div class="testimonial-full">
+          A major strength of this book is its comprehensive coverage of both Android and iOS. It doesn't favor one platform over the other but instead highlights common design patterns and principles that are applicable across both ecosystems, while also addressing platform-specific implementations and considerations where necessary. This dual-platform approach makes it an invaluable resource for any mobile engineer, regardless of their primary expertise.
+          <div class="testimonial-author">Thomas - Amazon</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-case-item" style="margin-bottom: 40px;">
+      <h3 style="margin-bottom: 15px; color: var(--brand-color);">Raise the bar for mobile architecture across your team</h3>
+      <div class="testimonial-card">
+        <div class="testimonial-highlight">"...walks you through multiple solution paths... explains trade-offs..."</div>
+        <div class="testimonial-full">
+          A while ago, I started diving deep into System Design and surprisingly, I couldn't find resources that truly speak to Mobile Developers. So I decided to order this book from the US and a few days later, it arrived. And honestly, it turned out to be one of the best books I've read in a long time. The book doesn't just present concepts, it walks you through multiple solution paths, explains trade-offs, and helps you understand why a certain architecture is the best fit for a particular problem. After reading it, the way you look at mobile app development will completely change.
+          <div class="testimonial-author">Youseff - LinkedIn</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-case-item" style="margin-bottom: 40px;">
+      <h3 style="margin-bottom: 15px; color: var(--brand-color);">Set a mobile architecture standard your org can scale</h3>
+      <div class="testimonial-card">
+        <div class="testimonial-highlight">"This is a must-read for anyone serious about mobile app development"</div>
+        <div class="testimonial-full">
+          I didn't buy this book for interview preparation, but rather to see whether I had been doing my projects correctly over the past decade. It has cleared up many doubts I've had through the years. This is a must-read for anyone serious about mobile app development—particularly in today's AI-driven era, where many assume they can code anything, yet only apps with clear and maintainable architectures will truly shine.
+          <div class="testimonial-author">Hong-Yi - Amazon</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -508,9 +551,9 @@ Unlike general system design books, this is the first comprehensive guide writte
       </div>
 
       <div class="faq-item">
-        <h4 class="faq-question">🌍 Can I buy the book outside of Amazon?</h4>
+        <h4 class="faq-question">🌍 Can I buy the book anywhere besides Amazon?</h4>
         <div class="faq-answer">
-          <p>Yes! The book is available through <a href="https://geni.us/bbg-msd" target="_blank">Amazon</a> with international shipping to most countries.</p>
+          <p>The book is available through <a href="https://geni.us/bbg-msd" target="_blank">Amazon</a> with international shipping to most countries.</p>
           <p>If you're in <strong>India</strong> and cannot get it through Amazon, you can order it directly from our Indian publisher: <a href="https://www.shroffpublishers.com/books/9789368082255/" target="_blank">Shroff Publishers</a>.</p>
         </div>
       </div>
@@ -534,6 +577,16 @@ Unlike general system design books, this is the first comprehensive guide writte
           </ul>
         </div>
       </div>
+
+      <div class="faq-item">
+        <h4 class="faq-question">📖 What are the book details?</h4>
+        <div class="faq-answer">
+          <p><strong>ISBN:</strong> 1736049151 / 978-1736049150</p>
+          <p><strong>Publisher:</strong> ByteByteGo</p>
+          <p><strong>Publish date:</strong> Jun 06, 2025</p>
+          <p><strong>Pages:</strong> 293</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -544,28 +597,27 @@ Unlike general system design books, this is the first comprehensive guide writte
         cards.forEach(function(card) {
           if (card.querySelector('.read-more')) return;
 
-          // Using a small timeout to ensure dimensions are calculated correctly after rendering
-          setTimeout(function() {
-            if (card.scrollHeight > card.offsetHeight + 5) {
-              var btn = document.createElement('button');
-              btn.className = 'read-more';
-              btn.textContent = 'Read more';
-              card.appendChild(btn);
-              
-              btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                card.classList.toggle('expanded');
-                if (card.classList.contains('expanded')) {
-                  btn.textContent = 'Read less';
-                } else {
-                  btn.textContent = 'Read more';
-                }
-              });
+          var btn = document.createElement('button');
+          btn.className = 'read-more';
+          btn.textContent = 'Read more';
+          card.appendChild(btn);
+
+          var highlight = card.querySelector('.testimonial-highlight');
+          
+          function toggleExpanded(e) {
+            e.preventDefault();
+            card.classList.toggle('expanded');
+            if (card.classList.contains('expanded')) {
+              btn.textContent = 'Read less';
             } else {
-              card.classList.add('no-fade');
-              card.style.maxHeight = 'none';
+              btn.textContent = 'Read more';
             }
-          }, 200);
+          }
+
+          btn.addEventListener('click', toggleExpanded);
+          if (highlight) {
+            highlight.addEventListener('click', toggleExpanded);
+          }
         });
       }
 
