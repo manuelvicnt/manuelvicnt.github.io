@@ -2,7 +2,7 @@
 layout: page
 current: about
 title: Hello World! I'm Manuel 👋
-description: Manuel Vicente Vivo is a Staff Mobile Architect and seasoned Android engineer with experience at leading companies including Capital One, Google, and Bumble Inc.
+description: Manuel Vicente Vivo is a Senior Staff Mobile Architect and seasoned Android engineer with experience at leading companies including Capital One, Google, Bumble Inc., and Super Technologies.
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template
@@ -15,14 +15,15 @@ subclass: 'post page'
 </p>
 
 <p align="center">
-I'm an Android developer 👨‍💻 currently working at Bumble Inc.
+I'm a Mobile developer 👨‍💻 currently working at Super Technologies.
 </p>
 
 &nbsp;
 
 ## What I do
 
-I currently work as a Staff Android Engineer at Bumble Inc. where I work with other Android developers to deliver a first-in-class user experience.
+I currently work as a Senior Staff Mobile Engineer at Super, where I work with other Android and iOS developers to
+deliver a first-in-class user experience.
 
 
 ## What I did at Google
