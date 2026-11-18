@@ -15,7 +15,7 @@ subclass: 'post page'
 * 👨‍💻 Live coding - [2021](#2021-live-coding)
 * 👥 Panels - [2022](#2022-panels), [2021](#2021-panels), [2020](#2020-panels)
 * 🎙️ Podcasts - [2021](#2021-podcasts), [2020](#2020-podcasts), [2019](#2019-podcasts)
-* 📹 Youtube videos - [2023](#2023-youtube), [2022](#2022-youtube), [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
+* 📹 Youtube videos - [2026](#2026-youtube), [2023](#2023-youtube), [2022](#2022-youtube), [2021](#2021-youtube), [2020](#2020-youtube), [2019](#2019-youtube)
 * 💬 Interviews - [2023](#2023-interviews), [2022](#2022-interviews), [2021](#2021-interviews), [2020](#2020-interviews), [2019](#2019-interviews)
 
 ---
@@ -26,6 +26,10 @@ subclass: 'post page'
 
 - <b>Fundamentals of Mobile System Design</b> - [Video](https://www.youtube.com/watch?v=8vWtYH2Fh0E)<br/>_Next app devCon 2026 - October 8th, 2026_
 - <b>Degrease your Android app: stripping bloat for low-end devices</b> - [Video](https://www.youtube.com/watch?v=-vBreAku2zA)<br/>_Next app devCon 2026 - October 7th, 2026_
+
+### 📹 Youtube videos <a name="2026-youtube"/>
+
+- <b>Fundamentals of Mobile System Design</b> - [Conference talk](https://youtu.be/qFOLYymDjVM)<br/>_November 18th, 2026_
 
 # 2025 <a name="2025"/>
 
